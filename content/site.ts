@@ -243,13 +243,13 @@ const ATTIRE = {
 // ── Website address (used for QR codes, link previews, table finder) ────────
 // NEXT_PUBLIC_SITE_URL (env) overrides this when set.
 // ⚠ check: set this to the live domain before going live
-const SITE_URL = "https://zanicare-christmas-party.digitalinvitationrsvp.com/"
+const SITE_URL = "https://zanicare-group-of-companies.digitalinvitationrsvp.com/"
 // Image shown when the link is shared (Facebook, Messenger, Viber, WhatsApp, X, …).
 // Ideally a 1200×630 JPG under ~300 KB — the company logo is used until a preview image is made.
 // Use a NEW filename whenever the image changes — Facebook caches images by URL.
-const LINK_PREVIEW_IMAGE = "/Details/companyLogo.png"
+const LINK_PREVIEW_IMAGE = "/Details/LinkPreview.png"
 // Square fallback (600×600) for apps that show a small square thumbnail
-const LINK_PREVIEW_IMAGE_SQUARE = "/Details/companyLogo.png"
+const LINK_PREVIEW_IMAGE_SQUARE = "/Details/LinkPreview.png"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
@@ -266,7 +266,7 @@ const BRAND = {
   coupleNameImage: "/Details/companyLogo.png", // logo (loader, envelope)
   seal: "/Details/companyLogo.png", // envelope wax seal
   // ⚠ check: still the previous wedding song — swap in a Christmas track
-  backgroundMusic: "/background_music/PALAGI (Wedding Version) - TJ Monterde OFFICIAL AUDIO.mp3",
+  backgroundMusic: "/background_music/Bruno Mars - 24k Magic (Lyrics).mp3",
 }
 
 // Event photos reused across the site (gallery, reminders, snap & share, closing).
