@@ -7,7 +7,7 @@ import { StorySection } from "@/components/StorySection"
 import { layeredSectionTitleSize } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
-import { IVORY_GOLD, IVORY_LACE_EDGE, IVORY_SECTION_BACKGROUND } from "@/lib/ivory-lace"
+import { IVORY_LACE_EDGE } from "@/lib/ivory-lace"
 import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
@@ -28,8 +28,20 @@ const aboveTheBeyond = localFont({
 const revealEase = [0.22, 1, 0.36, 1] as const
 
 
-// Light lift so text stays crisp over the lace (same as the couple video section)
-const onBgGlow = "0 1px 0 rgb(255 255 255 / 80%)"
+// Luxury dark palette (matches the home hero and Welcome card)
+const GOLD = "#E2B75A" // lettering
+const GOLD_LINE = "#C9A24A" // rules and ornaments
+const WHITE = "#F5F5F5"
+// Dark edge so lettering stays crisp over the pattern
+const onBgGlow = "0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%)"
+// Section ground: black with a soft gold glow at the top
+const SECTION_BACKGROUND = [
+  "radial-gradient(110% 40% at 50% 0%, rgb(226 183 90 / 10%) 0%, transparent 65%)",
+  "radial-gradient(90% 35% at 50% 100%, rgb(226 183 90 / 6%) 0%, transparent 70%)",
+  "linear-gradient(180deg, #0b0b0c 0%, #121214 50%, #0b0b0c 100%)",
+].join(", ")
+// Gold monogram pattern, slightly visible (same tile as the hero)
+const PATTERN = "/monogram/monogram-liner-gold.png"
 
 function formatStoryParagraph(
   paragraph: string,
@@ -46,16 +58,16 @@ function OrnamentalDivider() {
     <div className="flex items-center justify-center gap-1.5">
       <span
         className="h-px w-10 sm:w-16"
-        style={{ background: `linear-gradient(to right, transparent, ${IVORY_GOLD})` }}
+        style={{ background: `linear-gradient(to right, transparent, ${GOLD_LINE})` }}
       />
       <span
-        className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5"
-        style={{ background: IVORY_GOLD, boxShadow: "0 0 0 2px rgb(184 146 90 / 18%)" }}
+        className="h-1 w-1 rotate-45 sm:h-1.5 sm:w-1.5"
+        style={{ background: GOLD, boxShadow: "0 0 8px rgb(226 183 90 / 45%)" }}
         aria-hidden
       />
       <span
         className="h-px w-10 sm:w-16"
-        style={{ background: `linear-gradient(to left, transparent, ${IVORY_GOLD})` }}
+        style={{ background: `linear-gradient(to left, transparent, ${GOLD_LINE})` }}
       />
     </div>
   )
@@ -82,7 +94,7 @@ function LoveStoryTitle({
         className={`${theSeasons.className} block pb-1 uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{
           fontSize: "var(--title-size)",
-          color: "var(--color-welcome-navy)",
+          color: WHITE,
           textShadow: onBgGlow,
         }}
       >
@@ -93,8 +105,8 @@ function LoveStoryTitle({
         className={`${aboveTheBeyond.className} mx-auto mt-2 block w-fit max-w-full px-1 leading-[0.88] sm:mt-2.5 sm:leading-[0.9] md:mt-3`}
         style={{
           fontSize: "var(--script-size)",
-          color: "var(--color-welcome-heading)",
-          textShadow: onBgGlow,
+          color: GOLD,
+          textShadow: `${onBgGlow}, 0 0 20px rgb(226 183 90 / 25%)`,
         }}
       >
         <StoryGlyphText text={subtitle} />
@@ -122,9 +134,9 @@ function chapterTextFromParagraphs(
             <p
               key={index}
               className="love-story-signature mt-3 inline-flex items-center gap-2 font-goudy-italic italic"
-              style={{ color: "var(--color-welcome-navy)", fontSize: "1.05em", letterSpacing: "0.02em" }}
+              style={{ color: GOLD, fontSize: "1.05em", letterSpacing: "0.02em" }}
             >
-              <span aria-hidden className="h-px w-6" style={{ background: IVORY_GOLD }} />
+              <span aria-hidden className="h-px w-6" style={{ background: GOLD_LINE }} />
               <StoryGlyphText text={text.replace(SIGNATURE, "")} />
             </p>
           )
@@ -142,8 +154,8 @@ function chapterTextFromParagraphs(
   )
 }
 
-// The section paints its own ivory-and-gold lace ground, the same as the couple video section above
-// it. skyBackdrop is kept for compatibility and no longer changes anything.
+// The section paints its own black-and-gold ground with a faint gold monogram pattern.
+// skyBackdrop is kept for compatibility and no longer changes anything.
 export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
   const siteConfig = useSiteConfig()
   const loading = siteConfig.loadingScreen ?? defaultSiteConfig.loadingScreen
@@ -178,8 +190,18 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
       // painted by the parent wrapper) — its translucent wash then softens the circles behind it.
       // (A bare `isolate` would put the section at z-index auto, under the circles' opaque base.)
       className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative z-[2] min-h-screen w-full overflow-x-hidden`}
-      style={{ background: IVORY_SECTION_BACKGROUND }}
+      style={{ background: SECTION_BACKGROUND }}
     >
+      {/* Gold monogram pattern across the whole section, slightly visible */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url("${PATTERN}")`,
+          backgroundSize: "88px auto",
+          opacity: 0.18,
+        }}
+      />
       {/* Lace edging down both sides and a gold rule along the top (same as the couple video) */}
       <div
         aria-hidden
@@ -194,7 +216,7 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-10 top-0 z-[1] h-px"
-        style={{ background: `linear-gradient(to right, transparent, ${IVORY_GOLD}, #E9D3A6, ${IVORY_GOLD}, transparent)` }}
+        style={{ background: `linear-gradient(to right, transparent, ${GOLD_LINE}, #F3D27A, ${GOLD_LINE}, transparent)` }}
       />
 
       {/* Corner florals at the section's four corners, sized per corner like the loader
@@ -203,7 +225,7 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
         <div
           className="love-story-frame"
           aria-hidden="true"
-          style={{ "--color-motif-medium": IVORY_GOLD } as React.CSSProperties}
+          style={{ "--color-motif-medium": GOLD_LINE } as React.CSSProperties}
         />
       )}
       {(
@@ -286,7 +308,7 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
           transition={{ duration: 0.75, delay: 0.08, ease: revealEase }}
         >
           <OrnamentalDivider />
-          <PuhonText className="mt-6 sm:mt-8" />
+          <PuhonText tone="gold" className="mt-6 sm:mt-8" />
           {isPlain && eucalyptusDecos.sectionBottom ? (
             <TintedDeco src={eucalyptusDecos.sectionBottom} className="love-story-footer-euc mx-auto mt-8 sm:mt-10" />
           ) : null}

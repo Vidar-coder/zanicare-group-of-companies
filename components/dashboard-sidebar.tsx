@@ -73,6 +73,8 @@ export function DashboardSidebar({
     }
   }, [mobileOpen, onMobileClose])
 
+  // Proposal invites are a wedding feature — hidden for the Christmas party (set true to bring back)
+  const SHOW_PROPOSALS = false
   const navItems = [
     {
       id: "dashboard" as const,
@@ -104,14 +106,14 @@ export function DashboardSidebar({
     },
     {
       id: "entourage" as const,
-      group: "Wedding Party",
-      label: "Entourage & Sponsors",
+      group: "Our People",
+      label: "Representatives & Managers",
       icon: Crown,
       badge: null,
     },
     {
       id: "proposals" as const,
-      group: "Wedding Party",
+      group: "Our People",
       label: "Proposal Invites",
       icon: Heart,
       badge: null,
@@ -124,7 +126,7 @@ export function DashboardSidebar({
   const weddingDay = siteConfig.ceremony?.day || ""
   const weddingTime = siteConfig.ceremony?.time || siteConfig.wedding.time || ""
   const daysLeft = now && weddingDate ? daysUntil(weddingDate, now) : null
-  const groups = ["Overview", "Guests", "Wedding Party"] as const
+  const groups = ["Overview", "Guests", "Our People"] as const
 
   const panel = (
     <>
@@ -144,7 +146,7 @@ export function DashboardSidebar({
         ) : null}
 
         <p className={`${cinzel.className} relative text-[9.5px] font-semibold uppercase tracking-[0.3em] text-dash-faint`}>
-          Wedding Dashboard
+          Christmas Party Dashboard
         </p>
 
         {/* Names */}
@@ -198,7 +200,7 @@ export function DashboardSidebar({
             <p className={`${cinzel.className} mb-1.5 px-3 text-[9.5px] font-semibold uppercase tracking-[0.22em] text-dash-faint`}>{group}</p>
             <div className="space-y-0.5">
               {navItems
-                .filter((item) => item.group === group)
+                .filter((item) => item.group === group && (SHOW_PROPOSALS || item.id !== "proposals"))
                 .map((item) => {
                   const Icon = item.icon
                   const isActive = activeTab === item.id

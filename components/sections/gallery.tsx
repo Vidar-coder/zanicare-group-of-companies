@@ -44,7 +44,8 @@ const C = {
 } as const
 
 // Soft white edge so text stays crisp over the circles
-const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+// Dark edge so text stays crisp over the dark patterned ground (lib/lux-dark.ts)
+const onBgGlow = "0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%)"
 
 // Warm-gray hairlines either side of a dusty-rose heart (same as the love story divider)
 const lineRight = {
@@ -569,10 +570,11 @@ export function Gallery() {
                 href={gallery.buttonHref}
                 className={`${cinzel.className} inline-flex items-center justify-center rounded-full border px-8 py-3 text-[0.625rem] font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 active:scale-[0.98] sm:text-[0.6875rem] sm:tracking-[0.22em]`}
                 style={{
-                  background: "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",
-                  borderColor: "rgb(255 255 255 / 70%)",
-                  color: "#FFFFFF",
-                  boxShadow: "0 0 0 4px rgb(255 255 255 / 35%), 0 10px 22px -10px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+                  // Gold button with black lettering (matches the other sections)
+                  background: "linear-gradient(180deg, #F3D27A 0%, #E2B75A 45%, #B8862B 100%)",
+                  borderColor: "rgb(255 241 194 / 60%)",
+                  color: "#111111",
+                  boxShadow: "0 0 0 4px rgb(201 162 74 / 18%), 0 10px 22px -10px rgb(0 0 0 / 80%)",
                 }}
               >
                 {gallery.buttonText}

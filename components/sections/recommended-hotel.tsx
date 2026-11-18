@@ -24,8 +24,8 @@ const aboveTheBeyond = localFont({
 })
 
 const C = {
-  forest: "#44413C",
-  sage: "#44413C",
+  forest: "#1C1C1E",
+  sage: "#1C1C1E",
   mustard: "#B97865",
   butter: "#D9A08C",
   cream: "#FFF8F2",

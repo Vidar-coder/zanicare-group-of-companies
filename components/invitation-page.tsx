@@ -12,7 +12,7 @@ import { Navbar } from "@/components/navbar"
 import { AppState } from "@/components/types"
 import { prefetchInvitationData } from "@/lib/invitation-data"
 import { useSiteConfig } from "@/hooks/use-site-config"
-import { WeddingPlaylist } from "@/components/sections/wedding-playlist"
+// import { WeddingPlaylist } from "@/components/sections/wedding-playlist"
 import { PlainBubbles } from "@/components/loader/PlainBubbles"
 import type { SponsorsList } from "@/components/sections/entourage"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
@@ -26,6 +26,7 @@ const GuestList = dynamic(() => import("@/components/sections/guest-list").then(
 // Below-the-fold sections are split into separate chunks to shrink the initial bundle.
 const CoupleVideo = dynamic(() => import("@/components/sections/couple-video").then(mod => mod.CoupleVideo))
 const LoveStory = dynamic(() => import("@/components/sections/love-story").then(mod => mod.LoveStory))
+const BranchesMap = dynamic(() => import("@/components/sections/branches-map").then(mod => mod.BranchesMap))
 const Countdown = dynamic(() => import("@/components/sections/countdown").then(mod => mod.Countdown))
 const Gallery = dynamic(() => import("@/components/sections/gallery").then(mod => mod.Gallery))
 const MessageVideo = dynamic(() => import("@/components/sections/message-video").then(mod => mod.MessageVideo))
@@ -35,7 +36,7 @@ const WeddingTimeline = dynamic(() => import("@/components/sections/wedding-time
 const Entourage = dynamic(() => import("@/components/sections/entourage").then(mod => mod.Entourage))
 const BookOfGuests = dynamic(() => import("@/components/sections/book-of-guests").then(mod => mod.BookOfGuests))
 const FAQ = dynamic(() => import("@/components/sections/faq").then(mod => mod.FAQ))
-const Registry = dynamic(() => import("@/components/sections/registry").then(mod => mod.Registry))
+// const Registry = dynamic(() => import("@/components/sections/registry").then(mod => mod.Registry))
 const SnapShare = dynamic(() => import("@/components/sections/snap-share").then(mod => mod.SnapShare))
 const SeeYouThere = dynamic(() => import("@/components/sections/see-you-there").then(mod => mod.SeeYouThere))
 const Footer = dynamic(() => import("@/components/sections/footer").then(mod => mod.Footer))
@@ -91,9 +92,9 @@ const sectionsRevealVariants = {
 }
 
 /** WebGL Silk needs a hex color. */
-// Silk behind the invitation sections (React Bits Silk, components/silk.jsx), in the motif sage
-const SILK_COLOR = "#8A9A72" // motif sage
-const SILK_SHEEN_COLOR = "#F6E9DF" // highlights tinted blush ivory
+// Silk behind the invitation sections (React Bits Silk, components/silk.jsx): black silk, white sheen
+const SILK_COLOR = "#2B2B2E" // charcoal
+const SILK_SHEEN_COLOR = "#F2F2F2" // white highlights
 
 type InvitationPageProps = {
   /** Which principal-sponsor sheet the entourage shows (googleAPI.sponsorsInviteOne / Two) */
@@ -330,12 +331,16 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
                {/* <CoupleVideo skyBackdrop={false} /> */}
                 <LoveStory skyBackdrop={false} />
               </div>
+              {/* All branches on a map, glowing red pins (content/site.ts → branches) */}
+   
               <Countdown />
-              <Gallery />
+              <BranchesMap />
+              {/* <Gallery /> */}
              {/*  <MessageVideo />*/}
               <Messages />
               <Details />
-              <WeddingTimeline />
+              {/* <WeddingTimeline /> */}
+              {/* Wedding entourage — not used for the company party */}
               {showEntourage && <Entourage sponsorsList={sponsorsList} />}
               <GuestList />
               {/* One continuous cream lace ground behind Book of Guests and FAQ — no seam between them */}
@@ -346,11 +351,12 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
                 <BookOfGuests background={false} />
                 <FAQ background={false} />
               </div>
-              <Registry />
-              <WeddingPlaylist /> 
+              {/* Gift guide + playlist — not used for the company party */}
+              {/* <Registry /> */}
+              {/* <WeddingPlaylist /> */}
               <SnapShare />
               {/* Full-bleed photo section — paints its own background, so it sits outside the footer's pattern */}
-              <SeeYouThere />
+              {/* <SeeYouThere /> */}
               <div className="relative isolate" style={ivorySectionStyle}>
                 {/* Cream lace ground + lace edging (same as the other sections) and a double border around the footer */}
                 <IvoryBackdrop />

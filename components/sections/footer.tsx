@@ -7,12 +7,12 @@ import {
   Instagram,
   Facebook,
   Youtube,
-  CalendarHeart,
-  Heart,
+  CalendarDays,
+  Sparkles,
   Mail,
   MessageCircle,
-  Church,
-  GlassWater,
+  Building2,
+  UtensilsCrossed,
   Clock,
   MapPin,
   ChevronRight,
@@ -23,6 +23,7 @@ import { cinzel } from "@/lib/fonts"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
+import { LUX, LUX_CARD, LUX_GOLD_BUTTON, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 
 const theSeasons = localFont({
@@ -37,38 +38,37 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Palette lives in globals.css → motif / welcome tokens.
-// White cards, navy headings, body-blue text; dusty-blue buttons that deepen to navy on hover.
-const TEAL = "var(--color-welcome-navy)"
-const BUTTON =
-  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
-const BUTTON_HOVER = "#4E0A1E"
-const BUTTON_SHADOW = "0 8px 18px -10px color-mix(in srgb, var(--color-welcome-navy) 60%, transparent)"
-const IVORY = "#FFF8F2"
-const HAIRLINE = "color-mix(in srgb, var(--color-motif-medium) 60%, transparent)"
+// Luxury dark palette (lib/lux-dark.ts): black cards with a gold edge, white headings, gold labels,
+// gold buttons with black lettering.
+const TEAL = LUX.white
+const BUTTON = LUX_GOLD_BUTTON
+const BUTTON_HOVER = "linear-gradient(180deg, #FFF1C2 0%, #F3D27A 45%, #C9952F 100%)"
+const BUTTON_SHADOW = "0 8px 18px -10px rgb(0 0 0 / 80%)"
+const IVORY = "#111111" // lettering / icons on gold
+const HAIRLINE = "rgb(201 162 74 / 40%)"
 
 const palette = {
-  body: "var(--color-welcome-text)",
-  soft: "color-mix(in srgb, var(--color-welcome-text) 75%, white)",
+  body: LUX.body,
+  soft: LUX.muted,
   heading: TEAL,
-  label: "var(--color-welcome-heading)",
-  accent: "var(--color-welcome-heading)",
+  label: LUX.gold,
+  accent: LUX.gold,
 } as const
 
-// Text sitting directly on the background: deep slate with a soft white edge (matches the gallery)
-const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
-const onBg = { color: "var(--color-welcome-navy)", textShadow: onBgGlow } as const
-const onBgBlue = { color: "var(--color-welcome-heading)", textShadow: onBgGlow } as const
+// Text sitting directly on the pattern: white / gold with a dark edge
+const onBgGlow = LUX_TEXT_SHADOW
+const onBg = { color: LUX.white, textShadow: onBgGlow } as const
+const onBgBlue = { color: LUX.gold, textShadow: onBgGlow } as const
 
 // Same, for the softer lines in the bottom bar
-const onBgSoft = { color: "var(--color-welcome-text)", textShadow: onBgGlow } as const
+const onBgSoft = { color: LUX.muted, textShadow: onBgGlow } as const
 
 const onBgLineStyle = {
-  background: "linear-gradient(to right, transparent, var(--color-motif-medium), transparent)",
+  background: `linear-gradient(to right, transparent, ${LUX.goldLine}, transparent)`,
 } as const
 
 const dividerLineStyle = {
-  background: "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
+  background: `linear-gradient(to right, transparent, ${LUX.goldLine}, transparent)`,
 } as const
 
 const ct = {
@@ -78,13 +78,7 @@ const ct = {
   cardTitle: sectionType.subheader,
 } as const
 
-const cardStyle = {
-  background:
-    "radial-gradient(90% 35% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-medium) 10%, white) 100%)",
-  border: `1px solid ${HAIRLINE}`,
-  boxShadow:
-    "0 0 0 5px rgb(255 255 255 / 35%), 0 22px 48px -28px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
-} as const
+const cardStyle = LUX_CARD
 
 type IconProps = { className?: string }
 
@@ -184,11 +178,11 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
   const year = new Date().getFullYear()
   const ceremonyDate = siteConfig.ceremony.date
 
-  const groomName = siteConfig.couple.groomNickname || siteConfig.couple.groom
-  const brideName = siteConfig.couple.brideNickname || siteConfig.couple.bride
-  const coupleDisplayName = `${groomName} & ${brideName}`
+  // couple.groom = company name, couple.bride = event name (content/site.ts → QUICK SETUP)
+  const companyName = siteConfig.couple.groom
+  const eventName = siteConfig.couple.bride
   const fill = (text: string) =>
-    text.split("{couple}").join(coupleDisplayName).split("{year}").join(String(year))
+    text.split("{couple}").join(companyName).split("{year}").join(String(year))
 
   const quotes = content.quotes.length > 0 ? content.quotes : [""]
   const longestQuote = useMemo(
@@ -245,7 +239,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
   const isCombined = venues.layout === "combined"
   type SummaryRow = {
     key: string
-    Icon: typeof Church
+    Icon: typeof Building2
     label: string
     place: string
     times: { label: string; time: string; showLabel: boolean }[]
@@ -254,7 +248,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
     ? [
         {
           key: "combined",
-          Icon: Church,
+          Icon: Building2,
           label: venues.combined.badge,
           place: ceremony.location,
           times: [
@@ -269,7 +263,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
         ...(venues.ceremony.show
           ? [{
               key: "ceremony",
-              Icon: Church,
+              Icon: Building2,
               label: content.summary.ceremonyLabel,
               place: ceremony.location,
               times: ceremony.time ? [{ label: content.summary.ceremonyLabel, time: ceremony.time, showLabel: false }] : [],
@@ -278,7 +272,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
         ...(venues.reception.show
           ? [{
               key: "reception",
-              Icon: GlassWater,
+              Icon: UtensilsCrossed,
               label: content.summary.receptionLabel,
               place: reception.location,
               times: reception.time ? [{ label: content.summary.receptionLabel, time: reception.time, showLabel: false }] : [],
@@ -293,8 +287,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={background ? ivorySectionStyle : undefined}
     >
-      {/* Cream lace ground with lace edging + double border (on the invitation page the shared
-          wrapper paints these instead — see invitation-page.tsx) */}
+      {/* Dark ground with gold pattern + lace edging and double border (on the invitation page the
+          shared wrapper paints these instead — see invitation-page.tsx) */}
       {background && <IvoryBackdrop />}
       {background && content.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
@@ -302,7 +296,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
       <DecoCorners decos={{ bottomLeft: decos.bottomLeft, bottomRight: decos.bottomRight }} />
 
       <footer className="relative z-20 pt-14 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
-        {/* Header: monogram + couple */}
+        {/* Header: monogram + company + event */}
         <motion.div
           className="relative mx-auto mb-8 flex max-w-xl flex-col items-center px-6 text-center sm:mb-10 md:mb-12"
           variants={stagger}
@@ -314,11 +308,11 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
             <motion.span
               variants={rise}
               role="img"
-              aria-label={`${coupleDisplayName} monogram`}
-              className="block h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48"
+              aria-label={`${companyName} monogram`}
+              className="block h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32"
               style={{
-                background: "var(--color-welcome-navy)",
-                filter: "drop-shadow(0 2px 10px rgb(255 255 255 / 70%))",
+                background: LUX_GOLD_BUTTON,
+                filter: "drop-shadow(0 4px 14px rgb(0 0 0 / 70%)) drop-shadow(0 0 10px rgb(226 183 90 / 25%))",
                 WebkitMaskImage: `url("${siteConfig.couple.monogram}")`,
                 maskImage: `url("${siteConfig.couple.monogram}")`,
                 WebkitMaskSize: "contain",
@@ -337,20 +331,18 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
 
           <motion.h2
             variants={rise}
-            className={`${theSeasons.className} mt-4 text-2xl uppercase tracking-[0.12em] sm:mt-5 sm:text-3xl md:text-4xl`}
+            className={`${theSeasons.className} mt-4 text-xl uppercase leading-tight tracking-[0.12em] sm:mt-5 sm:text-2xl md:text-3xl`}
             style={onBg}
           >
-            {groomName}
-            <span
-              className={`${aboveTheBeyond.className} mx-2 inline-block normal-case tracking-normal sm:mx-3`}
-              style={{ fontSize: "1.1em" }}
-              aria-hidden
-            >
-              &amp;
-            </span>
-            <span className="sr-only">and</span>
-            {brideName}
+            <SpecialCharFont text={companyName} />
           </motion.h2>
+          <motion.p
+            variants={rise}
+            className={`${aboveTheBeyond.className} mt-1 text-[1.6rem] leading-tight sm:text-3xl`}
+            style={{ color: LUX.gold, textShadow: `${onBgGlow}, 0 0 18px rgb(226 183 90 / 25%)` }}
+          >
+            {eventName}
+          </motion.p>
 
           {ceremonyDate ? (
             <motion.p
@@ -363,9 +355,9 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
           ) : null}
 
           <motion.div variants={rise} className="mt-4 flex items-center justify-center gap-2" aria-hidden>
-            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }} />
-            <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} />
-            <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: `linear-gradient(to right, transparent, ${LUX.goldLine})` }} />
+            <span className="h-1.5 w-1.5 rotate-45" style={{ background: LUX.gold, boxShadow: "0 0 8px rgb(226 183 90 / 45%)" }} />
+            <span className="h-px w-12 sm:w-20" style={{ background: `linear-gradient(to left, transparent, ${LUX.goldLine})` }} />
           </motion.div>
         </motion.div>
 
@@ -382,7 +374,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
               <FooterCard className="h-full">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <Label>{content.noteTitle}</Label>
-                  <Heart className="h-3.5 w-3.5 shrink-0" style={{ color: palette.label, fill: palette.label }} aria-hidden />
+                  <Sparkles className="h-3.5 w-3.5 shrink-0" style={{ color: palette.label }} aria-hidden />
                 </div>
                 <blockquote className={`font-goudy-italic relative ${ct.bodyLg}`}>
                   {/* Reserve height for the longest quote so the card doesn't jump */}
@@ -408,7 +400,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                         className="h-1.5 rounded-full transition-all duration-500"
                         style={{
                           width: i === currentQuoteIndex ? "1.25rem" : "0.375rem",
-                          background: i === currentQuoteIndex ? palette.label : "color-mix(in srgb, var(--color-welcome-navy) 25%, transparent)",
+                          background: i === currentQuoteIndex ? palette.label : "rgb(201 162 74 / 30%)",
                         }}
                       />
                     ))}
@@ -423,10 +415,10 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                 <div className="flex items-start gap-3">
                   <span
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-                    style={{ background: TEAL }}
+                    style={{ background: LUX_GOLD_BUTTON }}
                     aria-hidden
                   >
-                    <CalendarHeart className="h-4.5 w-4.5" style={{ color: IVORY }} />
+                    <CalendarDays className="h-4.5 w-4.5" style={{ color: IVORY }} />
                   </span>
                   <div className="min-w-0">
                     <Label>{content.dateLabel}</Label>
@@ -443,11 +435,11 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       <div
                         key={key}
                         className="flex items-start gap-3 rounded-2xl px-3 py-2.5"
-                        style={{ background: "color-mix(in srgb, var(--color-motif-medium) 14%, white)", boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
+                        style={{ background: "rgb(0 0 0 / 35%)", boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
                       >
                         <span
                           className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
-                          style={{ background: IVORY, boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
+                          style={{ background: LUX.cardDeep, boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
                           aria-hidden
                         >
                           <Icon className="h-4 w-4" style={{ color: palette.accent }} />
@@ -468,7 +460,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                                 <span
                                   key={t.label}
                                   className={`${cinzel.className} inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.62rem] font-semibold tracking-[0.06em]`}
-                                  style={{ background: IVORY, color: palette.label, boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
+                                  style={{ background: LUX.cardDeep, color: palette.label, boxShadow: `inset 0 0 0 1px ${HAIRLINE}` }}
                                 >
                                   <Clock className="h-3 w-3" aria-hidden />
                                   {t.showLabel ? <span className="uppercase tracking-[0.12em]">{t.label}</span> : null}
@@ -504,9 +496,9 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       className={`${cinzel.className} ${ct.label} mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-full border px-5 py-2.5 font-semibold uppercase tracking-[0.14em] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98]`}
                       style={{
                         background: BUTTON,
-                        borderColor: "rgb(255 255 255 / 70%)",
+                        borderColor: "rgb(255 241 194 / 60%)",
                         color: IVORY,
-                        boxShadow: `0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 22%, transparent), ${BUTTON_SHADOW}`,
+                        boxShadow: `0 0 0 3px rgb(201 162 74 / 18%), ${BUTTON_SHADOW}`,
                       }}
                     >
                       {content.rsvp.button}
@@ -583,7 +575,7 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       </span>
                       <span
                         className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-colors duration-300"
-                        style={{ background: "rgb(255 255 255 / 22%)" }}
+                        style={{ background: "rgb(0 0 0 / 18%)" }}
                         aria-hidden
                       >
                         <ChevronRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: IVORY }} />
@@ -617,8 +609,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       href={content.credit.developerUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold underline decoration-[var(--color-motif-medium)] underline-offset-2 hover:opacity-80"
-                      style={{ color: "var(--color-welcome-heading)" }}
+                      className="font-semibold underline decoration-[rgb(201_162_74/60%)] underline-offset-2 hover:opacity-80"
+                      style={{ color: LUX.gold }}
                     >
                       {content.credit.developerName}
                     </a>
@@ -629,8 +621,8 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       href={content.credit.promoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold underline decoration-[var(--color-motif-medium)] underline-offset-2 hover:opacity-80"
-                      style={{ color: "var(--color-welcome-heading)" }}
+                      className="font-semibold underline decoration-[rgb(201_162_74/60%)] underline-offset-2 hover:opacity-80"
+                      style={{ color: LUX.gold }}
                     >
                       {content.credit.promoName}
                     </a>

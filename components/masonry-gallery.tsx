@@ -185,7 +185,7 @@ export default function MasonryGallery({ images }: { images: ImageItem[] }) {
         <div className="columns-2 gap-3 sm:columns-2 sm:gap-4 md:columns-3 lg:columns-4">
           {images.map((img, idx) => (
             <button
-              key={img.src}
+              key={`${img.src}-${idx}`}
               type="button"
               className="group mb-3 block w-full break-inside-avoid text-left sm:mb-4"
               onClick={() => setLightboxIdx(idx)}

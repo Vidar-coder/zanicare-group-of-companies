@@ -125,10 +125,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:8773b4acb4d819beff60be758fab385ed007b8e99ab2fd4e4ad90236977cc8b2"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:01f33ed7ea3ff7a43113cbc8c6692b9f7b278c8e9eb36607d9c93835ff8d34bb",
+        "previousReceiptHash": "sha256:8773b4acb4d819beff60be758fab385ed007b8e99ab2fd4e4ad90236977cc8b2",
+        "sequence": 3,
+        "issuedAt": 1795015543400,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1795015543400
+          },
+          "requestId": "e83d69c0-0f0b-480b-b89d-c416558b15f1"
+        },
+        "decision": {
+          "requestId": "e83d69c0-0f0b-480b-b89d-c416558b15f1",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:56cec2a6eb72e6be96a47b965e9241322c970406b40fc162fa00daf33ca1f58c"
     }
   ],
   "migratedAt": 1794916713348,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 3,
-  "ledgerHead": "sha256:8773b4acb4d819beff60be758fab385ed007b8e99ab2fd4e4ad90236977cc8b2"
+  "ledgerLength": 4,
+  "ledgerHead": "sha256:56cec2a6eb72e6be96a47b965e9241322c970406b40fc162fa00daf33ca1f58c"
 }

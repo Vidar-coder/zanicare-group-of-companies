@@ -12,7 +12,6 @@ import {
   MessageSquare,
   RefreshCw,
   X,
-  Heart,
   Sparkles,
   Phone,
   ShieldCheck,
@@ -43,35 +42,33 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Palette (app/globals.css motif tokens). The section itself keeps its burgundy headings;
-// the modals use the light sage / yellow / orange motif below.
+// Palette — black-tie ivory & gold, matching the dark luxury sections (lib/lux-dark.ts).
+// Cards are warm ivory with fine gold edges; buttons are black satin with a gold ring.
 const NAVY = "var(--color-welcome-navy)"
 const TEAL = "var(--color-welcome-text)"
 const BUTTON = "var(--color-welcome-heading)"
-const PEACH = "var(--color-motif-medium)"
-const IVORY = "#FFF8F2"
-// Light modal motif: white / sage-mist surfaces, sage edges, charcoal text, yellow + orange
-// accents from the guests' summer palette. Burgundy stays on buttons only.
-const SAGE = "var(--color-motif-silver)"
-const SAGE_DEEP = "color-mix(in srgb, var(--color-motif-silver) 62%, #1F2618)"
-const SAGE_MIST = (pct: number) => `color-mix(in srgb, var(--color-motif-silver) ${pct}%, white)`
+const IVORY = "#FBF7EE"
+// Gold family (names kept so every modal picks up the new look from here)
+const GOLD = "#C9A24A"
+const SAGE = GOLD // rules, frames
+const SAGE_DEEP = "#8A6A22" // antique gold — labels, script lines (readable on ivory)
+const SAGE_MIST = (pct: number) => `color-mix(in srgb, ${GOLD} ${pct}%, white)`
 const CHARCOAL = "var(--color-welcome-text)"
-const YELLOW = "#F2C230"
-const ORANGE = "#E8833A"
-const SUN_GRADIENT = `linear-gradient(90deg, ${YELLOW} 0%, ${ORANGE} 100%)`
-const SUN_LINE = `linear-gradient(to right, transparent, ${YELLOW}, ${ORANGE}, transparent)`
+const YELLOW = "#E2B75A" // champagne gold — glows, focus rings
+const ORANGE = "#B8862B" // deep gold — active borders
+const SUN_GRADIENT = `linear-gradient(90deg, #F3D27A 0%, ${YELLOW} 50%, ${ORANGE} 100%)`
+const SUN_LINE = `linear-gradient(to right, transparent, ${ORANGE}, #F3D27A, ${ORANGE}, transparent)`
 // Guest names and avatars
 const LEAF = CHARCOAL
-const DEEP_GRADIENT = "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)" // burgundy satin buttons
-// Round sage avatar / icon badges (white icon on top)
-const SAGE_GRADIENT =
-  "linear-gradient(160deg, color-mix(in srgb, var(--color-motif-silver) 88%, white) 0%, var(--color-motif-silver) 45%, color-mix(in srgb, var(--color-motif-silver) 70%, #1F2618) 100%)"
-const HAIRLINE = "color-mix(in srgb, var(--color-motif-silver) 55%, transparent)"
-// Secondary text / unselected options (muted navy, still readable)
-const TEAL_SOFT = "color-mix(in srgb, var(--color-welcome-text) 70%, white)"
-// Light ivory veil (with blur) behind modals; slightly stronger for alerts
-const LIGHT_OVERLAY = "rgb(246 233 223 / 55%)"
-const DARK_OVERLAY = "color-mix(in srgb, #44413C 30%, rgb(246 233 223 / 40%))"
+const DEEP_GRADIENT = "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)" // black satin buttons
+// Round avatar / icon badges: black satin with an ivory icon on top
+const SAGE_GRADIENT = "linear-gradient(160deg, #3A3A3D 0%, #161618 55%, #050505 100%)"
+const HAIRLINE = `color-mix(in srgb, ${GOLD} 45%, transparent)`
+// Secondary text / unselected options (muted, still readable)
+const TEAL_SOFT = "color-mix(in srgb, var(--color-welcome-text) 62%, white)"
+// Smoky black veil (with blur) behind modals; slightly stronger for alerts
+const LIGHT_OVERLAY = "rgb(8 8 9 / 70%)"
+const DARK_OVERLAY = "rgb(8 8 9 / 80%)"
 
 const palette = {
   body: TEAL,
@@ -82,10 +79,10 @@ const palette = {
 
 // White card with a soft yellow glow at the top, sage-mist base, sage edge and a white halo
 const modalCardStyle = {
-  background: `radial-gradient(90% 38% at 50% 0%, color-mix(in srgb, ${YELLOW} 14%, white) 0%, transparent 72%), linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 62%, ${SAGE_MIST(12)} 100%)`,
+  background: `radial-gradient(90% 38% at 50% 0%, color-mix(in srgb, ${YELLOW} 16%, white) 0%, transparent 72%), linear-gradient(180deg, #FFFFFF 0%, ${IVORY} 62%, ${SAGE_MIST(10)} 100%)`,
   border: `1px solid ${HAIRLINE}`,
   boxShadow:
-    `0 0 0 6px rgb(255 255 255 / 55%), 0 0 0 7px ${SAGE_MIST(40)}, 0 30px 60px -24px rgb(31 38 24 / 40%)`,
+    `0 0 0 5px rgb(17 17 17 / 55%), 0 0 0 6px color-mix(in srgb, ${GOLD} 70%, transparent), 0 34px 70px -24px rgb(0 0 0 / 75%)`,
 } as const
 
 const innerSurfaceStyle = {
@@ -93,7 +90,7 @@ const innerSurfaceStyle = {
   borderColor: HAIRLINE,
 } as const
 
-const modalInputClass = `w-full rounded-xl border bg-white px-3 py-2 font-goudy-italic ${sectionType.text} transition-all duration-300 outline-none focus:border-[#E8833A] focus:ring-[3px] focus:ring-[color-mix(in_srgb,#F2C230_35%,transparent)] placeholder:text-[0.92em] placeholder:text-[color-mix(in_srgb,var(--color-welcome-text)_50%,white)] sm:px-3.5 sm:py-2.5`
+const modalInputClass = `w-full rounded-xl border bg-white px-3 py-2 font-goudy-italic ${sectionType.text} transition-all duration-300 outline-none focus:border-[#B8862B] focus:ring-[3px] focus:ring-[color-mix(in_srgb,#E2B75A_35%,transparent)] placeholder:text-[0.92em] placeholder:text-[color-mix(in_srgb,var(--color-welcome-text)_50%,white)] sm:px-3.5 sm:py-2.5`
 
 const modalInputStyle = {
   borderColor: HAIRLINE,
@@ -107,16 +104,16 @@ const dividerLineStyle = {
   background: `linear-gradient(to right, transparent, ${SAGE}, transparent)`,
 } as const
 
-// Navy button with a peach ring
+// Black satin button with a gold ring
 const primaryButtonStyle = {
   background: DEEP_GRADIENT,
-  borderColor: "rgb(255 255 255 / 70%)",
+  borderColor: `color-mix(in srgb, ${GOLD} 80%, transparent)`,
   color: IVORY,
   boxShadow:
     `0 0 0 4px color-mix(in srgb, ${YELLOW} 30%, transparent), 0 12px 24px -10px color-mix(in srgb, var(--color-welcome-navy) 50%, transparent)`,
 } as const
 
-// Soft peach notice box with navy text
+// Soft champagne notice box
 const noticeStyle = {
   background: `color-mix(in srgb, ${YELLOW} 12%, white)`,
   borderColor: `color-mix(in srgb, ${YELLOW} 55%, transparent)`,
@@ -705,7 +702,7 @@ export function GuestList() {
 
         <div className="mx-auto mt-5 flex items-center justify-center gap-1.5 sm:mt-6" aria-hidden>
           <span className="h-px w-8 sm:w-10" style={dividerLineStyle} />
-          <Heart className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: PEACH, fill: PEACH }} />
+          <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: GOLD }} />
           <span className="h-px w-8 sm:w-10" style={dividerLineStyle} />
         </div>
 
@@ -796,7 +793,7 @@ export function GuestList() {
 
                 <div className="mx-auto mt-3 flex items-center justify-center gap-1.5 sm:mt-4">
                   <span className="h-px w-6 sm:w-8" style={dividerLineStyle} />
-                  <Heart className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: palette.accent, fill: palette.accent }} aria-hidden />
+                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: palette.accent }} aria-hidden />
                   <span className="h-px w-6 sm:w-8" style={dividerLineStyle} />
                 </div>
 
@@ -1022,7 +1019,7 @@ export function GuestList() {
               {!isCompactRsvp && (
                 <div className="mx-auto mb-4 flex items-center justify-center gap-1.5 sm:mb-5">
                   <span className="h-px w-6 sm:w-10" style={dividerLineStyle} />
-                  <Heart className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: palette.accent }} aria-hidden />
+                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" style={{ color: palette.accent }} aria-hidden />
                   <span className="h-px w-6 sm:w-10" style={dividerLineStyle} />
                 </div>
               )}
@@ -1474,7 +1471,7 @@ export function GuestList() {
                           </>
                         ) : (
                           <>
-                            <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                             <span className="text-xs sm:text-sm">{copy.form.submit}</span>
                           </>
                         )}
@@ -1617,7 +1614,7 @@ export function GuestList() {
 
                   <div className="my-4 flex items-center gap-3">
                     <span className="h-px flex-1" style={dividerLineStyle} />
-                    <Heart className="h-2.5 w-2.5 flex-shrink-0" style={{ color: palette.accent }} />
+                    <Sparkles className="h-2.5 w-2.5 flex-shrink-0" style={{ color: palette.accent }} />
                     <span className="h-px flex-1" style={dividerLineStyle} />
                   </div>
 

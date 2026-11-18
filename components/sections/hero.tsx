@@ -176,17 +176,19 @@ function CountdownUnit({
   )
 }
 
-function HeroCountdown() {
+function HeroCountdown({ heading }: { heading: string }) {
   const timeLeft = useCeremonyCountdown()
   const colonClass = `${cinzel.className} home-hero-countdown-value shrink-0 self-start px-0.5 text-[clamp(1.2rem,5.4vw,1.75rem)] font-semibold leading-none tabular-nums sm:px-1`
 
   return (
     <div className="relative z-10 w-full px-4 py-4 sm:px-6 sm:py-5">
-      <p
-        className={`${cinzel.className} home-hero-countdown-heading text-center text-[0.58rem] font-semibold uppercase tracking-[0.22em] sm:text-[0.64rem] sm:tracking-[0.26em]`}
-      >
-        Time left til we say I do
-      </p>
+      {heading && (
+        <p
+          className={`${cinzel.className} home-hero-countdown-heading text-center text-[0.58rem] font-semibold uppercase tracking-[0.22em] sm:text-[0.64rem] sm:tracking-[0.26em]`}
+        >
+          {heading}
+        </p>
+      )}
       <div
         className="mx-auto mt-2 flex max-w-md items-start justify-center sm:mt-2.5 sm:max-w-lg"
         aria-live="polite"
@@ -219,6 +221,8 @@ export function Hero() {
   const cornerDecos = homeHero.decos ?? defaultSiteConfig.homeHero.decos
   const showFrame = homeHero.showFrame ?? defaultSiteConfig.homeHero.showFrame
   const coverVine = homeHero.coverVine ?? defaultSiteConfig.homeHero.coverVine
+  // Wording + faint background pattern (content/site.ts → homeHero)
+  const copy = { ...defaultSiteConfig.homeHero, ...homeHero }
   const backgroundPhotos = loading.backgroundPhotos ?? []
   // Same sliding photo marquee as the loader and envelope (plain mode)
   const plainPhotos = useMemo(() => backgroundPhotos.map((src) => encodeURI(src)), [backgroundPhotos])
@@ -265,6 +269,14 @@ export function Hero() {
       id="home"
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} home-hero relative -mt-12 flex min-h-[100dvh] w-full flex-col overflow-hidden sm:-mt-14 md:-mt-16${isPlain ? " home-hero--plain" : " home-hero--photos"}`}
     >
+      {copy.pattern && (
+        // Faint repeating monogram behind everything, fading out toward the edges
+        <div
+          className="home-hero-pattern"
+          aria-hidden="true"
+          style={{ backgroundImage: `url("${encodeURI(copy.pattern)}")` }}
+        />
+      )}
       {isPlain ? (
         <>
           <PhotoBackground photos={plainPhotos} desktopPhotos={plainPhotosDesktop} />
@@ -341,6 +353,9 @@ export function Hero() {
             aria-hidden
             className="home-hero-title-glow pointer-events-none absolute left-1/2 top-[42%] h-[min(18rem,58vw)] w-[min(36rem,96%)] -translate-x-1/2 -translate-y-1/2 rounded-full"
           />
+          {copy.kicker && (
+            <span className={`${cinzel.className} home-hero-kicker relative mb-4 block sm:mb-5`}>{copy.kicker}</span>
+          )}
           <span className="sr-only">You&apos;re Invited!</span>
           <span
             aria-hidden
@@ -372,12 +387,19 @@ export function Hero() {
           </span>
         </motion.h1>
 
-        <motion.p
-          className="home-hero-eyebrow mt-5 text-[clamp(1.05rem,4.6vw,1.4rem)] italic leading-snug sm:mt-6"
-          {...fadeUp(0.2)}
-        >
-          We are getting married
-        </motion.p>
+        {copy.eyebrow && (
+          <motion.p
+            className="home-hero-eyebrow mt-5 text-[clamp(1.05rem,4.6vw,1.4rem)] italic leading-snug sm:mt-6"
+            {...fadeUp(0.2)}
+          >
+            {copy.eyebrow}
+          </motion.p>
+        )}
+        {copy.tagline && (
+          <motion.p className="home-hero-tagline mt-2 max-w-[22rem] sm:max-w-none" {...fadeUp(0.24)}>
+            {copy.tagline}
+          </motion.p>
+        )}
 
         <motion.div className="home-hero-date-block mt-5 flex flex-col items-center sm:mt-6" {...fadeUp(0.28)}>
           <span
@@ -406,10 +428,14 @@ export function Hero() {
         </motion.div>
 
         <motion.div className="home-hero-meta mt-5 flex flex-col items-center sm:mt-6" {...fadeUp(0.36)}>
-          {/* "3:30 in the afternoon" between peach dots, then the venue in title case */}
-          <span className="home-hero-meta-time">{ceremonyTimePhrase}</span>
+          {/* "Program begins at 7:00 in the evening", registration time, then the venue in title case */}
+          <span className="home-hero-meta-time">
+            {copy.timeLead ? `${copy.timeLead} ${ceremonyTimePhrase}` : ceremonyTimePhrase}
+          </span>
           {arrivalTime && (
-            <span className="home-hero-meta-arrival">Guest arrival · {arrivalTime}</span>
+            <span className="home-hero-meta-arrival">
+              {copy.arrivalLabel || "Guest arrival"} · {arrivalTime}
+            </span>
           )}
           <span className="home-hero-meta-venue">{ceremonyName}</span>
         </motion.div>
@@ -417,7 +443,7 @@ export function Hero() {
       </div>
 
       <motion.div className="home-hero-countdown-bar relative z-10 mt-auto w-full" {...fadeUp(0.42)}>
-        <HeroCountdown />
+        <HeroCountdown heading={copy.countdownHeading} />
       </motion.div>
     </section>
   )

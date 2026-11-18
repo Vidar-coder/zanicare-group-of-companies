@@ -1,0 +1,437 @@
+/* Branch map section (branches-map.tsx) — luxury dark, matching About Us:
+   black ground, gold frame + rules, white/gold lettering, glowing red pins. */
+
+.branches-root {
+  background:
+    radial-gradient(110% 40% at 50% 0%, rgb(226 183 90 / 10%) 0%, transparent 65%),
+    radial-gradient(90% 35% at 50% 100%, rgb(226 183 90 / 6%) 0%, transparent 70%),
+    linear-gradient(180deg, #0b0b0c 0%, #121214 50%, #0b0b0c 100%);
+}
+
+/* Thin double frame in gold */
+.branches-frame {
+  position: absolute;
+  z-index: 1;
+  inset: clamp(0.6rem, 2vw, 0.9rem);
+  pointer-events: none;
+  border: 1.5px solid rgb(201 162 74 / 55%);
+  border-radius: 6px;
+}
+.branches-frame::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgb(201 162 74 / 28%);
+  border-radius: 3px;
+}
+
+/* Corner decorations — same sizes as the other sections (bottom ones a little smaller) */
+.branches-corner {
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 4px 10px rgb(0 0 0 / 45%));
+}
+.branches-corner--tl,
+.branches-corner--tr {
+  width: min(36vw, 300px);
+}
+.branches-corner--bl,
+.branches-corner--br {
+  width: min(35vw, 290px);
+}
+
+.branches-intro {
+  font-family: "Crimson Text", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.95rem, 1vw + 0.7rem, 1.1rem);
+  line-height: 1.7;
+  color: #ede6d6;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
+}
+
+/* ── Region tabs ─────────────────────────────────────────────────────── */
+.zb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.zb-tab {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgb(201 162 74 / 45%);
+  background: rgb(0 0 0 / 40%);
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e2b75a;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.zb-tab:hover {
+  background: rgb(226 183 90 / 12%);
+}
+.zb-tab.is-active {
+  background: linear-gradient(180deg, #f3d27a 0%, #e2b75a 45%, #b8862b 100%);
+  border-color: rgb(255 241 194 / 60%);
+  color: #111111;
+}
+.zb-tab:focus-visible {
+  outline: 2px solid #f3d27a;
+  outline-offset: 2px;
+}
+
+/* ── Map ─────────────────────────────────────────────────────────────── */
+.zb-map-frame {
+  position: relative;
+  padding: 6px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #1c1c1e 0%, #0b0b0c 100%);
+  box-shadow:
+    0 0 0 1px rgb(201 162 74 / 60%),
+    0 0 0 5px rgb(0 0 0 / 55%),
+    0 0 0 6px rgb(201 162 74 / 25%),
+    0 30px 60px -24px rgb(0 0 0 / 85%);
+}
+.zb-map {
+  position: relative;
+  z-index: 0; /* keeps Leaflet's panes under the navbar */
+  height: clamp(320px, 62vh, 520px);
+  width: 100%;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #0e0e10;
+}
+/* Esri's light street tiles turned into a dark map: invert, swing the hues back, then mute and
+   warm them slightly toward the gold motif (roads read as soft grey-gold lines on charcoal) */
+.zb-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(1.05) saturate(0.35) sepia(0.18);
+}
+
+/* Zoom buttons + attribution in the dark/gold style */
+.zb-map .leaflet-bar {
+  border: 1px solid rgb(201 162 74 / 55%);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 60%);
+}
+.zb-map .leaflet-bar a {
+  background: #111113;
+  color: #e2b75a;
+  border-bottom-color: rgb(201 162 74 / 35%);
+}
+.zb-map .leaflet-bar a:hover {
+  background: #1c1c1e;
+  color: #f3d27a;
+}
+.zb-map .leaflet-control-attribution {
+  background: rgb(0 0 0 / 60%);
+  color: #9a9aa0;
+  font-size: 10px;
+}
+.zb-map .leaflet-control-attribution a {
+  color: #c9a24a;
+}
+
+/* ── Glowing red pin ─────────────────────────────────────────────────── */
+.zb-pin-wrap {
+  background: none;
+  border: 0;
+}
+.zb-pin {
+  position: relative;
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+.zb-pin__icon {
+  position: absolute;
+  inset: 0;
+  width: 34px;
+  height: 34px;
+  fill: #ff2d2d;
+  stroke: #ffd1d1;
+  stroke-width: 0.6;
+  filter:
+    drop-shadow(0 0 3px rgb(255 45 45 / 95%))
+    drop-shadow(0 0 10px rgb(255 45 45 / 75%))
+    drop-shadow(0 3px 4px rgb(0 0 0 / 70%));
+  animation: zb-pin-glow 2.4s ease-in-out infinite;
+}
+.zb-pin__icon circle {
+  fill: #2a0606;
+  stroke: none;
+}
+/* Pulsing glow rings at the pin's point */
+.zb-pin__pulse {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-bottom: -5px;
+  border-radius: 50%;
+  background: rgb(255 45 45 / 55%);
+  box-shadow: 0 0 12px 4px rgb(255 45 45 / 55%);
+  transform: scale(0.6);
+  opacity: 0;
+  animation: zb-pin-pulse 2.4s ease-out infinite;
+}
+.zb-pin__pulse--late {
+  animation-delay: 1.2s;
+}
+@keyframes zb-pin-pulse {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(3.4); opacity: 0; }
+}
+@keyframes zb-pin-glow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 3px rgb(255 45 45 / 95%))
+      drop-shadow(0 0 10px rgb(255 45 45 / 70%))
+      drop-shadow(0 3px 4px rgb(0 0 0 / 70%));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 5px rgb(255 70 70 / 100%))
+      drop-shadow(0 0 18px rgb(255 45 45 / 90%))
+      drop-shadow(0 3px 4px rgb(0 0 0 / 70%));
+  }
+}
+
+/* ── Popup ───────────────────────────────────────────────────────────── */
+.zb-popup-wrap .leaflet-popup-content-wrapper {
+  background: #111113;
+  color: #ede6d6;
+  border: 1px solid rgb(201 162 74 / 60%);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 75%);
+}
+.zb-popup-wrap .leaflet-popup-tip {
+  background: #111113;
+  border: 1px solid rgb(201 162 74 / 60%);
+}
+.zb-popup-wrap .leaflet-popup-content {
+  margin: 12px 16px;
+}
+.zb-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 150px;
+  font-family: "Crimson Text", Georgia, serif;
+}
+.zb-popup__name {
+  font-family: var(--font-the-seasons), "Cinzel", serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f5f5f5;
+}
+.zb-popup__area {
+  font-size: 0.92rem;
+  font-style: italic;
+  color: #c9c9cc;
+}
+.zb-popup__note {
+  font-size: 0.82rem;
+  color: #e2b75a;
+}
+.zb-popup__link {
+  margin-top: 6px;
+  font-family: "Cinzel", serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e2b75a !important;
+  text-decoration: none;
+}
+.zb-popup__link:hover {
+  color: #f3d27a !important;
+}
+
+/* ── Summary strip ───────────────────────────────────────────────────── */
+.zb-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.85rem 0.4rem;
+  border-radius: 10px;
+  border: 1px solid rgb(201 162 74 / 32%);
+  background: rgb(0 0 0 / 40%);
+  text-align: center;
+}
+.zb-stat__value {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  line-height: 1;
+  color: #e2b75a;
+  text-shadow: 0 2px 6px rgb(0 0 0 / 70%);
+}
+.zb-stat__label {
+  margin-top: 0.45rem;
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b9b9bd;
+}
+
+/* ── Branch cards (compact) ──────────────────────────────────────────── */
+.zb-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem 0.95rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgb(201 162 74 / 32%);
+  background:
+    radial-gradient(120% 70% at 0% 0%, rgb(226 183 90 / 7%) 0%, transparent 60%),
+    linear-gradient(160deg, rgb(28 28 30 / 94%) 0%, rgb(11 11 12 / 94%) 100%);
+  box-shadow: inset 0 1px 0 rgb(243 210 122 / 10%), 0 12px 24px -16px rgb(0 0 0 / 85%);
+}
+.zb-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.zb-card__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff2d2d;
+  box-shadow: 0 0 5px 2px rgb(255 45 45 / 70%), 0 0 12px 3px rgb(255 45 45 / 35%);
+  animation: zb-dot-glow 2.4s ease-in-out infinite;
+}
+.zb-card__dot--pending {
+  background: #6e6e73;
+  box-shadow: none;
+  animation: none;
+}
+@keyframes zb-dot-glow {
+  0%, 100% { box-shadow: 0 0 5px 2px rgb(255 45 45 / 70%), 0 0 12px 3px rgb(255 45 45 / 35%); }
+  50%      { box-shadow: 0 0 8px 3px rgb(255 60 60 / 90%), 0 0 18px 6px rgb(255 45 45 / 45%); }
+}
+.zb-card__number {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e2b75a;
+}
+.zb-card__region {
+  color: #8e8e93;
+}
+.zb-card__badge {
+  flex-shrink: 0;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgb(201 162 74 / 40%);
+  background: rgb(226 183 90 / 8%);
+  font-size: 0.44rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #e2b75a;
+}
+.zb-card__name {
+  margin-top: 0.4rem;
+  font-size: clamp(1.1rem, 4.4vw, 1.3rem);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f5f5f5;
+}
+.zb-card__area {
+  margin-top: 0.1rem;
+  font-family: "Crimson Text", Georgia, serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #b9b9bd;
+}
+.zb-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fd8a8;
+}
+.zb-card__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4cc760;
+  box-shadow: 0 0 6px rgb(76 199 96 / 70%);
+}
+.zb-card__blurb {
+  margin-top: 0.45rem;
+  font-family: "Crimson Text", Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #e5e5e7;
+}
+
+.zb-card__actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+.zb-btn {
+  flex: 1 1 0;
+  min-height: 2.1rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.zb-btn--ghost {
+  border: 1px solid rgb(201 162 74 / 55%);
+  background: transparent;
+  color: #e2b75a;
+}
+.zb-btn--ghost:hover {
+  background: rgb(226 183 90 / 12%);
+}
+.zb-btn--gold {
+  border: 1px solid rgb(255 241 194 / 60%);
+  background: linear-gradient(180deg, #f3d27a 0%, #e2b75a 45%, #b8862b 100%);
+  color: #111111;
+}
+.zb-btn--gold:hover {
+  background: linear-gradient(180deg, #fff1c2 0%, #f3d27a 45%, #c9952f 100%);
+}
+.zb-btn:focus-visible {
+  outline: 2px solid #f3d27a;
+  outline-offset: 2px;
+}
+
+.branches-closing {
+  font-family: "Crimson Text", "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1vw + 0.75rem, 1.15rem);
+  line-height: 1.6;
+  color: #ede6d6;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zb-pin__icon,
+  .zb-pin__pulse,
+  .zb-card__dot {
+    animation: none;
+  }
+  .zb-pin__pulse { opacity: 0; }
+}

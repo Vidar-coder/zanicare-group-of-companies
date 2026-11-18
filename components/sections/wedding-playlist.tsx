@@ -102,7 +102,7 @@ const aboveTheBeyond = localFont({
 // White card, navy headings, body-blue text; dusty-blue buttons (no yellow for text).
 const TEAL = "var(--color-welcome-navy)"
 const BUTTON =
-  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
+  "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)"
 const BUTTON_SHADOW =
   "0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 22%, transparent), 0 12px 24px -12px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)"
 const IVORY = "#FFF8F2"

@@ -12,6 +12,20 @@ export type TimelineIconName =
   | "fireworks"
   | "dance"
 
+// Icons for the "What to Expect" program and Gentle Reminders (components/sections/details.tsx)
+export type ProgramIconName =
+  | "registration"
+  | "prayer"
+  | "welcome"
+  | "founder"
+  | "review"
+  | "dinner"
+  | "awards"
+  | "raffle"
+  | "performance"
+  | "closing"
+export type ReminderIconName = "registration" | "dress" | "raffle" | "share"
+
 export type AttireGroupId = "entourage" | "family" | "sponsors" | "guests"
 // A palette color: "#9CAF88" or { name: "Sage", hex: "#9CAF88" }
 export type AttireColor = string | { name: string; hex: string }
@@ -65,40 +79,42 @@ export type AttireColor = string | { name: string; hex: string }
    (loader, envelope, hero, details, timeline, RSVP, FAQ, footer, …).
    ============================================================================ */
 
-// ── The couple ──────────────────────────────────────────────────────────────
+// ── The event ───────────────────────────────────────────────────────────────
+// The site was built for couples, so the event uses the same fields:
+//   groom / bride                   → full company + event name (Welcome sign-off, full names)
+//   groomNickname / brideNickname   → the two big words on the loader, envelope and footer
+//                                     ("Christmas" & "Thanksgiving"), joined by loadingScreen.namesJoiner
+const COMPANY_NAME = "Zanicare Group of Companies Inc."
+const EVENT_NAME = "Christmas Thanksgiving Party"
 const COUPLE = {
-  bride: "Olivia Bernadette Papilla Reodique",
-  brideNickname: "Via",
-  groom: "Benedict Mariano Dumlao",
-  groomNickname: "Ben",
+  bride: EVENT_NAME,
+  brideNickname: "Thanksgiving",
+  groom: COMPANY_NAME,
+  groomNickname: "Christmas",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
-const WEDDING_DATE = "January 8, 2027" // e.g. "June 5, 2027"
-const WEDDING_DAY = "Friday" //
+const WEDDING_DATE = "December 13, 2026" // event date
+const WEDDING_DAY = "Sunday"
 const TIMES = {
-  entourageCall: "2:00 PM", // entourage assembly
-  guestArrival: "2:00 PM", // arrival at the church (shown in Event Details + reminders)
-  ceremony: "2:30 PM", // wedding ceremony
-  reception: "5:30 PM", // arrival at the reception venue
+  entourageCall: "5:00 PM", // organizing committee / staff call time
+  guestArrival: "6:00 PM", // registration & cocktails (shown in Event Details + reminders)
+  ceremony: "7:00 PM", // program starts
+  reception: "8:00 PM", // dinner is served
 }
 
-// ── Venues ──────────────────────────────────────────────────────────────────
-
-// map: a Google Maps search link — swap in the venue's own share link (maps.app.goo.gl/…) if you have it
-// photos: couple photos as placeholders until venue photos are added (files in /public)
+// ── Venue ───────────────────────────────────────────────────────────────────
+// Ceremony and reception are the same venue (VENUE_CARDS.layout = "combined").
+// photos: placeholder until venue photos are added (files in /public)
+const PLACEHOLDER_IMAGE = "/Details/imageplaceholder.jpg"
 const CEREMONY_VENUE = {
-  name: "Shrine of the Holy Face of Jesus",
-  address: "Nampicuan, Nueva Ecija",
-  map: "https://maps.app.goo.gl/ztiuT56C6wUepQNRA",
-  photos: ["/Details/venue (1).png", "/Details/venue (2).png", "/Details/venue (3).png", "/Details/venue (4).png"],
+  name: "The Heritage Hotel Manila",
+  address: "Roxas Boulevard corner EDSA, Pasay City, 1300 Metro Manila, Philippines",
+  map: "https://maps.app.goo.gl/S9YEHD8Jjuz7kPrg6",
+  // Venue photos (crossfade on the Event Details card)
+  photos: Array.from({ length: 5 }, (_, i) => `/Details/venue-party (${i + 1}).png`),
 }
-const RECEPTION_VENUE = {
-  name: "Sirmata Eco Farm and Nature Park",
-  address: "Cuyapo, Nueva Ecija",
-  map: "https://maps.app.goo.gl/VoxQwBFhx4avpwMz6",
-  photos: ["/Details/reception (1).jpg", "/Details/reception (2).jpg", "/Details/reception (3).jpg"],
-}
+const RECEPTION_VENUE = { ...CEREMONY_VENUE }
 
 // ── Venue cards (Event Details section) ─────────────────────────────────────
 // layout:
@@ -110,31 +126,31 @@ const RECEPTION_VENUE = {
 // showDate     = show the big Month / Day / Year
 // showArrival  = show "Arrival: <guest arrival time>" (otherwise "At <time>")
 const VENUE_CARDS = {
-  layout: "separate" as "separate" | "combined",
+  layout: "combined" as "separate" | "combined",
   // Used when layout is "combined"
   combined: {
-    badge: "Ceremony & Reception",
+    badge: "Christmas Thanksgiving Party",
     sectionLabel: "Venue",
     showDate: true,
-    showArrival: false,
-    // Time rows on the card, e.g. "Ceremony 4:30 PM | Reception 7:00 PM"
-    ceremonyLabel: "Ceremony",
-    receptionLabel: "Reception",
-    // false = show only the ceremony time on the combined card
-    showReceptionTime: false,
+    showArrival: true,
+    // Time rows on the card, e.g. "Program 7:00 PM | Dinner 8:00 PM"
+    ceremonyLabel: "Program",
+    receptionLabel: "Dinner",
+    // false = show only the program time on the combined card
+    showReceptionTime: true,
   },
   // Used when layout is "separate"
   ceremony: {
     show: true,
-    badge: "Ceremony",
-    sectionLabel: "Ceremony Venue",
+    badge: "Program",
+    sectionLabel: "Venue",
     showDate: true,
     showArrival: true,
   },
   reception: {
-    show: true,
-    badge: "Reception",
-    sectionLabel: "Reception Venue",
+    show: false,
+    badge: "Dinner",
+    sectionLabel: "Venue",
     showDate: false,
     showArrival: false,
   },
@@ -142,197 +158,150 @@ const VENUE_CARDS = {
 
 // ── RSVP & contact ──────────────────────────────────────────────────────────
 const RSVP = {
-  deadline: " December 31, 2026",
-  coordinator: "{groom} / {bride}", // {groom} / {bride} → couple nicknames
+  deadline: "December 1, 2026",
+  coordinator: "the Zanicare HR & Events Committee",
   phone: "to be announced",
 }
-const HASHTAGS = ["#BenAndVia"] // official wedding hashtag (Snap & Share, reminders)
+const HASHTAGS = ["#ZanicareChristmas2026", "#ZanicareCares"] // official hashtags (Snap & Share, reminders)
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
-// SHOW = which cards to display AND their order, top to bottom. Examples:
-//   ["guests"]                            guests only
-//   ["entourage", "guests"]               entourage + guests
-//   ["sponsors", "entourage", "guests"]   complete
-//   ["guests", "sponsors"]                guests first, then sponsors
-//   []                                    hide the whole attire guide
-// Leave out a name to hide that card. Unknown or empty entries are ignored.
+// SHOW = which cards to display AND their order, top to bottom.
 // Each card: fill in only what you need — anything left "" or [] is hidden.
 //   image:     illustration path in /public ("" = no image; any size/shape works)
 //   palette:   colors for this card — "#9CAF88" or { name: "Sage", hex: "#9CAF88" }
-//              (names show on the swatches; [] = no palette)
 //   ladies / gentlemen:
-//     label:     e.g. "Ninang", "Bridesmaids", "Ladies"
+//     label:     e.g. "Ladies"
 //     details:   the dress code text ("" hides this half of the card)
 //     highlight: phrase inside details shown bold + underlined ("" for none)
 // Guest dress code colors — also shown in the "Dress Code" gentle reminder
-
 const DRESS_CODE_PALETTE: AttireColor[] = [
-  { name: "Green", hex: "#5E8C4A" },
-  { name: "Yellow", hex: "#F2C230" },
-  { name: "Orange", hex: "#E8833A" },
-];
+  { name: "Black", hex: "#111111" },
+  { name: "Charcoal", hex: "#3A3A3C" },
+  { name: "Silver", hex: "#C7C7CC" },
+  { name: "White", hex: "#F5F5F5" },
+]
 
 // Attire groups shown in the Details section (components/sections/details.tsx).
 //   show      → which groups appear, in order
 //   dressCode → small line under the palette title, e.g. "Formal Attire"
 //   note      → closing line shown above the card's palette ("" = default color guide note)
-//   Each side (ladies / gentlemen) has a label, an optional intro (details, with an
-//   optional highlighted phrase) and an optional list of roles with what they wear.
+const NO_ROLES = [] as { role: string; attire: string }[]
 const ATTIRE = {
-  show: ["guests", "sponsors", "entourage"] as AttireGroupId[],
+  show: ["guests"] as AttireGroupId[],
 
   entourage: {
-    title: "Entourage",
-    image: "/Details/entourage.png",
-    dressCode: "Classic Filipino",
-    palette: [
-      { name: "Fuchsia Pink", hex: "#D6337A" },
-      { name: "Barong Ecru", hex: "#EFE6D2" },
-      { name: "Black", hex: "#1E1E1E" },
-      { name: "Grey", hex: "#8C8C8C" },
-    ] as AttireColor[],
+    title: "Organizing Committee",
+    image: "",
+    dressCode: "Black Tie",
+    palette: DRESS_CODE_PALETTE,
     note: "",
-    ladies: {
-      label: "Ladies",
-      details: "",
-      highlight: "",
-      roles: [{ role: "Bridesmaids", attire: "Fuchsia pink" }],
-    },
-    gentlemen: {
-      label: "Gentlemen",
-      details: "",
-      highlight: "",
-      roles: [
-        { role: "Best Man", attire: "Barong and black pants" },
-        { role: "Groomsmen", attire: "Barong and grey pants" },
-      ],
-    },
+    ladies: { label: "Ladies", details: "", highlight: "", roles: NO_ROLES },
+    gentlemen: { label: "Gentlemen", details: "", highlight: "", roles: NO_ROLES },
   },
 
   family: {
     title: "Family",
-    image: "/Details/Family.png",
+    image: "",
     dressCode: "Formal Attire",
     palette: [] as AttireColor[],
     note: "",
-    ladies: { label: "Ladies", details: "", highlight: "", roles: [] as { role: string; attire: string }[] },
-    gentlemen: { label: "Gentlemen", details: "", highlight: "", roles: [] as { role: string; attire: string }[] },
+    ladies: { label: "Ladies", details: "", highlight: "", roles: NO_ROLES },
+    gentlemen: { label: "Gentlemen", details: "", highlight: "", roles: NO_ROLES },
   },
 
   sponsors: {
-    title: "Principal Sponsors",
-    image: "/Details/sponsors.png",
-    dressCode: "Classic Filipino",
-    palette: [
-      { name: "Burgundy", hex: "#6A0D28" },
-      { name: "Barong Ecru", hex: "#EFE6D2" },
-      { name: "Dark Brown", hex: "#4A3226" },
-    ] as AttireColor[],
+    title: "Guests of Honor",
+    image: "",
+    dressCode: "Black Tie",
+    palette: DRESS_CODE_PALETTE,
     note: "",
-    ladies: {
-      label: "Ninang",
-      details: "",
-      highlight: "",
-      roles: [{ role: "Ninang", attire: "Burgundy" }],
-    },
-    gentlemen: {
-      label: "Ninong",
-      details: "",
-      highlight: "",
-      roles: [{ role: "Ninong", attire: "Barong and dark brown" }],
-    },
+    ladies: { label: "Ladies", details: "", highlight: "", roles: NO_ROLES },
+    gentlemen: { label: "Gentlemen", details: "", highlight: "", roles: NO_ROLES },
   },
 
   guests: {
-    title: "Wedding Guests",
-    image: "/Details/guest.png",
-    dressCode: "Summer Palette",
+    title: "All Guests",
+    image: "/Details/attire.png",
+    dressCode: "Black Tie · Black, Grey & White",
     palette: DRESS_CODE_PALETTE,
-    note: "Ladies, choose a floor-length dress in green, yellow, or orange from our summer palette.",
+    note: "Dress to shine in black, grey, white or silver — sequins and metallic accents are welcome.",
     ladies: {
       label: "Ladies",
-      details: "Floor-length dresses in green, yellow, or orange.",
-      highlight: "green, yellow, or orange",
-      roles: [] as { role: string; attire: string }[],
+      details: "Evening gown or elegant cocktail dress in black, grey, white or silver.",
+      highlight: "black, grey, white or silver",
+      roles: NO_ROLES,
     },
     gentlemen: {
       label: "Gentlemen",
-      details: "Polo with chinos or suit trousers.",
-      highlight: "Polo with chinos or suit trousers",
-      roles: [] as { role: string; attire: string }[],
+      details: "Suit, tuxedo or long-sleeve barong with dark trousers.",
+      highlight: "Suit, tuxedo or long-sleeve barong",
+      roles: NO_ROLES,
     },
   },
 }
 
 // ── Website address (used for QR codes, link previews, table finder) ────────
 // NEXT_PUBLIC_SITE_URL (env) overrides this when set.
-const SITE_URL = "https://ben-and-via-wedding.digitalinvitationrsvp.com/"
+// ⚠ check: set this to the live domain before going live
+const SITE_URL = "https://zanicare-christmas-party.digitalinvitationrsvp.com/"
 // Image shown when the link is shared (Facebook, Messenger, Viber, WhatsApp, X, …).
-// Keep it a 1200×630 JPG under ~300 KB — Messenger/WhatsApp silently drop larger images,
-// which is why forwarded links can lose their preview. Exported from /Details/imagepreview.png.
+// Ideally a 1200×630 JPG under ~300 KB — the company logo is used until a preview image is made.
 // Use a NEW filename whenever the image changes — Facebook caches images by URL.
-const LINK_PREVIEW_IMAGE = "/Details/linkPreview.png"
+const LINK_PREVIEW_IMAGE = "/Details/companyLogo.png"
 // Square fallback (600×600) for apps that show a small square thumbnail
-const LINK_PREVIEW_IMAGE_SQUARE = "/Details/linkPreview.png"
+const LINK_PREVIEW_IMAGE_SQUARE = "/Details/companyLogo.png"
 
 // Site address with env override applied and no trailing slash — no need to edit
 export const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, "")
 
 // ── Look & feel ─────────────────────────────────────────────────────────────
-// "plain"  = no photo backgrounds anywhere (botanical cards, hides photo-only blocks)
+// "plain"  = no photo backgrounds anywhere (hides photo-only blocks)
 // "photos" = photo backgrounds on the loader, envelope and closing section
 const DISPLAY_MODE = "plain" as "photos" | "plain"
 
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
-  monogram: "/monogram/new-mono.webp", // monogram (loader, envelope, closing)
-  coupleNameImage: "/monogram/new-mono.png", // couple-name lettering (loader, envelope)
-  seal: "/monogram/new-seal.png", // envelope wax seal
+  logo: "/Details/companyLogo.png",
+  monogram: "/monogram/monogram.png", // logo (loader, envelope, closing)
+  coupleNameImage: "/Details/companyLogo.png", // logo (loader, envelope)
+  seal: "/Details/companyLogo.png", // envelope wax seal
+  // ⚠ check: still the previous wedding song — swap in a Christmas track
   backgroundMusic: "/background_music/PALAGI (Wedding Version) - TJ Monterde OFFICIAL AUDIO.mp3",
 }
 
-// Couple photos reused across the site (gallery, loader, reminders, snap & share, closing)
-// — every portrait in /public/mobile-background
-const COUPLE_PHOTOS = Array.from(
-  { length: 24 },
-  (_, i) => `/mobile-background/couple (${i + 1}).webp`,
-)
+// Event photos reused across the site (gallery, reminders, snap & share, closing).
+// Placeholder for now — replace with real photos in /public when available.
+const COUPLE_PHOTOS = Array.from({ length: 6 }, () => PLACEHOLDER_IMAGE)
 
-// Portraits for the envelope reveal + the main cover photo (soft natural light, no heavy filters)
+// Envelope photos + the main cover photo — "" = none (no photos beside the letter, no cover photo
+// pulled out of the envelope or shown on the home hero)
 const COUPLE_PORTRAITS = {
-  groom: "/mobile-background/couple (2).webp", // left photo in the envelope
-  bride: "/mobile-background/couple (15).webp", // right photo in the envelope
-  cover: "/mobile-background/couple (6).webp", // photo pulled out of the envelope + home hero cover photo
+  groom: "", // left photo in the envelope
+  bride: "", // right photo in the envelope
+  cover: "", // photo pulled out of the envelope + home hero cover photo
 }
 
-// Sliding photo marquee behind the loader and envelope.
-// Phones use the portrait shots in /public/mobile-background, desktop the landscape
-// shots in /public/desktop-background — update the counts when files are added/removed.
-const MARQUEE_PHOTO_COUNT = 24
-const MARQUEE_PHOTOS = Array.from(
-  { length: MARQUEE_PHOTO_COUNT },
-  (_, i) => `/mobile-background/couple (${i + 1}).webp`,
-)
-const MARQUEE_PHOTO_COUNT_DESKTOP = 41
-const MARQUEE_PHOTOS_DESKTOP = Array.from(
-  { length: MARQUEE_PHOTO_COUNT_DESKTOP },
-  (_, i) => `/desktop-background/couple (${i + 1}).webp`,
-)
+// No background photos — the loader and envelope sit on black silk instead
+const MARQUEE_PHOTOS: string[] = []
+const MARQUEE_PHOTOS_DESKTOP: string[] = []
 
 // ── Decorations ─────────────────────────────────────────────────────────────
 // Change a path here to swap it on every section at once.
 // To change ONE section only, override it there, e.g. decos: { ...SECTION_DECOS, footerVine: "" }
+// (shown in their own gold-and-grey colors)
 const DECOR = {
-  cornerTopLeft: "/deco/new/top-left.png",
-  cornerTopRight: "/deco/new/top-right.png",
-  cornerBottomLeft: "/deco/new/bottom-left.png",
-  cornerBottomRight: "/deco/new/bottom-right.png",
-  cornerOverlayTopLeft: "/deco/ivory-peach-v1/top-left-corner.png", // floral corner layered over the top vines (loader + envelope)
-  cornerOverlayTopRight: "/deco/ivory-peach-v1/top-right-corner.png",
-  headerOrnament:  "/deco/new/header.png", // small sprig above titles
-  footerVine: "/deco/new-deco/header.png", // long vine at section ends
-  sideLeft: "/deco/ivory-peach-v1/side-left.png", // love story side sprigs
-  sideRight: "/deco/ivory-peach-v1/side-right.png",
+  // decor-clean = the decor/ artwork with its leftover white background haze removed
+  // (the originals in /deco/new/decor/ showed a faint white box on the dark pages)
+  cornerTopLeft: "/deco/new/decor-clean/top-left.png",
+  cornerTopRight: "/deco/new/decor-clean/top-right.png",
+  cornerBottomLeft: "/deco/new/decor-clean/bottom-left.png",
+  cornerBottomRight: "/deco/new/decor-clean/bottom-right.png",
+  cornerOverlayTopLeft: "", // no extra corner overlay
+  cornerOverlayTopRight: "",
+  headerOrnament: "/deco/new/decor-clean/header.png", // small ornament above titles
+  footerVine: "/deco/new/decor-clean/header.png", // ornament at section ends
+  sideLeft: "", // side sprigs (none)
+  sideRight: "",
 }
 
 // The four corners as one set
@@ -350,20 +319,20 @@ const SECTION_DECOS = {
   footerVine: DECOR.footerVine,
 }
 
-// One love story chapter (content/site.ts → loveStory.chapters)
+// One story chapter (content/site.ts → loveStory.chapters)
 type StoryChapter = {
   date?: string // small caps line above the title ("" shows "Chapter 0X")
   title: string
   image?: string // photo beside the text ("" for none)
   video?: string // optional silent looping video shown instead of the photo (photo is its poster)
   imageAlt?: string // photo description ("" uses loveStory.photoAlt)
-  paragraphs: string[] // {groom} / {bride} → nicknames
+  paragraphs: string[]
   imagePosition?: string // which part of the photo stays in frame, e.g. "center 20%" (default "center 30%")
   layout?: "image-left" | "image-right" // optional — chapters alternate sides automatically
 }
 
 // Handy derived values — no need to edit
-const COUPLE_LABEL = `${COUPLE.groomNickname} & ${COUPLE.brideNickname}`
+const COUPLE_LABEL = `${COMPANY_NAME} ${EVENT_NAME}`
 
 /* ============================================================================
    SECTIONS — wording and per-section options. Values above are referenced here.
@@ -400,9 +369,9 @@ export const siteConfig = {
     date: WEDDING_DATE,
     time: TIMES.ceremony,
     venue: CEREMONY_VENUE.name,
-    tagline: "are getting married!!!!!",
-    theme: "Classic Filipino · Summer Palette",
-    motif: "#C56A4A, #F6E9DF, #8A9A72, #D9C3AB, #6A0D28",
+    tagline: "invites you to our Christmas Thanksgiving Party",
+    theme: "Luxury · Black, Grey & White",
+    motif: "#111111, #3A3A3C, #8E8E93, #D6D6D6, #F5F5F5",
   },
   // Tap-to-open card shown before the loading screen (components/loader/OpeningCard.tsx):
   // a gate-fold card tied with a satin bow. On tap the bow unties, light runs through the gold,
@@ -419,16 +388,16 @@ export const siteConfig = {
     ribbonY: "47.5%",
     images: {
       // Front of the card, split down the middle into the two doors (portrait, ~9:16)
-      card: "/loading-deco/front-card.png",
+      card: "/loading/card.png",
       // Bow with its tails and short band ends, transparent background (1322×1190 — knot at
       // 50% across, 29% down; band ends are 0.22× its width tall)
-      bow: "/loading-deco/ribbon-whole.png",
+      bow: "/loading/ribbon.png",
       // A straight piece of the same satin band, transparent margins (1402×1122) — one copy per
       // side of the card, meeting under the bow
-      band: "/loading-deco/ribbon-band.png",
+      band: "/loading/band.png",
       // Close-up of the knot laid over the bow's own knot, so the knot can loosen on its own
       // (same 1322×1190 canvas as `bow`, lined up with it: loops + knot only; "" to hide)
-      knot: "/loading-deco/Knot.png",
+      knot: "/loading/Knot.png",
       // Gold light map for the tap shimmer, same size/framing as `card` — red = gold areas,
       // green = order the light reaches them, blue = sparkle points. "" = simple CSS shimmer
       // (the old map was drawn for the previous card art, so it is off for front-card.png)
@@ -444,32 +413,38 @@ export const siteConfig = {
     // Loading screen only — overrides `display` for the loader:
     //   "photos" = photo strip + photo date cards
     //   "plain"  = invitation card wording over a soft background
-    //   "poster" = couple cut-out in the middle, "Save the Date" on top, details below (see `poster`)
+    //   "poster" = logo in the middle, headline on top, event title + details below (see `poster`)
     loaderDisplay: "poster" as "photos" | "plain" | "poster",
-    // Poster layout (loaderDisplay: "poster") — names, date, time and venue come from
-    // couple / wedding / ceremony; corners from `cornerDecos` below; headline from `headline`
+    // Poster layout (loaderDisplay: "poster") — date and venue come from wedding / ceremony;
+    // corners from `cornerDecos` below; headline from `headline`
     poster: {
-      // Couple photo with a transparent background, shown in the middle (PNG/WebP; "" to hide)
-      coupleImage: "/Details/new-couple.png",
-      kicker: "Together with their families", // small line above "Save the Date" ("" to hide)
-      // Short lines either side of the couple, one entry per line ([] to hide a side)
-      sideLeft: ["Two hearts", "One love", "Forever"],
-      sideRight: ["Come", "witness", "our first", "chapter"],
-      weddingOf: "The wedding of", // line above the couple's names ("" to hide)
-      showVenue: true, // ceremony venue name + address under the date and time
+      // Image in the middle of the poster (PNG/WebP; "" to hide) — the company logo
+      coupleImage: BRAND.logo,
+      kicker: COMPANY_NAME, // small line above the headline ("" to hide)
+      // Short lines either side of the logo, one entry per line ([] to hide a side)
+      sideLeft: [] as string[],
+      sideRight: [] as string[],
+      weddingOf: "cordially invites you to our", // line above the event title ("" to hide)
+      // Event title under the logo, in capitals on two lines. joiner = small word between the
+      // lines ("" = none). Leave titleTop/titleBottom "" to use couple.groomNickname / brideNickname.
+      titleTop: "Christmas",
+      titleJoiner: "",
+      titleBottom: "Thanksgiving Party",
+      showTime: false, // weekday · time and guest arrival lines under the date
+      showVenue: true, // venue name + address under the date
       showProgress: true, // progress bar under the status line
       showPercent: true, // "0% … 100%" under the progress bar
-      // How much the background photos are washed out (0 = full photos, 1 = hidden)
-      photoVeil: 0.35,
+      // Not used — the poster sits on black silk (components/loader/PosterBackdrop.tsx)
+      photoVeil: 0,
       // Colors — shared with the envelope screen that follows, so the look carries over
       theme: {
-        goldDark: "#6a0d28", // lettering: shadow side (plain burgundy — all three the same = no gradient)
-        gold: "#6a0d28", // lettering: main tone (burgundy)
-        goldLight: "#6a0d28", // lettering: sheen (burgundy)
-        ink: "#5e4535", // small capital lines (kicker, date line, venue, status)
-        inkSoft: "#6f5a48", // venue address
-        washTop: "#f6e9df", // color washed over the top of the photos (blush ivory)
-        washBottom: "#e3e2d2", // color washed over the bottom of the photos (sage mist)
+        goldDark: "#8e8e93", // lettering: shadow side (silver)
+        gold: "#e5e5e7", // lettering: main tone (platinum)
+        goldLight: "#ffffff", // lettering: sheen (white)
+        ink: "#ededee", // small capital lines (kicker, date line, venue, status)
+        inkSoft: "#b9b9bd", // venue address
+        washTop: "#050506", // dark vignette over the top of the silk
+        washBottom: "#050506", // dark vignette over the bottom of the silk
       },
       // Optional image for the envelope paper that follows the poster (portrait image; its middle
       // band is used, lined up across the flap, front and pocket), e.g. "/loadingImages/kart.webp".
@@ -484,17 +459,17 @@ export const siteConfig = {
       text: "var(--color-welcome-text)",
       accent: "var(--color-welcome-gold)",
     },
-    // Sliding photo marquee behind the loader and envelope (both display modes); files live in /public
+    // Photo marquee behind the loader and envelope — empty: black silk instead (files live in /public)
     backgroundPhotos: MARQUEE_PHOTOS,
     backgroundPhotosDesktop: MARQUEE_PHOTOS_DESKTOP, // same marquee on screens 768px and up
     // Opening title on the loader and the envelope letter — short joining words ("of", "the") are set in script
-    headline: "Save the Date", // "the" is set in the Brittany script (loader + envelope letter)
+    headline: "Merry Christmas", // set in the Brittany script (loader + envelope letter)
     // Word between the couple's names on the loader and the envelope letter ("and", "&", "y", …)
-    namesJoiner: "and",
+    namesJoiner: "&",
     // {days} is replaced with the number of days left before wedding.date
-    countdownText: "{days} more days to go",
+    countdownText: "{days} days until the celebration",
     countdownOneDayText: "1 more day to go",
-    countdownTodayText: "Today is the day",
+    countdownTodayText: "Tonight is the night",
     countdownPastText: "Thank you for celebrating with us",
     coupleNameImage: BRAND.coupleNameImage,
     // Shown in the three date cards (Month / Day / Year), left to right (display: "photos")
@@ -507,34 +482,34 @@ export const siteConfig = {
     // Plain mode invitation card — classic invitation wording around the couple's names ("" to hide a line)
     plainInvite: {
       ornament: DECOR.headerOrnament,
-      lineAbove: "Together with their families",
-      lineBelow: "request the honour of your presence",
+      lineAbove: COMPANY_NAME,
+      lineBelow: "requests the pleasure of your company",
     },
     showCeremonyDetails: true,
     eyebrow: "You're invited",
-    message: "We can't wait to celebrate with you",
+    message: "An evening of gratitude, recognition and Christmas cheer",
     // Rotates under the progress bar while the invitation loads
     statusMessages: [
-      "Gathering our favorite moments",
-      "Setting the table for you",
-      "Crafting your invitation experience",
+      "Polishing the silverware",
+      "Setting the stage for the awards",
+      "Preparing your invitation",
     ],
     durationMs: 10000,
     // Invitation envelope (components/loader/Hero.tsx) — shares display + photos with loader above
     hintText: "Tap the Seal to Open",
     enterButtonText: "View the Invitation",
     sealImage: BRAND.seal,
-    // Revealed when the envelope opens: one portrait of each, side by side (groom left, bride right)
+    // Revealed when the envelope opens: two photos side by side (placeholders for now)
     portraits: {
       groom: COUPLE_PORTRAITS.groom,
       bride: COUPLE_PORTRAITS.bride,
     },
-    // Bouquet tucked inside the open envelope, peeking out on both sides ("" to hide)
+    // Ornament tucked inside the open envelope, peeking out on both sides ("" to hide)
     envelopeFlowers: DECOR.cornerBottomLeft,
-    // Main page cover photo (home hero, plain display) — one natural, candid couple photo
+    // Main page cover photo (home hero, plain display) — placeholder for now
     coverPhoto: COUPLE_PORTRAITS.cover,
     coverPhotoAlt: COUPLE_LABEL,
-    // All four corner florals (top two are drawn smaller in CSS; "" hides a corner)
+    // All four corner ornaments (top two are drawn smaller in CSS; "" hides a corner)
     cornerDecos: { ...CORNER_DECOS },
     // Floral corners drawn on top of the top corner vines ("" hides one)
     cornerOverlays: {
@@ -549,180 +524,378 @@ export const siteConfig = {
     decos: { ...CORNER_DECOS },
     // Thin double border around the section, under the corner florals (false hides it)
     showFrame: true,
-    // Sprig tucked under the bottom of the couple's cover photo ("" hides it)
+    // Ornament tucked under the bottom of the cover photo ("" hides it)
     coverVine: DECOR.headerOrnament,
+    // Wording — "" hides a line
+    kicker: COMPANY_NAME, // small capitals above "You're Invited"
+    eyebrow: `to our ${EVENT_NAME}`, // under the title
+    tagline: "An evening of gratitude, recognition & Christmas cheer",
+    timeLead: "Program begins at", // before "7:00 in the evening"
+    arrivalLabel: "Registration & cocktails", // before the guest arrival time
+    countdownHeading: "Counting down to the celebration",
+    // Faint repeating pattern behind the hero ("" hides it)
+    pattern: "/monogram/monogram-liner-gold.png",
   },
   // Couple video (components/sections/couple-video.tsx)
   coupleVideo: {
-    title: "A Glimpse of Our Love",
-    script: "Our Journey Together",
-    subtitle: "Watch the journey that brought our hearts together",
-    closingNote: "A glimpse into the moments that made our hearts one",
-    // Your own video file in /public (e.g. "/video/our-story.mp4"). When set it is
-    // played directly with no YouTube at all; leave "" to use youtubeId instead.
-    // (A YouTube link pasted here is detected and played through YouTube.)
+    title: "Our Year in Review",
+    script: "The Zanicare Journey",
+    subtitle: "A look back at the year that was",
+    closingNote: "Every patient, every clinic, every milestone — thank you",
+    // Your own video file in /public (e.g. "/video/year-in-review.mp4"); "" = use youtubeId
     videoSrc: "",
-    // YouTube video ID or full link (youtu.be/…, watch?v=…, /shorts/…, /embed/…)
-    youtubeId: "poC3qotRpO4",
+    // YouTube video ID or full link ("" = none yet)
+    youtubeId: "",
     // Cover image shown before the video plays
-    thumbnail: "/desktop-background/couple (19).webp",
-    thumbnailAlt: `${COUPLE_LABEL} — video cover`,
-    playLabel: "Play our video",
+    thumbnail: PLACEHOLDER_IMAGE,
+    thumbnailAlt: `${COMPANY_NAME} — video cover`,
+    playLabel: "Play the video",
   },
-  // Our love story (components/sections/love-story.tsx + StorySection)
+  // About Us (components/sections/love-story.tsx + StorySection) — the company story
   loveStory: {
-    title: "Our Love Story",
-    subtitle: "a story written by God",
+    title: "About Us",
+    subtitle: "our story of care",
     // Short opening line under the title ("" hides it)
     intro:
-      "From a game of chess to a “yes” before the altar in Baguio — this is the story of how Benedict and Olivia found their way to forever.",
-    // Small sprig above the title ("" hides it)
+      "From one clinic in Molino, Bacoor to a growing network of DOH-accredited animal bite clinics — this is the story of Zanicare Group of Companies Inc., and of the people who make it possible.",
+    // Small ornament above the title ("" hides it)
     headerOrnament: DECOR.headerOrnament,
     // Shown above a chapter's title when it has no date, e.g. "Chapter 03"
     chapterLabel: "Chapter",
     // Photo description used when a chapter has no imageAlt
-    photoAlt: "{groom} and {bride}",
+    photoAlt: "Zanicare Animal Bite Clinic",
     // Large faint chapter number (01, 02 …) behind each chapter's text
     showChapterNumbers: true,
-    // Small heart divider between chapters
+    // Small divider between chapters
     showChapterDividers: true,
-    // Closing block: big word, hashtag, then the verse (also shown in Snap & Share)
-    closingEyebrow: "", // large word on top (was "Puhon") — "" hides it
-    closingHashtag: "", // hashtag under it (was HASHTAGS[0]) — "" hides it
+    // Closing block: big word, hashtag, then the quote (also shown in Snap & Share)
+    closingEyebrow: "", // large word on top — "" hides it
+    closingHashtag: "", // hashtag under it — "" hides it
     closingQuoteLead: "", // bold first line ("" for none)
-    closingQuote: "“He has made everything beautiful in its time.”",
-    closingCitation: "Ecclesiastes 3:11",
-    // Four corner florals framing the section, sized per corner like the loader ("" hides a corner)
+    closingQuote:
+      "“Committed to bringing essential animal bite and preventive healthcare services closer to the communities we serve.”",
+    closingCitation: COMPANY_NAME,
+    // Four corner ornaments framing the section ("" hides a corner)
     decos: { ...CORNER_DECOS },
-    // Thin double border around the section, under the corner florals (false hides it)
+    // Thin double border around the section, under the corner ornaments (false hides it)
     showFrame: true,
     eucalyptusDecos: {
       topLeft: DECOR.sideLeft,
       bottomRight: DECOR.sideRight,
       timelineTop: DECOR.headerOrnament,
-      sectionBottom: DECOR.headerOrnament, // dusty-blue sprig under the closing verse ("" hides it)
+      sectionBottom: DECOR.headerOrnament, // ornament under the closing quote ("" hides it)
     },
-    // The story, one chapter at a time (fields: see StoryChapter above). Photos come from
-    // /public/mobile-background. Add, remove or reorder chapters freely — sides alternate on their own.
-
-chapters: [
-  {
-    date: "How We Met",
-    title: "Crossing Paths",
-    image: "/mobile-background/couple (1).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Bata pa lamang kami nang magkrus ang aming mga landas sa tulong ng larong chess.",
-    ],
+    // The company story, one chapter at a time (fields: see StoryChapter above).
+    // Photos are placeholders for now. Add, remove or reorder chapters freely — sides alternate on their own.
+    chapters: [
+      {
+        date: "Who We Are",
+        title: "Zanicare Group of Companies",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare Animal Bite Clinic",
+        paragraphs: [
+          "Zanicare Group of Companies Inc. is a growing healthcare organization dedicated to providing accessible and reliable animal bite management and preventive healthcare services through its network of Zanicare Animal Bite Clinics.",
+        ],
+      },
+      {
+        date: "2022 · Molino, Bacoor",
+        title: "Where It Began",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare's first branch in Molino, Bacoor",
+        paragraphs: [
+          "The company began its operations in 2022 in Molino, Bacoor, Cavite — our very first branch, and the place where the Zanicare story started.",
+        ],
+      },
+      {
+        date: "Growing Together",
+        title: "A Growing Network",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare clinic network",
+        paragraphs: [
+          "Since then, Zanicare has continued to expand its presence across different communities. Through its growing network of clinics, Zanicare aims to make essential animal bite treatment and post-exposure care more accessible to patients in convenient locations.",
+        ],
+      },
+      {
+        date: "What We Do",
+        title: "Animal Bite Treatment",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Animal bite treatment at Zanicare",
+        paragraphs: [
+          "At the heart of our work is animal bite treatment — timely, careful assistance for patients who need immediate medical attention after a potential exposure to rabies.",
+        ],
+      },
+      {
+        date: "After an Exposure",
+        title: "Post-Exposure Prophylaxis",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Post-exposure care",
+        paragraphs: [
+          "Our clinics provide post-exposure prophylaxis (PEP) and other necessary interventions following potential exposure to rabies, so patients receive the care they need when it matters most.",
+        ],
+      },
+      {
+        date: "Before an Exposure",
+        title: "Pre-Exposure Prophylaxis",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Preventive vaccination",
+        paragraphs: [
+          "Prevention is part of care. Zanicare offers pre-exposure prophylaxis (PrEP) for those who want to be protected before an exposure ever happens.",
+        ],
+      },
+      {
+        date: "Continued Protection",
+        title: "Boosters & Tetanus",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Booster vaccination",
+        paragraphs: [
+          "We also provide booster vaccination and tetanus protection, helping patients stay protected long after their first visit.",
+        ],
+      },
+      {
+        date: "Our People",
+        title: "Care in Capable Hands",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare healthcare professionals",
+        paragraphs: [
+          "Our clinics are supported by healthcare professionals and are designed to provide timely assistance to patients who require immediate medical attention.",
+          "Every patient we serve is met by someone in our Zanicare family — and tonight, we celebrate them.",
+        ],
+      },
+      {
+        date: "DOH Accredited Clinics",
+        title: "Our Clinics",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare DOH accredited clinic",
+        paragraphs: [
+          "Our DOH-accredited animal bite clinics serve patients in:",
+          "Baclaran · San Dionisio · Moonwalk · Malibay · Sta. Ana · Molino · City Med",
+        ],
+      },
+      {
+        date: "Our Commitment",
+        title: "Care Made Accessible",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare patient care",
+        paragraphs: [
+          "At Zanicare, we believe that quality healthcare should be accessible, responsive, and patient-centered. We continuously work toward expanding our services and strengthening our clinic operations to better serve the communities where we operate.",
+        ],
+      },
+      {
+        date: "Closer to Patients",
+        title: "Where We Serve",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare communities",
+        paragraphs: [
+          "Our growing presence in areas such as Molino, Baclaran, San Dionisio, Moonwalk, Malibay, Sta. Ana, and other locations reflects our commitment to bringing essential animal bite and preventive healthcare services closer to patients.",
+        ],
+      },
+      {
+        date: "Our Vision",
+        title: "Where We Are Headed",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare vision",
+        paragraphs: [
+          "To become a trusted and accessible healthcare organization providing quality animal bite management and preventive healthcare services to communities across the Philippines.",
+        ],
+      },
+      {
+        date: "Our Mission",
+        title: "What Drives Us",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare mission",
+        paragraphs: [
+          "To provide accessible, timely, and dependable healthcare services through professionally managed clinics, competent healthcare personnel, and patient-centered care.",
+        ],
+      },
+      {
+        date: "Our Values · I",
+        title: "Care",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare value: care",
+        paragraphs: [
+          "We put the safety and well-being of our patients first.",
+          "It is the first thing every patient should feel the moment they walk through our doors.",
+        ],
+      },
+      {
+        date: "Our Values · II",
+        title: "Accessibility",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare value: accessibility",
+        paragraphs: [
+          "We strive to make essential healthcare services available in communities where they are needed.",
+          "That is why every new branch brings care a little closer to home.",
+        ],
+      },
+      {
+        date: "Our Values · III",
+        title: "Professionalism",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare value: professionalism",
+        paragraphs: [
+          "We uphold professional standards in our healthcare services and clinic operations.",
+        ],
+      },
+      {
+        date: "Our Values · IV",
+        title: "Responsibility",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare value: responsibility",
+        paragraphs: [
+          "We take our responsibility to patients and communities seriously.",
+        ],
+      },
+      {
+        date: "Our Values · V",
+        title: "Continuous Growth",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare value: continuous growth",
+        paragraphs: [
+          "We continuously improve our services, people, and operations as the organization grows.",
+        ],
+      },
+      {
+        date: "Zanicare Today",
+        title: "The Story Continues",
+        image: PLACEHOLDER_IMAGE,
+        imageAlt: "Zanicare today",
+        paragraphs: [
+          "From its beginnings in Molino, Bacoor, Zanicare has developed into a growing network of animal bite clinics serving patients in different communities. The organization continues to pursue expansion while maintaining its focus on accessible healthcare, professional service, and patient care.",
+          "Thank you for being part of the story. Merry Christmas from the Zanicare family.",
+        ],
+      },
+    ] as StoryChapter[],
   },
-  {
-    date: "How We Met",
-    title: "“Master”",
-    image: "/mobile-background/couple (2).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Hinding-hindi ko malilimutan ang araw na napahanga ko siya sa aking paglalaro—ang mismong sandali na iyon ang naging dahilan upang tawagin niya akong “master”.",
+  // Branch map (components/sections/branches-map.tsx) — every clinic as a glowing red pin + compact cards.
+  //   Listed in the order shown on the page. Card title = "Zanicare – <name>".
+  //   region: groups branches for the tabs (see `regions`) · status: small badge ("" hides it)
+  //   lat / lng: pin position. ⚠ check: placed from the addresses, approximate — replace each with the
+  //   clinic's exact spot (Google Maps → right-click the clinic → copy the two numbers).
+  //   lat: null hides the pin (the branch still shows in the list).
+  //   map: the clinic's own Google Maps link for "Directions" ("" = a Google Maps search of the address)
+  branches: {
+    eyebrow: "Our Branches",
+    title: "Find Us",
+    script: "closer to every community",
+    description:
+      "From our first clinic in Molino, Bacoor in 2022, Zanicare has grown into a network of animal bite clinics across Metro Manila, Cavite and Cebu — so timely, dependable care is never far from home.",
+    // Summary strip above the map ("" hides one)
+    stats: [
+      { value: "11", label: "Branches" },
+      { value: "3", label: "Regions" },
+      { value: "2022", label: "Since" },
     ],
-  },
-  {
-    date: "How We Met",
-    title: "A Simple Kumustahan",
-    image: "/mobile-background/couple (3).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Noong una, bihira lamang kaming mag-usap sa Facebook sapagkat hindi kami ganoon kalapit sa isa't isa; isang simpleng kumustahan lamang tapos taon na naman ang aabutin bago ulit magkaroon ng kumbersasyon.",
+    // Tabs above the map: each zooms the map to its branches and filters the list
+    regions: [
+      { label: "All", match: [] as string[] },
+      { label: "Metro Manila & Cavite", match: ["Metro Manila", "Cavite"] },
+      { label: "Cebu", match: ["Cebu"] },
     ],
-  },
-  {
-    date: "How We Met",
-    title: "In the Right Time",
-    image: "/mobile-background/couple (4).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Wala pa man akong ganap na nauunawaan sa kahulugan ng pag-ibig sa mga panahong iyon, napatunayan kong ang tamang panahon lamang pala ang may kakayahang magpalitaw sa taong itinakda para sa iyo.",
-      "— Benedict",
-    ],
-  },
-  {
-    date: "September 3, 2026 · Baguio City",
-    title: "The Proposal",
-    image: "/mobile-background/couple (5).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Isang mahalumigmig na umaga noong Setyembre 3, 2026 sa Lungsod ng Baguio, nagtungo kami sa Mirador Heritage and Eco-Spirituality Park—ang mismong araw na itinakda ng Maykapal upang hilingin ang kanyang kamay sa pag-iisang-dibdib.",
-    ],
-  },
-  {
-    date: "The Proposal",
-    title: "A Prayer in the Chapel",
-    image: "/mobile-background/couple (6).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Sa kabila ng iba't ibang emosyong nag-uunahan sa aking dibdib, buong-puso ko muna itong ipinagdasal sa loob ng kapilya. Doon ay damang-dama ko ang banal na presensya ng Diyos.",
-    ],
-  },
-  {
-    date: "The Proposal",
-    title: "A Faith Rekindled",
-    image: "/mobile-background/couple (7).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Nabalot ako ng kapayapaan at pagmamahal—isang tila apoy sa loob ng aking puso na muling nagpaliyab sa pananampalatayang matagal na nalamigan.",
-    ],
-  },
-  {
-    date: "The Proposal",
-    title: "Before the Altar",
-    image: "/mobile-background/couple (8).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Sa harap ng altar, lumuhod ako habang nakatitig sa kanyang mga mata at mahigpit na hawak ang singsing. Sa kanyang matamis na pagbigkas ng salitang “oo”, kasabay ng dahan-dahang pagpatak ng aming mga luha, naging saksi ang Langit sa pagbubukas ng isang bagong kabanata ng aming buhay.",
-      "— Benedict",
-    ],
-  },
-  {
-    date: "Our Story",
-    title: "Like a Novel",
-    image: "/mobile-background/couple (9).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Ang kuwento ng aming pag-iibigan ay mahihahalintulad namin sa isang nobelang punong-puno ng kaganapan. Bawat kabanata ay may kuwento ngunit sa pinakahuling yugto nito ay masusumpungan pa rin namin isa’t isa at mananaig pa rin ang dalawang pusong sinubok man ng panahon sa kanilang nakaraan ngunit nahanap pa rin ang liwanag at kasagutan na matagal na nilang inaasam… ang mahanap ang tunay at wagas na pag-iibigan.",
-    ],
-  },
-  {
-    date: "Our Story",
-    title: "Our Forever",
-    image: "/mobile-background/couple (10).webp",
-    imageAlt: "{groom} and {bride} together",
-    imagePosition: "center 28%",
-    paragraphs: [
-      "Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang aming planong pag-iisang dibdib. Malayo na ang aming narating ngunit batid naming malayo pa ang aming babagtasin tungo sa pangarap namin… ang magkaroon ng masaya at payapang pamilya. Mamahalin namin ang isa’t isa hanggang sa aming huling paghinga, ngunit batid naming mas mahal kami ng Diyos na Siyang nakapagitna at Siyang may akda sa kuwentong pagmamahalan nina Benedict at Olivia.",
-    ],
-  },
-] as StoryChapter[],
+    defaultRegion: 1, // tab selected when the page opens (0 = All, 1 = Metro Manila & Cavite, 2 = Cebu)
+    labels: {
+      branch: "Branch", // "Branch 01"
+      directions: "Directions",
+      viewOnMap: "View on map",
+      noPin: "Address to follow", // a branch without an address / pin
+    },
+    // Closing line under the list ("" hides it)
+    closing: "Wherever you are, a Zanicare clinic is ready to care for you.",
+    decos: { ...CORNER_DECOS, headerOrnament: DECOR.headerOrnament },
+    showFrame: true,
+    list: [
+      {
+        name: "Molino", area: "Molino", region: "Cavite", note: "First branch · 2022", status: "Always Open",
+        address: "Unit 5 Comm. Space B1 L7 South Susana Homes, Molino 2, Bacoor",
+        blurb: "Where it all began — our very first clinic, opened in 2022.",
+        lat: 14.417, lng: 120.9815, map: "",
+      },
+      {
+        name: "Main", area: "Las Piñas", region: "Metro Manila", note: "Main branch", status: "Always Open",
+        address: "2nd Flr. 0121 F. Quirino Ave., Daniel Fajardo, Las Piñas",
+        blurb: "Our main clinic in Las Piñas, open around the clock.",
+        lat: 14.4795, lng: 120.979, map: "",
+      },
+      {
+        name: "Parañaque", area: "San Dionisio", region: "Metro Manila", note: "", status: "Always Open",
+        address: "0590-A Quirino Ave., San Dionisio, Parañaque",
+        blurb: "Round-the-clock animal bite care along Quirino Avenue.",
+        lat: 14.493, lng: 120.993, map: "",
+      },
+      {
+        name: "Kalayaan Pasay", area: "Pasay City", region: "Metro Manila", note: "", status: "Always Open",
+        address: "2nd Flr. 73 West Service Rd., Brgy. 201, Pasay City",
+        blurb: "Care close to home for the communities of southern Pasay.",
+        lat: 14.519, lng: 121.023, map: "",
+      },
+      {
+        name: "Guadalupe", area: "Makati City", region: "Metro Manila", note: "", status: "Always Open",
+        address: "Unit 2A-1, Perea Bldg., 121 P. Burgos cor. Reposo St., Guadalupe Nuevo, Makati",
+        blurb: "Dependable, patient-centered care in the heart of Makati.",
+        lat: 14.5615, lng: 121.048, map: "",
+      },
+      {
+        name: "Frisco", area: "Quezon City", region: "Metro Manila", note: "", status: "Always Open",
+        address: "55 Tolentino St., San Francisco Del Monte, Quezon City 1104",
+        blurb: "Serving San Francisco Del Monte and the neighborhoods of Quezon City.",
+        lat: 14.637, lng: 121.017, map: "",
+      },
+      // ⚠ check: no address yet — add address / lat / lng to show its pin
+      {
+        name: "Marikina", area: "Marikina City", region: "Metro Manila", note: "", status: "",
+        address: "",
+        blurb: "Bringing timely animal bite care to Marikina.",
+        lat: null, lng: null, map: "",
+      },
+      {
+        name: "Caloocan", area: "Caloocan City", region: "Metro Manila", note: "", status: "",
+        address: "129 Malolos Ave. cor. Catarungan St., Bagong Barrio, Caloocan City",
+        blurb: "Our clinic in Bagong Barrio, caring for patients in Caloocan.",
+        lat: 14.663, lng: 120.998, map: "",
+      },
+      {
+        name: "Cebu City", area: "Cebu City", region: "Cebu", note: "", status: "Always Open",
+        address: "101 N. Bacalso Ave., Sambag 1, Cebu City",
+        blurb: "Our clinic in Cebu City, along N. Bacalso Avenue.",
+        lat: 10.301, lng: 123.8935, map: "",
+      },
+      {
+        name: "Mandaue City", area: "Mandaue City", region: "Cebu", note: "", status: "Always Open",
+        address: "La Chef Arcade Bldg., 2nd Flr. Unit 5, P. Burgos, Centro, Mandaue City",
+        blurb: "Accessible, round-the-clock care in the center of Mandaue.",
+        lat: 10.327, lng: 123.944, map: "",
+      },
+      // ⚠ check: no address yet — add address / lat / lng to show its pin
+      {
+        name: "Lapu-Lapu City", area: "Lapu-Lapu City", region: "Cebu", note: "", status: "",
+        address: "",
+        blurb: "Extending Zanicare care to Lapu-Lapu City.",
+        lat: null, lng: null, map: "",
+      },
+    ] as {
+      name: string
+      area: string
+      region: string
+      note: string
+      status: string
+      address: string
+      blurb: string
+      lat: number | null
+      lng: number | null
+      map: string
+    }[],
   },
   // Gallery section (components/sections/gallery.tsx)
   gallery: {
     eyebrow: "Our Moments",
     title: "Gallery",
-    subtitle: "our favorite moments",
+    subtitle: "a year to remember",
     description:
-      "From our first chapter to this beautiful season of commitment — every moment has been a testament to love, faith, and grace.",
+      "From our first clinic in Molino to a growing family of branches — a look at the people and moments behind Zanicare.",
     footnote:
-      "More pictures will be added as we gather the rest of our favorite moments. Please check back — this gallery is still growing.",
+      "More pictures will be added after the party. Please check back — this gallery is still growing.",
     buttonText: "View Full Gallery",
     buttonHref: "/gallery",
-    // Corner florals (sized per corner like the loader), sprig above the title and
-    // sprig under the footnote — "" hides any of them
+    // Corner ornaments, ornament above the title and under the footnote — "" hides any of them
     decos: {
       ...CORNER_DECOS,
       headerOrnament: DECOR.headerOrnament,
@@ -738,25 +911,25 @@ chapters: [
     page: {
       backText: "Back to invitation",
       backTextShort: "Back", // narrow phones
-      label: "Gallery", // top bar, beside the couple's names
+      label: "Gallery", // top bar, beside the event name
       emptyText: "No images to display.",
     },
-    // Uses COUPLE_PHOTOS; replace with your own list if the gallery should differ.
+    // Uses COUPLE_PHOTOS (placeholders for now); replace with your own list when photos are ready.
     // text → caption used as the photo's description
-    images: COUPLE_PHOTOS.map((image, i) => ({ image, text: `${COUPLE_LABEL}, photo ${i + 1}` })),
+    images: COUPLE_PHOTOS.map((image, i) => ({ image, text: `${COMPANY_NAME}, photo ${i + 1}` })),
   },
 
   // Event details section (components/sections/details.tsx)
   // Venue names, addresses, dates, times, maps and venue photos come from ceremony / reception below.
   // In reminder text, {guestsTime} and {ceremonyTime} are replaced from ceremony below.
   eventDetails: {
-    eyebrow: "Our Celebration",
+    eyebrow: "The Celebration",
     title: "Event Details",
-    subtitle: "our special day",
-    description: "Everything you need to know about our special day.",
+    subtitle: "a night of thanks",
+    description: "Where to go, when to arrive and what to wear — everything you need for our Christmas Thanksgiving Party.",
     // Verse under the description — "" hides it
-    verse: "And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
-    verseCitation: "1 Corinthians 13:13",
+    verse: "Give thanks to the Lord, for He is good; His love endures forever.",
+    verseCitation: "Psalm 107:1",
     decos: { ...SECTION_DECOS },
     // Thin double border around the section (false hides it)
     showFrame: true,
@@ -778,12 +951,12 @@ chapters: [
     // Cards, colors, images and which groups show → QUICK SETUP → ATTIRE
     attire: {
       title: "Attire Guidelines",
-      description: "Our theme is Classic Filipino in a summer palette. We'd love for you to dress with us — please find your role below.",
+      description: "Our theme is a luxurious evening in black, grey and white. Dress to impress — it's our night to shine.",
       // Shown above a card's palette
       paletteTitle: "Dress Code Palette",
       paletteSubtitle: "", // script line under the palette title — "" hides it
       colorGuideTitle: "Color Guide",
-      colorGuideNote: "Choose any shade from the palette below. Solid colors and soft, flowy fabrics are all welcome.",
+      colorGuideNote: "Choose any shade from the palette below. Sequins, satin and metallic silver accents are all welcome.",
       // Order and visibility come from ATTIRE.show (skips blanks, typos and repeats)
       groups: ATTIRE.show
         .filter((id, i, list) => ["entourage", "family", "sponsors", "guests"].includes(id) && list.indexOf(id) === i)
@@ -791,56 +964,150 @@ chapters: [
       // Shared dress code palette (used by the "Strictly Formal" reminder)
       palette: DRESS_CODE_PALETTE,
     },
+    // "What to Expect" program card (between the venue card and the attire guidelines)
+    // icon: "registration" | "prayer" | "welcome" | "founder" | "review" | "dinner"
+    //       | "awards" | "raffle" | "performance" | "closing"
+    // show: false hides a row without deleting it
+    program: {
+      show: true,
+      title: "What to Expect",
+      subtitle: "the evening's program",
+      description:
+        "An evening of gratitude, good food and celebration — here is how the night will unfold.",
+      footnote: "Times are approximate and may shift slightly on the night.",
+      items: [
+        {
+          show: true,
+          time: TIMES.guestArrival,
+          title: "Registration & Cocktails",
+          description: "Sign in, claim your raffle stub and enjoy welcome drinks while you find your table.",
+          icon: "registration" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: TIMES.ceremony,
+          title: "Invocation & National Anthem",
+          description: "We open the evening in prayer, giving thanks for a blessed year.",
+          icon: "prayer" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "7:10 PM",
+          title: "Welcome Remarks",
+          description: "Our hosts welcome the Zanicare family, partners and special guests.",
+          icon: "welcome" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "7:20 PM",
+          title: "Message from the Founder",
+          description: "A heartfelt word of thanks from our Founder on the year we built together.",
+          icon: "founder" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "7:40 PM",
+          title: "Year in Review",
+          description: "A look back at our milestones, new branches and the people who made them happen.",
+          icon: "review" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: TIMES.reception,
+          title: "Christmas Dinner",
+          description: "Dinner is served — time to relax, share stories and celebrate with your team.",
+          icon: "dinner" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "8:45 PM",
+          title: "Awards & Recognition",
+          description:
+            "Honoring our loyal and outstanding people — Service Awards, Best Branch, Employee of the Year and special citations.",
+          icon: "awards" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "9:30 PM",
+          title: "Christmas Raffle & Games",
+          description: "Raffle draws, parlor games and holiday surprises throughout the night.",
+          icon: "raffle" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "10:15 PM",
+          title: "Performances & Dance",
+          description: "Branch presentations, live music and an open dance floor.",
+          icon: "performance" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "10:45 PM",
+          title: "Grand Raffle Draw",
+          description: "The biggest prizes of the night — be in the room to win!",
+          icon: "raffle" as ProgramIconName,
+        },
+        {
+          show: true,
+          time: "11:00 PM",
+          title: "Closing Remarks & Group Photo",
+          description: "A final thank-you and one big photo of the Zanicare family.",
+          icon: "closing" as ProgramIconName,
+        },
+      ],
+    },
     reminders: {
       title: "Gentle Reminders",
-      description: "A few thoughtful notes to help everyone enjoy our celebration.",
-      // Small photos that take turns above the "Gentle Reminders" title (files in /public/box)
-      images: [
-        "/box/box (1).png",
-        "/box/box (2).png",
-        "/box/box (3).png",
-        "/box/box (4).png",
-      ],
-      // Keep this to the 3 most important notes — everything else lives in the FAQ (faq.items)
+      description: "A few kind notes so everyone can enjoy a smooth, memorable evening together.",
+      // Keep this short — everything else lives in the FAQ (faq.items)
+      // icon: "registration" | "dress" | "raffle" | "share" (small icon above each title)
       // showPalette: shows the dress code palette after the first paragraph
       items: [
         {
-          title: "Arrival",
-          variant: "soft" as "accent" | "soft",
+          title: "Arrive Early",
+          icon: "registration" as ReminderIconName,
           showPalette: false,
           paragraphs: [
-            "Please arrive by {guestsTime} so you can find your seat and settle in before the ceremony begins at {ceremonyTime}. Thank you for being on time.",
+            "Registration and cocktails open at {guestsTime}. Arriving early gives you time to sign in, claim your raffle stub and settle at your table before the program begins at {ceremonyTime}.",
+            "Kindly bring your company ID — it is needed at registration.",
           ],
         },
         {
-          title: "Dress Code",
-          variant: "accent" as "accent" | "soft",
+          title: "Dress the Part",
+          icon: "dress" as ReminderIconName,
           showPalette: true,
           paragraphs: [
-            "Gentlemen: polo with chinos or suit trousers. Ladies: floor-length dresses in green, yellow, or orange from our summer palette.",
-            "Please avoid casual clothes and all-white outfits.",
+            "Black tie in black, grey, white or silver. Ladies: evening gown or elegant cocktail dress. Gentlemen: suit, tuxedo or long-sleeve barong.",
+            "We kindly ask that you skip casual wear, shorts and slippers for the night.",
           ],
         },
         {
-          title: "Intimate Gathering",
-          variant: "accent" as "accent" | "soft",
+          title: "Stay Until the Last Draw",
+          icon: "raffle" as ReminderIconName,
           showPalette: false,
           paragraphs: [
-            "While your little ones are so dear to us, we have decided to celebrate our day with an intimate, adults-only gathering.",
-            "We hope you will be able to share in our joy.",
+            "Awards, raffle prizes and the Grand Raffle Draw run until the very end of the night. Winners must be present when their name is called, so please stay and cheer on your colleagues.",
+          ],
+        },
+        {
+          title: "Capture & Share",
+          icon: "share" as ReminderIconName,
+          showPalette: false,
+          paragraphs: [
+            `Snap away and share your favorite moments using ${HASHTAGS.join(" and ")}. During the prayer, the Founder's message and the awards, we kindly ask that phones be kept on silent.`,
           ],
         },
       ],
     },
   },
-  // Wedding day timeline (components/sections/wedding-timeline.tsx)
+  // Program of the evening (components/sections/wedding-timeline.tsx)
   weddingTimeline: {
-    kicker: "Join us as we tie the knot!",
-    title: "Timeline",
-    subtitle: "our wedding day",
+    kicker: "An evening of gratitude",
+    title: "Program",
+    subtitle: "the night's itinerary",
     description:
-      "From the first arrival to the last farewell, here is how we will spend this day together.",
-    // "" hides the verse — Ecclesiastes 3:11 is already shown in the Love Story
+      "From registration to the last raffle draw, here is how we will spend the evening together.",
+    // "" hides the quote
     quote: "",
     quoteCitation: "",
     // Optional corner decorations — leave "" to hide
@@ -850,126 +1117,124 @@ chapters: [
       bottomLeft: "",
       bottomRight: "",
     },
-    // Each event — shown top to bottom in this order (move a block to reorder):
+    // Each item — shown top to bottom in this order (move a block to reorder):
     //   show:     true = display on the site, false = hide it (still kept here to edit later)
-    //   time:     shown above the title; TIMES.* come from QUICK SETUP, others are typed in, e.g. "4:00 PM"
+    //   time:     shown above the title
     //   location: text shown under the title; {ceremony} / {reception} are replaced
-    //             with ceremony.location / reception.location ("" to hide)
-    //   image:    line-art illustration from /public/weddingTimeline; "" to use the icon instead
+    //             with the venue name ("" to hide)
+    //   image:    illustration from /public; "" to use the icon instead
     //   icon:     fallback icon when there is no image —
     //             "arrival" | "guests" | "rings" | "departure" | "cocktail" | "fireworks" | "dance"
     //   description: not shown on the site (kept only as a note)
     events: [
       {
         show: true,
-        time: "2:00 PM",
-        title: "Arrival",
-        description: "Guests arrive at the church.",
-        location: "{ceremony}",
-        image: "/weddingTimeline/Elegant Wedding Guests Arrive Sign.png",
+        time: "6:00 PM",
+        title: "Registration & Cocktails",
+        description: "Guests arrive, register and receive their raffle stubs.",
+        location: "",
+        image: "",
         icon: "guests" as TimelineIconName,
       },
       {
         show: true,
-        time: "2:30 PM",
-        title: "Wedding Ceremony",
-        description: "We exchange our vows before God, family and friends.",
-        location: "{ceremony}",
-        image: "/weddingTimeline/WeddingCeremony.png",
-        icon: "rings" as TimelineIconName,
-      },
-      {
-        show: true,
-        time: "4:00 PM",
-        title: "Post-Nup Pictorial",
-        description: "Photos with the newlyweds.",
-        location: "{ceremony}",
-        image: "/weddingTimeline/PhotoSession.png",
-        icon: "rings" as TimelineIconName,
-      },
-      {
-        show: true,
-        time: "5:30 PM",
-        title: "Arrival at the Reception",
-        description: "Guests make their way to the reception venue.",
-        location: "{reception}",
-        image: "/weddingTimeline/arrival.png",
+        time: "7:00 PM",
+        title: "Opening Prayer & National Anthem",
+        description: "The program begins.",
+        location: "",
+        image: "",
         icon: "arrival" as TimelineIconName,
       },
       {
         show: true,
-        time: "5:30 – 6:00 PM",
-        title: "Bite & Mingle",
-        description: "Light bites while everyone settles in.",
-        location: "{reception}",
-        image: "/weddingTimeline/CockTailHour.png",
-        icon: "cocktail" as TimelineIconName,
-      },
-      {
-        show: true,
-        time: "6:00 PM",
-        title: "The Celebration",
-        description: "The program proper begins.",
-        location: "{reception}",
-        image: "/weddingTimeline/reception welcom.png",
+        time: "7:15 PM",
+        title: "Welcome Remarks",
+        description: "A message from the President & CEO.",
+        location: "",
+        image: "",
         icon: "fireworks" as TimelineIconName,
       },
       {
         show: true,
-        time: "7:00 PM",
-        title: "Dinner",
-        description: "Dinner is served.",
-        location: "{reception}",
-        image: "/weddingTimeline/DinnerService.png",
-        icon: "cocktail" as TimelineIconName,
+        time: "7:30 PM",
+        title: "Year in Review",
+        description: "A look back at the year: milestones, new branches and our growing Zanicare family.",
+        location: "",
+        image: "",
+        icon: "guests" as TimelineIconName,
       },
       {
         show: true,
         time: "8:00 PM",
-        title: "Toast & Speeches",
-        description: "Words of love from family and friends.",
-        location: "{reception}",
-        image: "/weddingTimeline/cakecutting.png",
+        title: "Christmas Dinner",
+        description: "Dinner is served.",
+        location: "",
+        image: "",
+        icon: "cocktail" as TimelineIconName,
+      },
+      {
+        show: true,
+        time: "8:45 PM",
+        title: "Awards & Recognition",
+        description:
+          "Loyalty awards, Best Branch, Outstanding Healthcare Professional, Employee of the Year and special citations.",
+        location: "",
+        image: "",
         icon: "fireworks" as TimelineIconName,
       },
       {
         show: true,
-        time: "8:30 – 9:30 PM",
-        title: "Cocktail Hour",
-        description: "Drinks, music and dancing.",
-        location: "{reception}",
-        image: "/weddingTimeline/dance.png",
+        time: "9:30 PM",
+        title: "Christmas Raffle & Games",
+        description: "Raffle draws, parlor games and holiday surprises.",
+        location: "",
+        image: "",
+        icon: "fireworks" as TimelineIconName,
+      },
+      {
+        show: true,
+        time: "10:15 PM",
+        title: "Performances & Dance",
+        description: "Branch presentations, music and dancing.",
+        location: "",
+        image: "",
         icon: "dance" as TimelineIconName,
       },
       {
         show: true,
-        time: "9:30 PM",
-        title: "Grand Exit",
+        time: "11:00 PM",
+        title: "Closing Remarks & Group Photo",
         description: "Thank you for celebrating with us!",
-        location: "{reception}",
-        image: "/weddingTimeline/SendOff.png",
+        location: "",
+        image: "",
         icon: "departure" as TimelineIconName,
       },
     ],
   },
-  // Wedding entourage (components/sections/entourage.tsx)
-  // Names and roles come from the Google Sheet (googleAPI.entourage); couple names from couple above.
+  // Branch representatives (components/sections/entourage.tsx)
+  // Names come from the Google Sheet's "Entourage" tab (or the dashboard), one row per person:
+  //   Name         → the person's full name
+  //   RoleCategory → the BRANCH they represent, written like the branch list above
+  //                  ("Molino", "Main", "Cebu City"… — "Zanicare", "Branch" and the area also match),
+  //                  or one of leadershipCategories below for the head office / leadership row
+  //   RoleTitle    → their position, e.g. "Branch Manager", "Head Nurse", "Branch Physician"
+  // Shown like the classic entourage: one arch card, a heading per group, names in two columns.
+  // Group order: Leadership first, then branches in branches.list order, then anything else as typed.
   entourage: {
     eyebrow: "Our People",
-    title: "Wedding Entourage",
-    subtitle: "standing with us",
-    description: "Honoring those who stand with us on our special day",
-    coupleKicker: "Together as one",
-    coupleLine: "The beginning of our forever",
-    coupleHeading: "The Couple",
-    groomRole: "Groom",
-    brideRole: "Bride",
-    loadingText: "Loading entourage...",
-    retryingText: "Still gathering the wedding party. Trying again...",
-    errorText: "Unable to load entourage",
+    title: "Branch Representatives",
+    subtitle: "the faces of every clinic",
+    description:
+      "Behind every Zanicare clinic are the people who keep its doors open and its patients cared for. Tonight we celebrate those representing each of our branches.",
+    // Heading of the first group (rows with any of leadershipCategories go here)
+    leadershipTitle: "Leadership",
+    leadershipCategories: ["Leadership", "Founder", "Executive", "Executives", "Management", "Head Office"],
+    emptyText: "Representatives to be announced",
+    loadingText: "Gathering our representatives...",
+    retryingText: "Still gathering our representatives. Trying again...",
+    errorText: "We couldn't load the representatives just now.",
     retryText: "Try again",
-    // Corner florals (sized per corner like the loader), sprig above the title and
-    // sprig at the end of the section — "" hides any of them
+    // Corner florals (sized per corner like the loader), sprig above the title — "" hides any of them
     decos: {
       ...CORNER_DECOS,
       headerOrnament: DECOR.headerOrnament,
@@ -977,29 +1242,6 @@ chapters: [
     },
     // Thin double border around the section (false hides it)
     showFrame: true,
-    // Rename any heading shown in the entourage card: "Heading as shown": "Your text"
-    headingLabels: {
-      "Parents of the Groom": "Parents of the Groom",
-      "Parents of the Bride": "Parents of the Bride",
-      "Principal Sponsors": "Principal Sponsors",
-      "Peer Sponsors": "Peer Sponsors",
-      "Family of the Groom": "Family of the Groom",
-      "Family of the Bride": "Family of the Bride",
-      "Man of Honor": "Man of Honor",
-      "Best Man": "Best Man",
-      "Maid of Honor": "Maid of Honor",
-      "Matron of Honor": "Matron of Honor",
-      "Little Groom": "Little Groom",
-      "Little Bride": "Little Bride",
-      "Flower Girls": "Flower Girls",
-      "Beloved Entourage": "Beloved Entourage",
-      "Candle Sponsors": "Candle Sponsors",
-      "Veil Sponsors": "Veil Sponsors",
-      "Cord Sponsors": "Cord Sponsors",
-      "Bridesmen": "Bridesmen",
-      "Escorts": "Escorts",
-      "Petal Maidens": "Petal Maidens",
-    } as Record<string, string>,
   },
   // RSVP / guest list (components/sections/guest-list.tsx) — card, search, RSVP form and all modals.
   // Placeholders in curly braces are filled in automatically: {name}, {count}, {n}.
@@ -1007,34 +1249,34 @@ chapters: [
   rsvp: {
     headerOrnament: DECOR.headerOrnament, // "" to hide
     title: "RSVP",
-    script: "Are you going",
-    intro: "Kindly confirm your attendance so we may prepare a place for you at our celebration.",
+    script: "Will you join us",
+    intro: "A night of gratitude, awards and Christmas cheer awaits. Kindly confirm your seat so we can prepare a warm welcome for you.",
     deadlineLabel: "RSVP Deadline",
-    openButton: "Tap here to respond",
+    openButton: "Reserve My Seat",
     search: {
       title: "RSVP",
-      script: "Find your Name",
-      placeholder: "Begin with your first name",
-      loading: "Preparing the guest list. We'll keep trying until names appear.",
-      refine: "Keep typing to refine results",
-      notFoundTitle: "Not finding your name?",
-      notFoundText: "We'd love to have you with us. Send a request to join the celebration.",
-      requestButton: "Request to Join",
+      script: "find your name",
+      placeholder: "Type your first or last name",
+      loading: "Opening the guest list — this will only take a moment.",
+      refine: "Keep typing to narrow it down",
+      notFoundTitle: "Can't find your name?",
+      notFoundText: "It may be listed a little differently. Try your surname, or send us a request and the committee will save you a seat.",
+      requestButton: "Request a Seat",
     },
     invite: {
-      title: "You are Invited",
+      title: "You're Invited",
       scriptFallback: "to our celebration",
-      greeting: "Hello {name}, you are invited to our wedding!",
-      seats: "We've reserved {count} for you.",
+      greeting: "Welcome, {name}! It would mean so much to celebrate this year with you at our Christmas Thanksgiving Party.",
+      seats: "We've set aside {count} for you.",
       seatSingular: "seat",
       seatPlural: "seats",
     },
     responded: {
-      title: "Thank You for Responding!",
-      text: "We've received your RSVP and look forward to celebrating with you!",
-      attending: "You're Attending!",
+      title: "You're All Set",
+      text: "Your RSVP is already with us. Thank you — we can't wait to see you on the night!",
+      attending: "See You There!",
       declined: "Unable to Attend",
-      guestCountLabel: "Number of Guests",
+      guestCountLabel: "Seats Reserved",
       closeButton: "Close",
     },
     form: {
@@ -1043,11 +1285,11 @@ chapters: [
       optional: "(Optional)",
       emailLabel: "Email Address",
       emailPlaceholder: "your.email@example.com",
-      attendLabel: "Can you attend? *",
-      yes: "Yes!",
-      no: "Sorry, No",
+      attendLabel: "Will you be joining us? *",
+      yes: "Count me in",
+      no: "Regretfully, no",
       companionsLabel: "Who's Coming With You?",
-      companionsHint: "Please provide names and relationships for your {count} additional {guests}",
+      companionsHint: "Tell us who will fill your {count} additional {guests} so we can welcome them by name",
       guestSingular: "guest",
       guestPlural: "guests",
       companionTitle: "Guest {n}",
@@ -1064,15 +1306,15 @@ chapters: [
       nextButton: "Next guest",
       phoneLabel: "Phone Number",
       phonePlaceholder: "09XX XXX XXXX",
-      phoneNote: "For wedding updates only. Your number stays private and will never be shown to other guests.",
-      submitting: "Submitting...",
-      submit: "Submit RSVP",
+      phoneNote: "Used only by the organizing committee for event-day updates — never shown to other guests.",
+      submitting: "Saving your seat...",
+      submit: "Confirm My RSVP",
     },
     phoneAlert: {
-      title: "A phone number is needed",
+      title: "One more detail",
       paragraphs: [
-        "We ask for your number so we can reach you with important updates — seating, timing, or anything you may need on the day.",
-        "Your number will not appear on this invitation, and it will not be shared with other guests. It is kept private and used only by us and our coordinators to take care of you.",
+        "Please add a mobile number so the committee can reach you with seating, schedule or raffle updates on the day.",
+        "It stays private — it won't appear on this invitation and is never shared with other guests.",
       ],
       button: "Add my number",
     },
@@ -1086,27 +1328,27 @@ chapters: [
       seatsLabel: "Seats reserved",
       companionsLabel: "Coming with you",
       confirmedOnLabel: "Confirmed on",
-      question: "Plans changed? Let us know below — no worries at all.",
+      question: "Plans changed? Just let us know below — no worries at all.",
       keepButton: "Keep my RSVP",
       cancelButton: "I can no longer attend",
       cancelling: "Updating...",
     },
     success: {
-      title: "RSVP Confirmed",
-      declinedTitle: "Response Received",
-      attending: "We're thrilled you'll be joining us — your spot is saved!",
-      declined: "We'll miss you, but thank you for letting us know.",
+      title: "Your Seat Is Saved",
+      declinedTitle: "Thank You for Letting Us Know",
+      attending: "Wonderful! We can't wait to celebrate, give thanks and cheer on this year's awardees with you.",
+      declined: "You'll be missed — thank you for being part of the Zanicare family this year. Merry Christmas!",
       neutral: "Thank you for your response!",
       messagePrompt:
-        "Before you go, leave a message for the couple — your words will be a cherished memory they can always look back on.",
-      messageButton: "Leave a Message",
-      laterButton: "Maybe later — close",
+        "While you're here, leave a Christmas message for the Zanicare family — your words will be part of our year-end keepsake.",
+      messageButton: "Write a Message",
+      laterButton: "Maybe later",
     },
     request: {
       title: "Request",
-      script: "to join us",
-      greetingNamed: "Hi {name} — want to celebrate with us? Send a request!",
-      greeting: "Want to celebrate with us? Send a request!",
+      script: "a seat",
+      greetingNamed: "Hi {name}! Send us your details and the organizing committee will get back to you.",
+      greeting: "Send us your details and the organizing committee will get back to you.",
       optional: "(Optional)",
       nameLabel: "Full Name *",
       namePlaceholder: "Enter your full name",
@@ -1117,19 +1359,19 @@ chapters: [
       guestsLabel: "Number of Guests *",
       guestsPlaceholder: "How many guests?",
       messageLabel: "Message",
-      messagePlaceholder: "Share why you'd like to join...",
-      submitting: "Submitting...",
+      messagePlaceholder: "Your branch or department, or how you're connected to Zanicare",
+      submitting: "Sending...",
       submit: "Send Request",
-      sentTitle: "Request Sent!",
-      sentText: "We've received your request",
-      sentSubtext: "We'll review it and get back to you soon",
+      sentTitle: "Request Sent",
+      sentText: "Thank you — your request is with the committee",
+      sentSubtext: "We'll reach out soon to confirm your seat",
       autoClose: "This will close automatically",
     },
     messages: {
       thankYou: "Thank you for your response!",
-      requestSubmitted: "Request submitted! We'll review and get back to you.",
-      loadFailed: "Failed to load guest list",
-      selectAttendance: "Please select if you can attend",
+      requestSubmitted: "Request sent! The committee will get back to you soon.",
+      loadFailed: "We couldn't open the guest list just now.",
+      selectAttendance: "Please let us know if you can join us",
       nameRequired: "Please enter your full name",
       invalidEmail: "Please enter a valid email address",
       requestFailed: "Failed to submit request. Please try again.",
@@ -1147,10 +1389,10 @@ chapters: [
   // Book of guests (components/sections/book-of-guests.tsx) — confirmed guests come from the guest list API.
   bookOfGuests: {
     title: "Book of Guests",
-    subtitle: "celebrating with us",
+    subtitle: "joining the celebration",
     description:
-      "Meet the cherished souls joining us in celebration — your presence makes our day truly special.",
-    statsEyebrow: "Our Celebration",
+      "Meet the colleagues, partners and friends joining us in celebration — your presence makes the night truly special.",
+    statsEyebrow: "Christmas Thanksgiving Party",
     guestSingular: "Guest",
     guestPlural: "Guests",
     statsCaption: "Celebrating With Us",
@@ -1158,11 +1400,11 @@ chapters: [
     rsvpPlural: "RSVPs",
     partySingular: "Party",
     partyPlural: "Parties",
-    thankYou: "Thank you for confirming your RSVP — your presence means the world to us.",
+    thankYou: "Thank you for confirming your RSVP — we can't wait to celebrate with you.",
     updatedLabel: "Updated",
     refreshLabel: "Refresh guest counts",
     listEyebrow: "Joining Us",
-    listDescription: "A glimpse of the wonderful guests celebrating with us",
+    listDescription: "Colleagues, partners and friends who have confirmed their seat",
     vipLabel: "VIP",
     noTable: "No Table Yet",
     tableLabel: "Table {table}",
@@ -1176,7 +1418,7 @@ chapters: [
     companionsLess: "Show less",
     confirmedLabel: "Confirmed",
     emptyTitle: "Guest list updating",
-    emptyText: "Confirmed guests will appear here as RSVPs come in.",
+    emptyText: "Confirmed guests will appear here as RSVPs come in — be one of the first.",
     // How many guest cards show per page (pages turn every few seconds — paused while
     // someone is reading or after they use the arrows; swipe works on phones)
     cardsPerView: 4,
@@ -1199,11 +1441,11 @@ chapters: [
   //   [link text](#section-id) → a link that smoothly scrolls to that section
   //   A blank line (\n\n) starts a new paragraph; lines starting with "• " show as a bulleted list
   faq: {
-    eyebrow: "A Few Notes",
+    eyebrow: "Before the Night",
     title: "Frequently Asked Questions",
     subtitle: "everything you need to know",
     description:
-      "Helpful notes so you can simply arrive, celebrate, and enjoy this new chapter with us.",
+      "Quick answers so you can simply arrive, celebrate and enjoy the evening with the Zanicare family.",
     // Corner florals (sized per corner like the loader), sprig above the title and
     // sprig at the end of the section — "" hides any of them.
     // On the invitation page Book of Guests shows the top corners and FAQ the bottom ones.
@@ -1214,101 +1456,72 @@ chapters: [
     },
     // Thin double border around the section (false hides it)
     showFrame: true,
+    // Shown at the bottom of the FAQ card — "" hides it ({coordinator} / {contact} are filled in)
+    contactTitle: "Still have a question?",
+    contactNote: "We're happy to help. Please reach out to {coordinator}{contact}.",
     // Answers: blank line = new paragraph, "• " = bullet, [label](#section) or [label](https://…) = link.
     // {deadline} {coordinator} {contact} {groom} {bride} are filled in automatically.
     items: [
       {
-        question: "When and where is the wedding?",
-        answer: `Our wedding will be on ${WEDDING_DAY}, ${WEDDING_DATE}. The ceremony begins at ${TIMES.ceremony}, followed by the reception at ${TIMES.reception}, with an early dinner, laughter and dancing.\n\n• Ceremony: ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}. [Open in Google Maps](${CEREMONY_VENUE.map})\n• Reception: ${RECEPTION_VENUE.name}, ${RECEPTION_VENUE.address}. [Open in Google Maps](${RECEPTION_VENUE.map})`,
+        question: "When and where is the party?",
+        answer: `Our Christmas Thanksgiving Party is on ${WEDDING_DAY}, ${WEDDING_DATE} at ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}.\n\n• Registration & cocktails: ${TIMES.guestArrival}\n• Program begins: ${TIMES.ceremony}\n• Christmas dinner: ${TIMES.reception}\n\n[Open in Google Maps](${CEREMONY_VENUE.map})`,
       },
       {
         question: "What time should I arrive?",
-        answer: `Please arrive by ${TIMES.guestArrival} so you have time to park, find your seat and settle in. The ceremony will begin promptly at ${TIMES.ceremony}.\n\nEntourage members are kindly requested to be at the venue by ${TIMES.entourageCall}.`,
+        answer: `Please arrive by ${TIMES.guestArrival} so you have time to register, claim your raffle stub and find your table. The program begins promptly at ${TIMES.ceremony}.\n\nOrganizing committee members are kindly requested to be at the venue by ${TIMES.entourageCall}.`,
+      },
+      {
+        question: "What happens during the evening?",
+        answer:
+          "It's a night of thanksgiving and celebration. You can look forward to:\n\n• A message from our Founder and a look back at the year\n• Christmas dinner with your colleagues\n• Awards & recognition for our outstanding people and branches\n• Christmas raffle, games and the Grand Raffle Draw\n• Performances, music and dancing\n\nSee the full [program](#details) in Event Details.",
       },
       {
         question: "How do I RSVP?",
         answer:
-          "Please RSVP through the [guest list](#guest-list) on this invitation: search for your name and confirm your attendance.\n\nKindly respond by {deadline}.\n\nFor questions, please reach out to {coordinator}{contact}.",
-      },
-      {
-        question: 'Do we still need to RSVP if we already said "Yes" to the couple?',
-        answer:
-          "Yes, please. Your formal RSVP helps us finalize the headcount for catering and seating, so every guest has a place prepared for them.",
-      },
-      {
-        question: "What if I RSVP'd but can no longer attend?",
-        answer:
-          "We will miss you, and we understand that some things are beyond our control. Please let us know as soon as possible so we can reallocate your seat/s.",
-      },
-      {
-        question: 'I said "No" but my plans changed. Can I still come?',
-        answer:
-          "Please message us first, as our guest list is limited. If a seat becomes available, we will let you know as soon as we can. Kindly do not attend unannounced, as we may not have a seat prepared for you.",
-      },
-      {
-        question: 'Can I bring a "Plus One"?',
-        answer:
-          "As much as we would love to celebrate with everyone, our venue and guest list are limited. Our wedding is strictly by invitation, and only the names reserved for you on the guest list can be accommodated.",
-      },
-      {
-        question: "Are children invited?",
-        answer:
-          "While your little ones are so dear to us, we have decided to celebrate our day with an intimate, adults-only gathering.\n\nWe hope you will be able to share in our joy.",
+          "Use the [RSVP](#guest-list) on this invitation: search for your name, choose whether you can join us, and confirm your seat.\n\nKindly respond by {deadline}.",
       },
       {
         question: "What should I wear?",
         answer:
-          "Please follow the [attire guide](#details) in Event Details.\n\n• Guests: gentlemen in a polo with chinos or suit trousers; ladies in a floor-length dress in green, yellow, or orange.\n• Principal sponsors: Ninang in burgundy; Ninong in a barong with dark brown.\n• Entourage: bridesmaids in fuchsia pink; best man in a barong with black pants; groomsmen in a barong with grey pants.",
+          "Our theme is a black-tie evening in black, grey, white and silver. See the [attire guide](#details) in Event Details.\n\n• Ladies: evening gown or elegant cocktail dress\n• Gentlemen: suit, tuxedo or long-sleeve barong with dark trousers\n\nKindly skip casual wear, shorts and slippers for the night.",
       },
       {
-        question: "May we choose our own seats at the reception?",
+        question: "Can I bring a plus one?",
         answer:
-          "We kindly ask that you take the seat reserved for you. Each table has been arranged with care so you can share the evening with the people we hoped you would sit with.",
+          "This is a company celebration for Zanicare employees, partners and invited guests, so we can only accommodate the seats reserved under your name. You'll see how many when you RSVP.",
+      },
+      {
+        question: "What should I bring?",
+        answer:
+          "Just your company ID — it's needed at registration. Your raffle stub will be handed to you at the registration table.",
+      },
+      {
+        question: "How do the awards and raffle work?",
+        answer:
+          "We'll honor our loyal and outstanding people — including Service Awards, Best Branch and Employee of the Year — followed by the Christmas raffle and the Grand Raffle Draw.\n\nWinners must be present when their name is called, so please stay until the very end of the program.",
+      },
+      {
+        question: "May we choose our own seats?",
+        answer:
+          "Tables are arranged by branch and department. Kindly take the seat reserved for you — you can look it up on the [table finder](/table) on the night.",
       },
       {
         question: "Is there parking at the venue?",
-        answer:
-          "Yes, parking for cars and motorcycles is available inside the venue. Arriving a little early will give you time to park comfortably.",
+        answer: `Yes, ${CEREMONY_VENUE.name} has parking for guests. Arriving a little early gives you time to park and register comfortably.`,
       },
       {
-        question: "Will the ceremony be unplugged?",
-        answer:
-          "Mostly. You may take a few photos, but please keep it minimal and avoid blocking or crowding our official photographers. We would love for everyone to stay present with us in the moment — professional photos will be shared after the wedding.",
-      },
-      {
-        question: "Can I take photos and videos during the reception?",
-        answer:
-          `Absolutely! Capture all the joy you can. We would love to see your snaps, so please upload them through [Snap and Share](#snap-share) and use our official hashtag, ${HASHTAGS[0]}.`,
+        question: "Can I take photos and videos?",
+        answer: `Absolutely — capture all the fun! Upload your photos through [Snap & Share](#snap-share) and use our official hashtag, ${HASHTAGS[0]}.\n\nWe kindly ask that phones be on silent during the prayer, the Founder's message and the awards.`,
       },
       {
         question: "What if I have dietary restrictions or allergies?",
         answer:
-          "Please let us know about any dietary restrictions or allergies when you RSVP so we can make sure you enjoy the celebration comfortably.",
+          "Please let {coordinator} know before {deadline} so the kitchen can prepare something you'll enjoy.",
       },
       {
-        question: "What gift should we give?",
+        question: "What if my plans change after I RSVP?",
         answer:
-          "Your presence and prayers are the greatest gifts of all. Should you wish to bless us further, a monetary gift is one we highly suggest. Please see our [gift guide](#registry).",
-      },
-      {
-        question: "Can I share the invitation online?",
-        answer:
-          "Please keep this one just between us! Kindly refrain from posting our invitation on social media.",
-      },
-      {
-        question: "May I make an announcement or a proposal during the wedding?",
-        answer:
-          "To keep the day centered on our celebration, we kindly ask that there be no surprise announcements or proposals during our wedding.",
-      },
-      {
-        question: "When is the best time to take our leave?",
-        answer:
-          "It would mean so much if you could stay with us until the end of the program. We have prepared the evening with love, and we hope you will laugh, take photos and celebrate with us until the very last dance.",
-      },
-      {
-        question: "How can I help make the day special?",
-        answer:
-          "• Pray with us for good weather and the Lord's continued blessings as we begin this new chapter as husband and wife.\n• RSVP as soon as your schedule is cleared.\n• Dress according to the attire guide and color palette.\n• Arrive on time.\n• Follow the seating arrangement at the reception.\n• Stay until the end of the program.\n• Join the activities and enjoy!",
+          "No worries — search for your name in the [RSVP](#guest-list) again and choose \"I can no longer attend\", or let {coordinator} know as soon as possible so we can offer your seat to someone else.",
       },
     ],
   },
@@ -1337,7 +1550,7 @@ chapters: [
       card: "#FFFFFF",                                                                 // letter card
       cardEdge: "color-mix(in srgb, var(--color-motif-silver) 55%, transparent)",      // card borders (sage)
       accountCard: "color-mix(in srgb, var(--color-motif-silver) 10%, white)",         // e-gift account card (sage mist)
-      button: "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",        // selected tab, Save QR, close
+      button: "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)",        // selected tab, Save QR, close
       line: "var(--color-motif-silver)",                                               // sage dividers
       glow: "color-mix(in srgb, #F2C230 30%, transparent)",                            // soft yellow fill (account without a QR)
       accent: "#E8833A",                                                               // orange: heart, "&"
@@ -1372,8 +1585,8 @@ chapters: [
     // {couple} → "Groom & Bride" nicknames. "" hides a line or image.
     qrCard: {
       coupleNameImage: BRAND.coupleNameImage, // unused: the card sets the names in type like the loader
-      coupleImage: "/Details/new-couple.png", // couple illustration beside the text
-      eyebrow: "The wedding of",
+      coupleImage: BRAND.logo, // company logo beside the text
+      eyebrow: "Zanicare Christmas Thanksgiving Party",
       title: "Find Your Table",
       script: "please be seated",
       description:
@@ -1395,7 +1608,7 @@ chapters: [
   proposal: {
     decos: { ...CORNER_DECOS },
     coupleNameImage: BRAND.coupleNameImage, // unused: names are set in type like the loader
-    coupleImage: "/Details/new-couple.png", // couple illustration above the question
+    coupleImage: BRAND.logo, // company logo above the question
     ornament: DECOR.headerOrnament, // small sprig at the top of the card; "" to hide
     // Eucalyptus sprigs on either side of the couple name; "" to hide one
     nameDecos: { left: DECOR.sideLeft, right: DECOR.sideRight },
@@ -1701,26 +1914,24 @@ chapters: [
     note: "We kindly request our guests to dress in attire following our Whimsical Spring Minimalist palette.",
   },
   narratives: {
-    ourStory: `Ang kuwento ng aming pag-iibigan ay mahihahalintulad namin sa isang nobelang punong-puno ng kaganapan. Bawat kabanata ay may kuwento ngunit sa pinakahuling yugto nito ay masusumpungan pa rin namin isa’t isa at mananaig pa rin ang dalawang pusong sinubok man ng panahon sa kanilang nakaraan ngunit nahanap pa rin ang liwanag at kasagutan na matagal na nilang inaasam… ang mahanap ang tunay at wagas na pag-iibigan.
-
-Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang aming planong pag-iisang dibdib. Malayo na ang aming narating ngunit batid naming malayo pa ang aming babagtasin tungo sa pangarap namin… ang magkaroon ng masaya at payapang pamilya. Mamahalin namin ang isa’t isa hanggang sa aming huling paghinga, ngunit batid naming mas mahal kami ng Diyos na Siyang nakapagitna at Siyang may akda sa kuwentong pagmamahalan nina Benedict at Olivia.`,
-    groom: `Bata pa lamang kami nang magkrus ang aming mga landas sa tulong ng larong chess. Hinding-hindi ko malilimutan ang araw na napahanga ko siya sa aking paglalaro—ang mismong sandali na iyon ang naging dahilan upang tawagin niya akong “master”. Noong una, bihira lamang kaming mag-usap sa Facebook sapagkat hindi kami ganoon kalapit sa isa't isa; isang simpleng kumustahan lamang tapos taon na naman ang aabutin bago ulit magkaroon ng kumbersasyon. Wala pa man akong ganap na nauunawaan sa kahulugan ng pag-ibig sa mga panahong iyon, napatunayan kong ang tamang panahon lamang pala ang may kakayahang magpalitaw sa taong itinakda para sa iyo.`,
-    bride: `Isang mahalumigmig na umaga noong Setyembre 3, 2026 sa Lungsod ng Baguio, nagtungo kami sa Mirador Heritage and Eco-Spirituality Park—ang mismong araw na itinakda ng Maykapal upang hilingin ang kanyang kamay sa pag-iisang-dibdib. Sa harap ng altar, lumuhod ako habang nakatitig sa kanyang mga mata at mahigpit na hawak ang singsing. Sa kanyang matamis na pagbigkas ng salitang “oo”, naging saksi ang Langit sa pagbubukas ng isang bagong kabanata ng aming buhay.`,
+    ourStory: `Zanicare Group of Companies Inc. is a growing healthcare organization dedicated to providing accessible and reliable animal bite management and preventive healthcare services through its network of Zanicare Animal Bite Clinics. The company began its operations in 2022 in Molino, Bacoor, Cavite, and has continued to expand its presence across different communities.`,
+    groom: "",
+    bride: "",
   },
   colors: {
-    primary: "#C56A4A", // terracotta
-    secondary: "#F6E9DF", // blush ivory
+    primary: "#111111", // black
+    secondary: "#F5F5F5", // white
   },
   // Wedding playlist (components/sections/wedding-playlist.tsx). {couple} → "Groom & Bride" nicknames.
   playlist: {
     eyebrow: "Our Soundtrack",
-    title: "A Playlist from our hearts",
-    script: "songs of our love",
-    subtitle: "Songs that have been part of our journey together",
+    title: "A Christmas Playlist",
+    script: "songs of the season",
+    subtitle: "Holiday songs for the night",
     // Shown on the playlist card
     cardEyebrow: "Spotify Playlist",
-    playlistName: `${COUPLE_LABEL} Wedding`,
-    cardNote: "Press play and listen along — every song holds a little piece of our story.",
+    playlistName: "Zanicare Christmas Party",
+    cardNote: "Press play and get into the Christmas spirit.",
     buttonText: "Open in Spotify",
     // CD album art: photo on the sleeve and the disc label ("" = plain sage sleeve)
     coverImage: COUPLE_PHOTOS[2],
@@ -1740,18 +1951,18 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
   seeYouThere: {
     titleLine1: "See you",
     titleLine2: "there!",
-    // Full-bleed photos: crossfade on mobile, side-by-side triptych on md+ (portrait shots work best)
-    photos: [COUPLE_PHOTOS[4], COUPLE_PHOTOS[5], COUPLE_PHOTOS[6]],
-    photoAlt: "{couple}",
+    // Full-bleed photos: crossfade on mobile, side-by-side triptych on md+ (placeholders for now)
+    photos: [COUPLE_PHOTOS[0], COUPLE_PHOTOS[1], COUPLE_PHOTOS[2]],
+    photoAlt: COMPANY_NAME,
     eyebrow: "Until we meet",
-    script: "with love, {couple}", // "" hides it
-    message: "We can't wait to celebrate this beautiful day with you.", // "" hides it
+    script: "with gratitude, Zanicare", // "" hides it
+    message: "We can't wait to celebrate this Christmas with you.", // "" hides it
     // Plain mode
     plain: {
       eyebrow: "Until we meet",
-      script: "with love, {couple}",
-      message: "We can't wait to celebrate this beautiful day with you.",
-      // Corner florals — top two here, bottom two on the footer below; "" hides any of them
+      script: "with gratitude, Zanicare",
+      message: "We can't wait to celebrate this Christmas with you.",
+      // Corner ornaments — top two here, bottom two on the footer below; "" hides any of them
       decos: { ...CORNER_DECOS, footerVine: DECOR.headerOrnament },
       // Thin double border around See You There + footer (false hides it)
       showFrame: true,
@@ -1760,20 +1971,20 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
   // Footer (components/sections/footer.tsx).
   // {couple} → "Groom & Bride" nicknames, {year} → current year. Date comes from ceremony, deadline from details.rsvp.
   footer: {
-    showMonogram: true, // couple.monogram, tinted to the motif
-    dateLabel: "Wedding Date",
+    showMonogram: true, // company logo (couple.monogram)
+    dateLabel: "Event Date",
     // Ceremony & reception at a glance (times and places come from ceremony / reception)
     summary: {
       show: true,
-      ceremonyLabel: "Ceremony",
-      receptionLabel: "Reception",
+      ceremonyLabel: "Program",
+      receptionLabel: "Dinner",
     },
-    noteTitle: "A Note From Us",
+    noteTitle: "A Note of Thanks",
     // Typed out one after another
     quotes: [
-      '"I have found the one whom my soul loves." – Song of Solomon 3:4',
-      "Welcome to our wedding website! We've found a love that's a true blessing, and we give thanks to God for writing the beautiful story of our journey together.",
-      "Thank you for your love, prayers, and support. We can't wait to celebrate this joyful day together!",
+      '"Give thanks to the Lord, for He is good; His love endures forever." – Psalm 107:1',
+      "Welcome to the Zanicare Christmas Thanksgiving Party! From our first clinic in Molino, Bacoor to a growing network of branches, every milestone was made possible by our people.",
+      "Thank you for your dedication, your care for our patients and your hard work all year. Merry Christmas and see you on December 13!",
     ],
     rsvp: {
       show: true,
@@ -1787,7 +1998,7 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
     //   show: false hides one; platforms: facebook | instagram | tiktok | youtube | twitter | threads | messenger | email
     //   email: use "mailto:you@example.com"; messenger: use "https://m.me/yourpage"
     followTitle: "Follow Us",
-    followNote: "Share your photos and tag us — we'd love to see the day through your eyes.",
+    followNote: "Share your photos and tag us — we'd love to see the night through your eyes.",
     socials: [
       { show: true, platform: "facebook", href: "https://www.facebook.com" },
       { show: true, platform: "instagram", href: "https://www.instagram.com/" },
@@ -1805,14 +2016,16 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
     quickLinksTitle: "Quick Links",
     links: [
       { label: "Home", href: "#home" },
+      { label: "About Us", href: "#love-story" },
+      { label: "Branches", href: "#branches" },
       { label: "Event Details", href: "#details" },
+      { label: "Program", href: "#wedding-timeline" },
       { label: "RSVP", href: "#guest-list" },
       { label: "Gallery", href: "#gallery" },
-      { label: "Messages", href: "#messages" },
       { label: "FAQ", href: "#faq" },
     ],
-    copyright: "© {year} {couple} — crafted with love, prayers, and gratitude.",
-    tagline: "This celebration site was designed to share our story and joy with you.",
+    copyright: "© {year} Zanicare Group of Companies Inc. — with gratitude and Christmas cheer.",
+    tagline: "This invitation was designed to share the evening's details with you.",
     credit: {
       show: true,
       developedBy: "Developed by",
@@ -1822,46 +2035,43 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
       promoName: "Wedding Invitation Naga",
       promoUrl: "https://www.facebook.com/WeddingInvitationNaga",
     },
-    // Corner florals — bottom two here, top two on See You There above; "" hides any of them
+    // Corner ornaments — bottom two here, top two on See You There above; "" hides any of them
     decos: { ...CORNER_DECOS, headerOrnament: DECOR.headerOrnament },
     // Thin double border when the footer is shown on its own (false hides it)
     showFrame: true,
   },
   // Snap & Share (components/sections/snap-share.tsx). {couple} → "Groom & Bride" nicknames.
   snapShare: {
+    // ⚠ check: still the previous event's Google Drive folder — replace with the company's upload folder
     googleDriveLink:
       "https://drive.google.com/drive/folders/1UG5DBKcoQ0a8_yRBq8AH6MaiwcVCPV4S?usp=sharing",
     albumQR: "/QR/AlbumQR.png",
     hashtag: HASHTAGS,
-    instructions: "Please scan this QR Code and upload the photos and videos you have taken during our wedding reception. We are delighted to see your snaps too!",
-    title: "Snap and Share",
-    subtitle: "Share your memories",
+    instructions: "Scan the QR code or tap Upload to add your photos and videos from the night. Every snap helps us build the Zanicare year-end album.",
+    title: "Snap & Share",
+    subtitle: "capture the night",
     // One line per line of the verse (snap-share.tsx keeps the line breaks); the hashtag is shown right under it
     description:
-      "After our unplugged ceremony,\nhelp us capture and share our\nprecious moments using our\nofficial wedding hashtag:",
+      "Strike a pose, raise a glass\nand help us capture every moment\nof gratitude and Christmas cheer.\nTag your photos with our official hashtag:",
     // "Our Favorite Moments" photo card — always hidden when loadingScreen.display is "plain"
     moments: {
       show: true,
-      title: "Our Favorite Moments",
-      caption: "Share your snapshots to be featured in our keepsake gallery.",
-      // 3 portrait photos: one tall feature on the left, two stacked on the right
-      images: [
-        "/mobile-background/couple (1).webp",
-        "/mobile-background/couple (2).webp",
-        "/mobile-background/couple (12).webp",
-      ],
+      title: "Moments to Remember",
+      caption: "Share your best shots — your photos may be featured in our year-end gallery.",
+      // 3 portrait photos: one tall feature on the left, two stacked on the right (placeholders for now)
+      images: [PLACEHOLDER_IMAGE, PLACEHOLDER_IMAGE, PLACEHOLDER_IMAGE],
     },
     website: {
       show: true,
-      title: "Share Our Wedding Website",
+      title: "Share the Invitation",
       description:
-        "Spread the word about {couple}'s celebration. Share this QR code so friends and family can join us.",
-      downloadButton: "Download QR",
-      note: "Scan with any camera app to open the full invitation and schedule.",
+        "Pass this QR code to your colleagues so they can open the invitation and RSVP in seconds.",
+      downloadButton: "Save QR Code",
+      note: "Works with any phone camera — no app needed.",
     },
     hashtags: {
       show: true,
-      title: "Wedding Hashtags",
+      title: "Official Hashtags",
       copy: "Copy",
       copied: "Copied",
       copyAll: "Copy All",
@@ -1869,32 +2079,32 @@ Sa loob ng isang taon na pagmamahalan, sa wakas magaganap o mangyayari na ang am
     },
     social: {
       show: true,
-      title: "Share on Social Media",
-      description: "Help spread the word about {couple}'s wedding across your favorite platforms.",
+      title: "Spread the Cheer",
+      description: "Post your favorite moments and tag us — let's fill our feeds with Zanicare Christmas cheer.",
+      // Shown under the buttons — "" hides it
+      note: "For Instagram and TikTok, your caption and hashtags are copied — just paste them into your post.",
+      // Button label for a moment after the caption is copied (Instagram / TikTok)
+      captionCopied: "Caption copied",
       // Remove any you don't want: "instagram" | "facebook" | "tiktok" | "twitter"
       platforms: ["instagram", "facebook", "tiktok", "twitter"] as ("instagram" | "facebook" | "tiktok" | "twitter")[],
-      shareText: "Celebrate {couple}'s wedding! Explore the details and share your special memories:",
+      shareText: "Celebrating a year of gratitude with the Zanicare family at our Christmas Thanksgiving Party!",
     },
     // Shown only when googleDriveLink is set
     upload: {
-      badge: "Upload Your Photos & Videos",
-      scanNote: "Scan with your camera app",
+      badge: "Add to Our Shared Album",
+      scanNote: "Scan to open the album",
       copyLink: "Copy Link",
-      copied: "Copied!",
-      downloadQr: "Download QR",
+      copied: "Link Copied!",
+      downloadQr: "Save QR Code",
       uploadButton: "Upload Photos",
     },
     closing:
-      "Thank you for helping make {couple}'s wedding celebration memorable. Your photos and messages create beautiful memories we will treasure for a lifetime.",
-    closingTag: "Thank you for sharing the joy",
-    // "Puhon" banner — text comes from loveStory.closing*; photos crossfade behind it
+      "Thank you for helping us capture a night of gratitude. Every photo and message becomes part of the Zanicare story.",
+    closingTag: "From our family to yours — Merry Christmas",
+    // Closing banner — text comes from loveStory.closing*; photos crossfade behind it (placeholders for now)
     puhon: {
       show: true,
-      images: [
-        "/desktop-background/couple (3).webp",
-        "/desktop-background/couple (22).webp",
-        "/desktop-background/couple (17).webp",
-      ],
+      images: [PLACEHOLDER_IMAGE],
       intervalMs: 5000, // time each photo stays before fading to the next
     },
   },

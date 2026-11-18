@@ -28,50 +28,40 @@ const imageType = (path: string) =>
 // Phones open on the tap-to-open card (content/site.ts → openingCard), so the loader comes later
 const phoneOpeningCard = siteConfig.openingCard?.enabled !== false
 
-const coupleNames = `${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname}`
-const eventTitle = `${coupleNames} - Wedding Invitation`
-const eventDescription = `Celebrate the wedding of ${siteConfig.couple.groomNickname} and ${siteConfig.couple.brideNickname} on ${siteConfig.wedding.date} at ${siteConfig.ceremony.venue}. RSVP, explore their story, and find everything you need to join the celebration.`
+// couple.groom = company name, couple.bride = event name (content/site.ts → QUICK SETUP)
+const companyName = siteConfig.couple.groom
+const eventName = siteConfig.couple.bride
+const coupleNames = `${companyName} ${eventName}`
+const eventTitle = `${eventName} | ${companyName}`
+const eventDescription = `You're invited to the ${companyName} ${eventName} on ${siteConfig.wedding.date} at ${siteConfig.ceremony.location}. RSVP, view the program, and find everything you need for the evening.`
+const eventHashtag = siteConfig.snapShare.hashtag[0] ?? ""
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: `${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} Wedding`,
-  startDate: "2026-12-06T16:00:00+08:00",
-  endDate: "2026-12-06T23:00:00+08:00",
+  name: `${companyName} ${eventName}`,
+  startDate: "2026-12-13T18:00:00+08:00",
+  endDate: "2026-12-13T23:30:00+08:00",
   eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-  location: [
-    {
-      "@type": "Place",
-      name: siteConfig.ceremony.venue,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: siteConfig.ceremony.venue,
-        addressLocality: siteConfig.ceremony.location,
-        addressRegion: siteConfig.ceremony.location,
-        addressCountry: "PH",
-      },
+  location: {
+    "@type": "Place",
+    name: siteConfig.ceremony.location,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: siteConfig.ceremony.venue,
+      addressLocality: "Pasay City",
+      addressRegion: "Metro Manila",
+      addressCountry: "PH",
     },
-    {
-      "@type": "Place",
-      name: siteConfig.reception.venue,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: siteConfig.reception.location,
-        addressLocality: siteConfig.reception.location,
-        addressRegion: siteConfig.reception.location,
-        addressCountry: "PH",
-      },
-    },
-  ],
-  image: [OG_IMAGE_FALLBACK],
-  description:
-    `You're invited to celebrate the wedding of ${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname}. Discover ceremony and reception details, RSVP, and explore their story.`,
-  organizer: {
-    "@type": "Person",
-    name: coupleNames,
   },
-  eventHashtag: `#${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}SayIDo`,
+  image: [OG_IMAGE_FALLBACK],
+  description: eventDescription,
+  organizer: {
+    "@type": "Organization",
+    name: companyName,
+  },
+  eventHashtag,
 }
 
 const brittany = localFont({
@@ -90,18 +80,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(canonicalUrl),
   title: {
     default: eventTitle,
-    template: `%s | ${coupleNames}`,
+    template: `%s | ${eventName}`,
   },
   description: eventDescription,
   keywords:
-    `${siteConfig.couple.groomNickname} ${siteConfig.couple.brideNickname} wedding, ${siteConfig.ceremony.venue} wedding, ${siteConfig.reception.venue} wedding, wedding invitation, RSVP, wedding gallery, message wall, love story, #${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}SayIDo`,
-  applicationName: `${coupleNames} Wedding Invitation`,
-  authors: [
-    { name: siteConfig.couple.groomNickname },
-    { name: siteConfig.couple.brideNickname },
-  ],
-  creator: coupleNames,
-  publisher: coupleNames,
+    `${companyName}, Zanicare, ${eventName}, Christmas party, company party, ${siteConfig.ceremony.location}, invitation, RSVP, ${eventHashtag}`,
+  applicationName: `${eventName} Invitation`,
+  authors: [{ name: companyName }],
+  creator: companyName,
+  publisher: companyName,
   category: "Event",
   formatDetection: {
     email: false,
@@ -125,42 +112,39 @@ export const metadata: Metadata = {
   },
   manifest: "/favicon_io/site.webmanifest",
   openGraph: {
-    title: `${coupleNames} | ${siteConfig.wedding.date}`,
-    description:
-      `Celebrate the union of ${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} on ${siteConfig.wedding.date}. Discover their story, RSVP, and find important details for the ceremony and reception.`,
+    title: `${eventName} | ${siteConfig.wedding.date}`,
+    description: eventDescription,
     url: canonicalUrl,
-    siteName: `${coupleNames} Wedding`,
+    siteName: coupleNames,
     locale: "en_PH",
     type: "website",
     // Wide image first (what Facebook / Messenger / Viber show); square second for apps that prefer it.
     // width/height must match the real files, or Messenger may skip the image.
+    // Both are the company logo (1254×1254) until a 1200×630 preview image is made.
     images: [
       {
         url: OG_IMAGE_FALLBACK,
         secureUrl: OG_IMAGE_FALLBACK,
-        width: 1200,
-        height: 630,
+        width: 1254,
+        height: 1254,
         type: imageType(siteConfig.linkPreviewImage),
-        alt: `${coupleNames} Wedding Invitation - ${siteConfig.wedding.date}`,
+        alt: `${coupleNames} - ${siteConfig.wedding.date}`,
       },
       {
         url: OG_IMAGE_SQUARE,
         secureUrl: OG_IMAGE_SQUARE,
-        width: 600,
-        height: 600,
+        width: 1254,
+        height: 1254,
         type: imageType(siteConfig.linkPreviewImageSquare),
-        alt: `${coupleNames} Wedding Invitation`,
+        alt: coupleNames,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${coupleNames} Wedding Invitation`,
-    description:
-      `You're invited to the wedding of ${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} on ${siteConfig.wedding.date}. RSVP, explore their story, and get all the details for the big day! #${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}SayIDo`,
+    title: `${eventName} Invitation`,
+    description: `${eventDescription} ${eventHashtag}`.trim(),
     images: [eventImageUrl],
-    creator: `@${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}`,
-    site: `@${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}`,
   },
   robots: {
     index: true,
@@ -174,7 +158,7 @@ export const metadata: Metadata = {
     },
   },
   appleWebApp: {
-    title: coupleNames,
+    title: eventName,
     statusBarStyle: "default",
     capable: true,
   },
@@ -198,7 +182,7 @@ export default function RootLayout({
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="color-scheme" content="light" />
-        <meta name="theme-color" content="#D9A08C" />
+        <meta name="theme-color" content="#111111" />
         <meta name="format-detection" content="telephone=yes,email=no,address=no" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

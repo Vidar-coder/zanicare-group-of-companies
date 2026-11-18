@@ -20,13 +20,14 @@ const NAV_MONOGRAM = siteConfig.couple.monogram
 const navLinks: { href: string; label: string; wideOnly?: boolean }[] = [
   { href: "#home", label: "Home" },
   { href: "#welcome", label: "Welcome", wideOnly: true },
-  { href: "#love-story", label: "With Gratitude" },
+  { href: "#love-story", label: "About Us" },
+  { href: "#branches", label: "Branches" },
   { href: "#countdown", label: "Countdown", wideOnly: true },
   { href: "#gallery", label: "Gallery" },
   { href: "#messages", label: "Messages" },
   { href: "#details", label: "Details" },
   { href: "#wedding-timeline", label: "Timeline" },
-  { href: "#entourage", label: "Entourage" },
+  { href: "#entourage", label: "Representatives" },
   { href: "#guest-list", label: "RSVP" },
   { href: "#guests", label: "Guests" },
   { href: "#faq", label: "FAQ" },
@@ -122,16 +123,16 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
         isScrolled
-          ? "shadow-[0_6px_18px_color-mix(in_srgb,var(--color-motif-deep)_12%,transparent)]"
+          ? "shadow-[0_6px_18px_rgb(0_0_0/45%)]"
           : "shadow-none"
       }`}
       style={{
-        // Plain blush-ivory bar; burgundy for the lettering only
-        background: "color-mix(in srgb, var(--color-motif-soft) 96%, transparent)",
+        // Black bar with a gold hairline; gold for the monogram, links and menu button
+        background: "rgb(10 10 11 / 92%)",
         WebkitBackdropFilter: "blur(10px)",
         backdropFilter: "blur(10px)",
         borderBottom:
-          "1px solid color-mix(in srgb, var(--color-motif-deep) 16%, transparent)",
+          "1px solid rgb(201 162 74 / 35%)",
       }}
     >
 
@@ -142,17 +143,17 @@ export function Navbar() {
             className="flex-shrink-0 group relative z-10 flex items-center justify-center py-0 pl-1 pr-2.5 sm:pl-1.5 sm:pr-3 md:pl-2 md:pr-3.5 -ml-0.5 sm:ml-0 self-stretch"
             aria-label={`${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} — Home`}
           >
-            {/* Monogram painted in burgundy through its alpha mask */}
+            {/* Monogram painted in gold through its alpha mask */}
             <span
               aria-hidden
               className="relative block h-[2.5rem] w-[3.2rem] sm:h-[2.85rem] sm:w-[3.65rem] md:h-[3.35rem] md:w-[4.15rem] shrink-0 my-0 group-hover:scale-105 group-active:scale-100 transition-transform duration-500"
               style={{
-                backgroundColor: "var(--color-motif-deep)",
+                backgroundColor: "#E2B75A",
                 WebkitMask: `url("${monogramSrc}") center / contain no-repeat`,
                 mask: `url("${monogramSrc}") center / contain no-repeat`,
               }}
             />
-            <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[color-mix(in_srgb,var(--color-motif-soft)_18%,transparent)] blur-md -z-10" />
+            <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[rgb(226_183_90/12%)] blur-md -z-10" />
           </Link>
 
           <div className="hidden xl:flex gap-0.5 items-center">
@@ -165,15 +166,15 @@ export function Navbar() {
                   aria-current={isActive ? "location" : undefined}
                   className={`${link.wideOnly ? "hidden 2xl:inline-block" : ""} ${cinzel.className} group relative whitespace-nowrap px-2.5 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 lg:px-3 lg:text-[0.72rem] ${
                     isActive
-                      ? "text-[var(--color-motif-deep)]"
-                      : "text-[color-mix(in_srgb,var(--color-motif-deep)_70%,transparent)] hover:text-[var(--color-motif-deep)]"
+                      ? "text-[#E2B75A]"
+                      : "text-[rgb(237_230_214/75%)] hover:text-[#E2B75A]"
                   }`}
                 >
                   {link.label}
-                  {/* Burgundy underline that grows from the centre */}
+                  {/* Gold underline that grows from the centre */}
                   <span
                     aria-hidden
-                    className={`absolute bottom-1 left-1/2 h-px -translate-x-1/2 bg-[var(--color-motif-deep)] transition-all duration-300 ${
+                    className={`absolute bottom-1 left-1/2 h-px -translate-x-1/2 bg-[#E2B75A] transition-all duration-300 ${
                       isActive ? "w-[60%]" : "w-0 group-hover:w-[60%]"
                     }`}
                   />
@@ -188,7 +189,7 @@ export function Navbar() {
               items={menuItems}
               socialItems={[]}
               displaySocials={false}
-              menuButtonColor="var(--color-motif-deep)"
+              menuButtonColor="#E2B75A"
               openMenuButtonColor="#FFFFFF"
               changeMenuColorOnOpen={true}
               // One plain burgundy layer slides in just ahead of the panel

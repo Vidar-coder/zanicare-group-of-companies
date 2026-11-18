@@ -27,7 +27,7 @@ export function CrossfadeImages({
         const isActive = i === active
         return (
           <div
-            key={src}
+            key={`${src}-${i}`}
             aria-hidden={isActive ? undefined : true}
             className="absolute inset-0 transition-opacity ease-in-out"
             style={{ opacity: isActive ? 1 : 0, transitionDuration: reduceMotion ? "0ms" : `${fadeMs}ms` }}

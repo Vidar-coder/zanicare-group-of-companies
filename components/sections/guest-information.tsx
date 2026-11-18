@@ -11,14 +11,14 @@ import { cormorantRegular as cormorant } from "@/lib/self-hosted-fonts"
 
 // Guest information color palette
 const GUEST_LIGHT = "#D9A08C"   // blush peach
-const GUEST_MEDIUM = "#44413C"   // slate navy
-const GUEST_DARK = "#44413C"    // midnight navy
+const GUEST_MEDIUM = "#1C1C1E"   // slate navy
+const GUEST_DARK = "#1C1C1E"    // midnight navy
 const GUEST_BG = "#FFF8F2"      // warm white container background
 
 // Guest attire motif palette (swatches shown in Wedding Attire)
 const GUEST_ATTIRE_PALETTE = [
-  "#44413C",
-  "#44413C",
+  "#1C1C1E",
+  "#1C1C1E",
   "#B97865",
   "#D9A08C",
   "#FFFFFF",

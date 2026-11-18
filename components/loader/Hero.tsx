@@ -137,7 +137,6 @@ export const Hero: React.FC<HeroProps> = ({
   // Poster loader: the envelope keeps the loader's backdrop (photos, pastel wash, gold frame,
   // corners) so the look carries straight across the hand-off
   const posterBackdrop = content.loaderDisplay === 'poster';
-  const poster = { ...defaultSiteConfig.loadingScreen.poster, ...content.poster };
   const posterTheme = { ...defaultSiteConfig.loadingScreen.poster.theme, ...content.poster?.theme };
   const namesJoiner = content.namesJoiner ?? defaultSiteConfig.loadingScreen.namesJoiner;
   // Paper of the envelope on the poster backdrop (loadingScreen.poster.envelopeTexture)
@@ -165,6 +164,13 @@ export const Hero: React.FC<HeroProps> = ({
   const groomName = siteConfig.couple.groomNickname;
   const brideName = siteConfig.couple.brideNickname;
   const coupleNames = `${groomName} & ${brideName}`;
+  // Letter title: the poster's event title (loadingScreen.poster.titleTop / titleBottom) when set
+  const posterContent = { ...defaultSiteConfig.loadingScreen.poster, ...content.poster };
+  const usePosterTitle = posterBackdrop && Boolean(posterContent.titleTop || posterContent.titleBottom);
+  const letterTop = usePosterTitle ? posterContent.titleTop : groomName;
+  const letterBottom = usePosterTitle ? posterContent.titleBottom : brideName;
+  const letterJoiner = usePosterTitle ? posterContent.titleJoiner : namesJoiner;
+  const letterTitle = [letterTop, letterJoiner, letterBottom].filter(Boolean).join(' ');
 
   const letterDateNumeric = useMemo(() => {
     const parsed = parseWeddingDate(siteConfig.ceremony.date ?? siteConfig.wedding.date);
@@ -666,12 +672,7 @@ export const Hero: React.FC<HeroProps> = ({
       )}
 
       {posterBackdrop && (
-        <PosterBackdrop
-          photos={backgroundPhotos}
-          desktopPhotos={backgroundPhotosDesktop}
-          corners={cornerDecos}
-          veil={poster.photoVeil}
-        />
+        <PosterBackdrop corners={cornerDecos} />
       )}
 
       {romanticArrival && (
@@ -731,7 +732,8 @@ export const Hero: React.FC<HeroProps> = ({
 
       {!isPlain && !posterBackdrop && <div className="env-invite-readability-scrim" aria-hidden="true" />}
 
-      {!reduceMotion && (
+      {/* Poster backdrop already has its own gold particles */}
+      {!reduceMotion && !posterBackdrop && (
         <div className="env-invite-particles pointer-events-none" aria-hidden="true">
           <InviteParticles count={28} />
         </div>
@@ -972,15 +974,20 @@ export const Hero: React.FC<HeroProps> = ({
                       </span>
                       <span className="env-invite-letter-date">{letterDateNumeric}</span>
                       <span className="env-invite-letter-invited">{content.eyebrow}</span>
-                      <h2 className="env-invite-letter-names env-invite-letter-names--text" aria-label={coupleNames}>
+                      <h2
+                        className={`env-invite-letter-names env-invite-letter-names--text${usePosterTitle ? ' env-invite-letter-names--title' : ''}`}
+                        aria-label={letterTitle}
+                      >
                         <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
-                          {groomName}
+                          {letterTop}
                         </span>
-                        <span className={`${aboveTheBeyond.className} env-invite-names__and`} aria-hidden="true">
-                          {namesJoiner}
-                        </span>
+                        {letterJoiner && (
+                          <span className={`${aboveTheBeyond.className} env-invite-names__and`} aria-hidden="true">
+                            {letterJoiner}
+                          </span>
+                        )}
                         <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
-                          {brideName}
+                          {letterBottom}
                         </span>
                       </h2>
                     </div>

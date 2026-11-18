@@ -3452,12 +3452,12 @@
    ========================================================================== */
 .loading-screen--plain {
   --ls-sky: var(--color-motif-medium);          /* #C5BDB5 */
-  --ls-blue: var(--color-welcome-heading);      /* #44413C */
-  --ls-navy: var(--color-welcome-navy);         /* #44413C */
-  --ls-ink: var(--color-welcome-text);          /* #44413C */
+  --ls-blue: var(--color-welcome-heading);      /* #1C1C1E */
+  --ls-navy: var(--color-welcome-navy);         /* #1C1C1E */
+  --ls-ink: var(--color-welcome-text);          /* #1C1C1E */
   --ls-leaf: var(--color-motif-yellow);         /* #C5BDB5 sage */
-  --ls-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 78%, #44413C);
-  --ls-sun: var(--color-motif-accent);          /* #44413C */
+  --ls-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 78%, #1C1C1E);
+  --ls-sun: var(--color-motif-accent);          /* #1C1C1E */
 
   --ls-text-dark: var(--ls-ink);
   --ls-text-accent-dark: var(--ls-blue);
@@ -3565,9 +3565,9 @@
    holds up over bright frames. Sage + sunshine appear only as accents.
    ========================================================================== */
 .home-hero--plain {
-  --hh-navy: var(--color-welcome-navy);       /* #44413C */
-  --hh-blue: var(--color-welcome-heading);    /* #44413C */
-  --hh-ink: var(--color-welcome-text);        /* #44413C */
+  --hh-navy: var(--color-welcome-navy);       /* #1C1C1E */
+  --hh-blue: var(--color-welcome-heading);    /* #1C1C1E */
+  --hh-ink: var(--color-welcome-text);        /* #1C1C1E */
   --hh-sky: var(--color-motif-medium);        /* #C5BDB5 */
   --hh-leaf: var(--color-motif-yellow);       /* #C5BDB5 */
   --hh-butter: var(--color-motif-silver);     /* #D9A08C */
@@ -3952,15 +3952,15 @@
   --ls-blush: #D9A08C;
   --ls-pastel: #FFF8F2;
   --ls-ivory: #FFF8F2;
-  --ls-burgundy: #44413C;
-  --ls-rose: #44413C;
-  --ls-rose-ink: #44413C;
+  --ls-burgundy: #1C1C1E;
+  --ls-rose: #1C1C1E;
+  --ls-rose-ink: #1C1C1E;
   --ls-sage: #B97865;
 
   --ls-sky: var(--ls-rose);
   --ls-blue: var(--ls-rose-ink);
   --ls-navy: var(--ls-burgundy);
-  --ls-ink: #44413C;
+  --ls-ink: #1C1C1E;
   --ls-leaf: var(--ls-sage);
   --ls-leaf-ink: var(--ls-rose);
   --ls-sun: var(--ls-rose);
@@ -4028,9 +4028,9 @@
    Desktop: photo left, wording right.
    ========================================================================== */
 .home-hero--plain {
-  --hh-navy: #44413C;
-  --hh-blue: #44413C;
-  --hh-ink: #44413C;
+  --hh-navy: #1C1C1E;
+  --hh-blue: #1C1C1E;
+  --hh-ink: #1C1C1E;
   --hh-sky: #D9A08C;
   --hh-leaf: #B97865;
   --hh-butter: #D9A08C;
@@ -4046,8 +4046,8 @@
 }
 
 .home-hero--plain .home-hero-title-script {
-  color: #44413C;
-  -webkit-text-fill-color: #44413C;
+  color: #1C1C1E;
+  -webkit-text-fill-color: #1C1C1E;
   text-shadow: none;
 }
 
@@ -4109,7 +4109,7 @@
   border: 5px solid #FFF8F2;
   box-shadow:
     0 0 0 1px color-mix(in srgb, #B97865 35%, transparent),
-    0 30px 55px -30px color-mix(in srgb, #44413C 40%, transparent),
+    0 30px 55px -30px color-mix(in srgb, #1C1C1E 40%, transparent),
     0 10px 24px -14px color-mix(in srgb, #B97865 45%, transparent);
 }
 
@@ -4140,7 +4140,7 @@
   aspect-ratio: 2170 / 725;
   margin: -1.6rem auto 0;
   background: url("/deco/new-deco/small-center.png") center / contain no-repeat;
-  filter: drop-shadow(0 4px 6px color-mix(in srgb, #44413C 15%, transparent));
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, #1C1C1E 15%, transparent));
 }
 
 @media (min-width: 768px) {
@@ -4177,8 +4177,8 @@
 }
 
 .loading-screen--plain .ls-headline__letter {
-  color: #44413C;
-  -webkit-text-fill-color: #44413C;
+  color: #1C1C1E;
+  -webkit-text-fill-color: #1C1C1E;
 }
 
 .ls-headline__break {
@@ -4286,7 +4286,7 @@
 
 .love-story-corner--bl,
 .love-story-corner--br {
-  width: min(44vw, 360px);
+  width: min(35vw, 290px); /* ~20% smaller than before (44vw / 360px) */
 }
 
 /* Opening line under the title */
@@ -4314,21 +4314,21 @@
 
 .story-open-wash--left {
   left: -18%;
-  background: radial-gradient(closest-side, color-mix(in srgb, #44413C 30%, transparent) 0%, color-mix(in srgb, #D9A08C 50%, transparent) 55%, transparent 100%);
+  background: radial-gradient(closest-side, color-mix(in srgb, #1C1C1E 30%, transparent) 0%, color-mix(in srgb, #D9A08C 50%, transparent) 55%, transparent 100%);
 }
 
 .story-open-wash--right {
   right: -18%;
-  background: radial-gradient(closest-side, color-mix(in srgb, #44413C 30%, transparent) 0%, color-mix(in srgb, #D9A08C 50%, transparent) 55%, transparent 100%);
+  background: radial-gradient(closest-side, color-mix(in srgb, #1C1C1E 30%, transparent) 0%, color-mix(in srgb, #D9A08C 50%, transparent) 55%, transparent 100%);
 }
 
 /* Text colors (loading screen palette): charcoal title, slate details, warm-gray rule */
 .story-open-date {
-  color: #44413C;
+  color: #1C1C1E;
 }
 
 .story-open-title {
-  color: #44413C;
+  color: #1C1C1E;
   text-shadow: 0 1px 0 rgb(255 248 242 / 85%);
 }
 
@@ -4337,7 +4337,7 @@
 }
 
 .story-open-text {
-  color: #44413C;
+  color: #1C1C1E;
   text-shadow: 0 0 8px rgb(255 248 242 / 75%);
 }
 
@@ -4350,7 +4350,7 @@
   background: #FFF8F2;
   box-shadow:
     0 0 0 1px color-mix(in srgb, #B97865 35%, transparent),
-    0 18px 34px -16px color-mix(in srgb, #44413C 32%, transparent);
+    0 18px 34px -16px color-mix(in srgb, #1C1C1E 32%, transparent);
 }
 
 
@@ -4373,7 +4373,7 @@
 
 .home-hero-corner-slot--bl,
 .home-hero-corner-slot--br {
-  width: min(44vw, 30vh, 360px);
+  width: min(35vw, 24vh, 290px); /* ~20% smaller than before (44vw / 30vh / 360px) */
 }
 
 .home-hero-corner-img {
@@ -4421,7 +4421,7 @@
   margin: -1.9rem auto 0;
   user-select: none;
   pointer-events: none;
-  filter: drop-shadow(0 4px 6px color-mix(in srgb, #44413C 15%, transparent));
+  filter: drop-shadow(0 4px 6px color-mix(in srgb, #1C1C1E 15%, transparent));
 }
 
 
@@ -4520,8 +4520,8 @@
    No panel behind the couple names. Kept last so it wins.
    ========================================================================== */
 .loading-screen--invitation:not(.loading-screen--plain) {
-  --ls-navy: #44413C;
-  --ls-navy-soft: #44413C;
+  --ls-navy: #1C1C1E;
+  --ls-navy-soft: #1C1C1E;
   --ls-peach: #D9A08C;
   --ls-peach-warm: #B97865;
   --ls-peach-light: #F1C8B8;
@@ -4764,7 +4764,7 @@
   font-weight: 500;
   font-style: italic;
   letter-spacing: 0.08em;
-  color: var(--color-welcome-heading, #44413C);
+  color: var(--color-welcome-heading, #1C1C1E);
 }
 
 /* Small peach dots either side of the time */
@@ -4783,7 +4783,7 @@
   font-style: normal;
   line-height: 1.15;
   letter-spacing: 0.02em;
-  color: var(--color-welcome-navy, #44413C);
+  color: var(--color-welcome-navy, #1C1C1E);
 }
 
 /* ==========================================================================
@@ -4964,7 +4964,7 @@
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: none;
-  color: #44413C; /* slate navy, matches the rest of the loader text */
+  color: #1C1C1E; /* slate navy, matches the rest of the loader text */
   text-shadow:
     0 0 2px rgb(255 248 242 / 95%),
     0 0 12px rgb(255 248 242 / 90%);
@@ -5043,7 +5043,7 @@
   font-style: italic;
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: #44413C;
+  color: #1C1C1E;
 }
 
 .home-hero--plain .home-hero-meta-time::before,
@@ -5061,7 +5061,7 @@
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: 0.02em;
-  color: #44413C;
+  color: #1C1C1E;
 }
 
 /* Countdown band — light peach fade rising from the bottom edge */
@@ -5093,12 +5093,12 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: #44413C;
+  color: #1C1C1E;
   text-shadow: none;
 }
 
 .home-hero--plain .home-hero-countdown-value {
-  color: #44413C;
+  color: #1C1C1E;
   text-shadow: 0 1px 0 rgb(255 248 242 / 70%);
 }
 
@@ -5112,17 +5112,17 @@
    the envelope. Kept last so it wins over the older passes above.
      cream       #FBF6EE → #F0E5D5 — page ground, with the welcome card's faint gold lace
      gold        #B8925A — rules, frames, dots, countdown labels (#9C7A43 for "Invited!")
-     burgundy    #6A0D28 — "YOU'RE", the date, the venue, countdown numbers
-     charcoal    #44413C — the quieter lines ("We are getting married", the time)
+     burgundy    #111111 — "YOU'RE", the date, the venue, countdown numbers
+     charcoal    #1C1C1E — the quieter lines ("We are getting married", the time)
    ========================================================================== */
 .home-hero--plain {
-  --hh-burgundy: #6A0D28;
+  --hh-burgundy: #111111;
   --hh-gold: #B8925A;
   --hh-gold-deep: #9C7A43;
   --hh-gold-light: #E9D3A6;
   --hh-cream: #FBF6EE;
   --hh-cream-deep: #F0E5D5;
-  --hh-charcoal: #44413C;
+  --hh-charcoal: #1C1C1E;
   background:
     radial-gradient(120% 60% at 50% 0%, rgb(255 253 248 / 85%) 0%, transparent 60%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E %3Cg fill='%23B8925A' fill-opacity='0.16'%3E%3Ccircle cx='11' cy='11' r='1.2'/%3E%3Ccircle cx='14.20' cy='11.00' r='1.1'/%3E%3Ccircle cx='12.60' cy='13.77' r='1.1'/%3E%3Ccircle cx='9.40' cy='13.77' r='1.1'/%3E%3Ccircle cx='7.80' cy='11.00' r='1.1'/%3E%3Ccircle cx='9.40' cy='8.23' r='1.1'/%3E%3Ccircle cx='12.60' cy='8.23' r='1.1'/%3E%3Ccircle cx='33' cy='33' r='1.2'/%3E%3Ccircle cx='36.20' cy='33.00' r='1.1'/%3E%3Ccircle cx='34.60' cy='35.77' r='1.1'/%3E%3Ccircle cx='31.40' cy='35.77' r='1.1'/%3E%3Ccircle cx='29.80' cy='33.00' r='1.1'/%3E%3Ccircle cx='31.40' cy='30.23' r='1.1'/%3E%3Ccircle cx='34.60' cy='30.23' r='1.1'/%3E%3C/g%3E %3Cg fill='%23B8925A' fill-opacity='0.12'%3E%3Ccircle cx='33' cy='11' r='0.8'/%3E%3Ccircle cx='11' cy='33' r='0.8'/%3E%3Ccircle cx='22' cy='22' r='0.6'/%3E%3Ccircle cx='0' cy='22' r='0.6'/%3E%3Ccircle cx='44' cy='22' r='0.6'/%3E%3Ccircle cx='22' cy='0' r='0.6'/%3E%3Ccircle cx='22' cy='44' r='0.6'/%3E%3C/g%3E %3C/svg%3E") 0 0 / 44px 44px,
@@ -5289,8 +5289,254 @@
 }
 
 .home-hero--plain .home-hero-meta-arrival {
-  color: #44413C;
+  color: #1C1C1E;
   text-shadow:
     0 0 2px rgb(255 248 242 / 95%),
     0 0 14px rgb(255 248 242 / 85%);
+}
+
+
+/* ==========================================================================
+   Home hero — luxury dark (kept last so it wins over the ivory passes above).
+     ground   #0B0B0C → #161618, with a faint gold monogram pattern (homeHero.pattern)
+     gold     #E2B75A (lettering), #C9A24A (rules, dots, labels), #F3D27A (sheen)
+     white    #F5F5F5 for the title and venue · ivory #EDE6D6 for quieter lines
+   Every rule sets -webkit-text-fill-color too: the ivory pass above sets it, and it beats color.
+   ========================================================================== */
+.home-hero--plain {
+  --hh-gold: #c9a24a;
+  --hh-gold-deep: #e2b75a;
+  --hh-gold-light: #f3d27a;
+  --hh-white: #f5f5f5;
+  --hh-ivory: #ede6d6;
+  --hh-muted: #b9b9bd;
+  --hh-edge: 0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 60%);
+  background:
+    radial-gradient(90% 55% at 50% 42%, rgb(201 162 74 / 10%) 0%, transparent 70%),
+    radial-gradient(120% 60% at 50% 0%, #1d1d20 0%, transparent 65%),
+    linear-gradient(180deg, #0b0b0c 0%, #121214 55%, #0a0a0b 100%);
+}
+
+/* Gold monogram pattern (homeHero.pattern): slightly visible across the whole hero, easing off
+   only at the very top and bottom edges. The tile itself is 50% gold, so 0.22 here ≈ 11% on screen. */
+.home-hero-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-repeat: repeat;
+  background-size: 88px auto;
+  background-position: center;
+  opacity: 0.22;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 80%, transparent 100%);
+}
+
+/* Soft black pool behind the wording so it reads over the corner leaves */
+.home-hero--plain .home-hero-mist {
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0 0 0 / 60%) 0%,
+    rgb(0 0 0 / 40%) 42%,
+    rgb(0 0 0 / 12%) 62%,
+    transparent 75%
+  );
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Thin double frame in gold */
+.home-hero--plain .home-hero-plain-frame {
+  border-color: rgb(201 162 74 / 55%);
+}
+.home-hero--plain .home-hero-plain-frame::after {
+  border-color: rgb(201 162 74 / 28%);
+}
+
+/* Company name above the title */
+.home-hero--plain .home-hero-kicker {
+  font-size: clamp(0.62rem, 2.6vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+  text-shadow: var(--hh-edge);
+}
+
+/* "YOU'RE" in white, "Invited!" in gold script */
+.home-hero--plain .home-hero-title-main {
+  color: var(--hh-white);
+  -webkit-text-fill-color: var(--hh-white);
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-title-script {
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+  text-shadow: 0 2px 4px rgb(0 0 0 / 85%), 0 0 22px rgb(226 183 90 / 30%);
+}
+
+/* "to our Christmas Thanksgiving Party" in ivory italic, tagline in small grey capitals */
+.home-hero--plain .home-hero-eyebrow {
+  color: var(--hh-ivory);
+  -webkit-text-fill-color: var(--hh-ivory);
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-eyebrow::before {
+  background: linear-gradient(90deg, transparent, var(--hh-gold));
+}
+.home-hero--plain .home-hero-eyebrow::after {
+  background: linear-gradient(90deg, var(--hh-gold), transparent);
+}
+.home-hero--plain .home-hero-tagline {
+  font-family: var(--font-cinzel, "Cinzel", serif);
+  font-size: clamp(0.58rem, 2.4vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--hh-muted);
+  -webkit-text-fill-color: var(--hh-muted);
+  text-shadow: var(--hh-edge);
+}
+
+/* Date: weekday in gold, month/year in white between gold rules, day number in gold */
+.home-hero--plain .home-hero-date,
+.home-hero--plain .home-hero-date-side {
+  color: var(--hh-white);
+  -webkit-text-fill-color: var(--hh-white);
+  -webkit-text-stroke: 0;
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-date-weekday {
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-date-weekday::before {
+  background: linear-gradient(90deg, transparent, var(--hh-gold));
+}
+.home-hero--plain .home-hero-date-weekday::after {
+  background: linear-gradient(90deg, var(--hh-gold), transparent);
+}
+.home-hero--plain .home-hero-date-side {
+  border-block-color: rgb(201 162 74 / 70%);
+}
+.home-hero--plain .home-hero-date-day {
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 70%));
+}
+
+/* Program time in gold, registration in ivory, venue in white */
+.home-hero--plain .home-hero-meta-time {
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-meta-time::before,
+.home-hero--plain .home-hero-meta-time::after {
+  background: var(--hh-gold);
+}
+.home-hero--plain .home-hero-meta-arrival {
+  color: var(--hh-ivory);
+  -webkit-text-fill-color: var(--hh-ivory);
+  text-shadow: var(--hh-edge);
+}
+.home-hero--plain .home-hero-meta,
+.home-hero--plain .home-hero-meta-venue {
+  color: var(--hh-white);
+  -webkit-text-fill-color: var(--hh-white);
+  text-shadow: var(--hh-edge);
+}
+
+/* Countdown band: black fading up, gold hairline, white numbers, gold heading and labels */
+.home-hero--plain .home-hero-countdown-bar {
+  background: linear-gradient(to top, rgb(0 0 0 / 92%) 0%, rgb(0 0 0 / 70%) 50%, transparent 100%);
+  border-top: 0;
+}
+.home-hero--plain .home-hero-countdown-bar > div::before {
+  background: linear-gradient(90deg, transparent, var(--hh-gold), var(--hh-gold-light), var(--hh-gold), transparent);
+}
+.home-hero--plain .home-hero-countdown-heading {
+  color: var(--hh-gold-deep);
+  -webkit-text-fill-color: var(--hh-gold-deep);
+}
+.home-hero--plain .home-hero-countdown-value {
+  color: var(--hh-white);
+  -webkit-text-fill-color: var(--hh-white);
+}
+.home-hero--plain .home-hero-countdown-label {
+  color: var(--hh-gold);
+  -webkit-text-fill-color: var(--hh-gold);
+}
+.home-hero--plain .home-hero-countdown-heading,
+.home-hero--plain .home-hero-countdown-value,
+.home-hero--plain .home-hero-countdown-label {
+  text-shadow: 0 1px 3px rgb(0 0 0 / 85%);
+}
+
+/* ==========================================================================
+   About Us (components/sections/love-story.tsx + StorySection open chapters) —
+   luxury dark, kept last so it wins: gold date lines and rules, white titles,
+   soft white text, a faint gold glow on the photo's side, black photo mats.
+   ========================================================================== */
+.love-story-root .love-story-intro {
+  color: #ede6d6;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 12px rgb(0 0 0 / 55%);
+}
+
+.love-story-root .story-open-wash--left,
+.love-story-root .story-open-wash--right {
+  background: radial-gradient(
+    closest-side,
+    rgb(226 183 90 / 14%) 0%,
+    rgb(226 183 90 / 5%) 55%,
+    transparent 100%
+  );
+}
+
+.love-story-root .story-open-date {
+  color: #e2b75a;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%);
+}
+
+.love-story-root .story-open-title {
+  color: #f5f5f5;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%);
+}
+
+.love-story-root .story-open-rule {
+  background: linear-gradient(90deg, #c9a24a, #f3d27a);
+}
+.love-story-root .story-open-rule.ml-auto {
+  background: linear-gradient(90deg, #f3d27a, #c9a24a);
+}
+
+.love-story-root .story-open-text {
+  color: #dcdcde;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 80%);
+}
+
+.love-story-root .story-open-number {
+  color: rgb(226 183 90 / 14%);
+}
+
+/* Photo frame: black mat with a fine gold edge */
+.love-story-root .story-open-photo {
+  background: #111113;
+  box-shadow:
+    0 0 0 1px rgb(201 162 74 / 60%),
+    0 0 0 4px rgb(0 0 0 / 60%),
+    0 20px 40px -16px rgb(0 0 0 / 80%);
+}
+
+/* Double frame in gold */
+.love-story-root .love-story-frame {
+  border-color: rgb(201 162 74 / 55%);
+  box-shadow: none;
+}
+.love-story-root .love-story-frame::after {
+  border-color: rgb(201 162 74 / 28%);
 }

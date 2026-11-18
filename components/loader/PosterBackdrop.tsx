@@ -1,15 +1,36 @@
 'use client';
 
 import React from 'react';
-import { PhotoBackground } from '@/components/loader/invite-photo-backdrop';
+import dynamic from 'next/dynamic';
 import './loader-poster.css';
 
 /*
  * Background shared by the poster loading screen and the envelope that follows it (Hero.tsx),
- * so the look carries straight across the hand-off: couple photos (the marquee runs on a page
- * clock, so both copies line up), a sky-blue → blush wash, a thin double gold frame and the
- * floral corners tucked into the screen corners.
+ * so the look carries straight across the hand-off: black silk (WebGL, components/silk.jsx)
+ * with soft white sheen, a dark vignette, gold particles rising, a thin double silver frame and
+ * the corner decorations.
  */
+
+const Silk = dynamic(() => import('@/components/silk'), { ssr: false });
+
+// Silk colors: charcoal folds with a cool white sheen
+const SILK_COLOR = '#2B2B2E';
+const SILK_SHEEN_COLOR = '#F2F2F2';
+
+// Gold particles drifting up the screen (deterministic, so SSR and client agree).
+// Negative delays start each one part-way up, so the screen is never empty at first paint.
+const GOLD_PARTICLES = Array.from({ length: 34 }, (_, i) => {
+  const far = i % 3 === 0; // smaller, softer specks further back
+  return {
+    x: (i * 37 + 13) % 100, // % across
+    size: far ? 1.5 + (i % 3) * 0.5 : 2.5 + ((i * 7) % 4), // px
+    dur: (far ? 16 : 10) + ((i * 5) % 8), // s to cross the screen
+    delay: -(((i * 2.7) % 18)), // s
+    drift: (i % 2 === 0 ? 1 : -1) * (10 + ((i * 11) % 34)), // px sideways
+    peak: far ? 0.45 : 0.7 + ((i * 3) % 4) * 0.08, // brightest opacity
+    blur: far ? 0.6 : 0,
+  };
+});
 
 export interface PosterTheme {
   goldDark?: string;
@@ -42,18 +63,48 @@ export function posterThemeVars(theme: PosterTheme | undefined): React.CSSProper
 }
 
 export interface PosterBackdropProps {
-  photos: string[];
-  desktopPhotos: string[];
   corners: { topLeft?: string; topRight?: string; bottomLeft?: string; bottomRight?: string };
-  /** How much the photos are washed out (loadingScreen.poster.photoVeil) */
-  veil?: number;
   className?: string;
 }
 
-export const PosterBackdrop: React.FC<PosterBackdropProps> = ({ photos, desktopPhotos, corners, veil = 0.35, className }) => (
+export const PosterBackdrop: React.FC<PosterBackdropProps> = ({ corners, className }) => (
   <div className={`lp-bd${className ? ` ${className}` : ''}`} aria-hidden="true">
-    <PhotoBackground photos={photos} desktopPhotos={desktopPhotos} veil={veil} />
+    <div className="lp-bd__silk">
+      <Silk
+        color={SILK_COLOR}
+        sheenColor={SILK_SHEEN_COLOR}
+        speed={3}
+        scale={1}
+        rotation={0}
+        sheen={0.6}
+        depth={0.55}
+        glow={0.25}
+        noiseIntensity={1.2}
+        mouseInteraction={false}
+        clickRipple={false}
+        intro={false}
+      />
+    </div>
     <div className="lp-bd__wash" />
+    <div className="lp-bd__particles">
+      {GOLD_PARTICLES.map((g, i) => (
+        <span
+          key={i}
+          className="lp-bd__particle"
+          style={
+            {
+              '--x': `${g.x}%`,
+              '--s': `${g.size}px`,
+              '--dur': `${g.dur}s`,
+              '--delay': `${g.delay}s`,
+              '--drift': `${g.drift}px`,
+              '--peak': g.peak,
+              '--blur': `${g.blur}px`,
+            } as React.CSSProperties
+          }
+        />
+      ))}
+    </div>
     <div className="lp-bd__frame" />
     {(
       [

@@ -27,7 +27,7 @@ const YELLOW = "#F2C230"
 const ORANGE = "#E8833A"
 const SUN_GRADIENT = `linear-gradient(90deg, ${YELLOW} 0%, ${ORANGE} 100%)`
 const DEEP = "31 38 24" // deep sage / olive (rgb) — shadows and fades
-const WARM = "197 106 74" // terracotta #C56A4A (rgb) — warm glow in the fade
+const WARM = "197 106 74" // terracotta #8E8E93 (rgb) — warm glow in the fade
 const BUTTER = YELLOW
 const entryEase = [0.22, 1, 0.36, 1] as const
 const SLIDE_MS = 5000
@@ -118,7 +118,7 @@ export function SeeYouThere() {
         {/* md+: portrait triptych */}
         <div className="absolute inset-0 hidden gap-[3px] md:flex">
           {photos.map((src, i) => (
-            <motion.div key={src} className="relative h-full flex-1 overflow-hidden" variants={panelReveal} custom={i}>
+            <motion.div key={`${src}-${i}`} className="relative h-full flex-1 overflow-hidden" variants={panelReveal} custom={i}>
               <Image
                 src={src}
                 alt={i === 0 ? alt : ""}
@@ -218,7 +218,7 @@ export function SeeYouThere() {
             <motion.div variants={rise} className="mt-7 flex items-center gap-1.5 md:hidden" aria-hidden>
               {photos.map((src, i) => (
                 <span
-                  key={src}
+                  key={`${src}-${i}`}
                   className="h-[3px] rounded-full transition-all duration-[1400ms] ease-in-out"
                   style={{
                     width: i === active ? "1.5rem" : "0.5rem",

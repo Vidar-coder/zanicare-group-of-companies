@@ -84,8 +84,8 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
 
   return (
     <div className={`lp${p.reduceMotion ? ' lp--still' : ''}`}>
-      {/* Photos, pastel wash, gold frame and floral corners — shared with the envelope (Hero.tsx) */}
-      <PosterBackdrop photos={p.photos} desktopPhotos={p.desktopPhotos} corners={p.corners} veil={p.photoVeil} />
+      {/* Black silk, vignette, silver frame and corners — shared with the envelope (Hero.tsx) */}
+      <PosterBackdrop corners={p.corners} />
 
       <div className="lp__stage">
         <div className="lp__glow" aria-hidden="true" />
@@ -111,8 +111,8 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 {p.kicker}
               </p>
             )}
-            <h1 className="lp__headline" aria-label={p.headline}>
-              <span className="lp__script lp-gold lp-in lp-in--left" style={delay(700)} aria-hidden="true">
+            <h1 className={`lp__headline${head.join ? '' : ' lp__headline--single'}`} aria-label={p.headline}>
+              <span className="lp__script lp-gold lp-gold--warm lp-in lp-in--left" style={delay(700)} aria-hidden="true">
                 {head.before}
               </span>
               {head.join && (
@@ -123,7 +123,7 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 </span>
               )}
               {head.after && (
-                <span className="lp__script lp-gold lp-in lp-in--right" style={delay(850)} aria-hidden="true">
+                <span className="lp__script lp-gold lp-gold--warm lp-in lp-in--right" style={delay(850)} aria-hidden="true">
                   {head.after}
                 </span>
               )}
@@ -153,21 +153,27 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 {p.weddingOf}
               </p>
             )}
-            <h2 className="lp__names" aria-label={`${p.groomName} ${p.namesJoiner} ${p.brideName}`}>
-              <span className={`${p.nameFontClass} lp__name lp-gold lp-in`} style={delay(2150)} aria-hidden="true">
+            {/* Event title: two lines in capitals; a joiner word ("&") between them only when set */}
+            <h2
+              className={`lp__names${p.namesJoiner ? '' : ' lp__names--title'}`}
+              aria-label={[p.groomName, p.namesJoiner, p.brideName].filter(Boolean).join(' ')}
+            >
+              <span className={`${p.nameFontClass} lp__name lp-gold lp-gold--warm lp-in`} style={delay(2150)} aria-hidden="true">
                 {p.groomName}
               </span>
-              <span className={`${p.andFontClass} lp__and lp-gold lp-in`} style={delay(2350)} aria-hidden="true">
-                {p.namesJoiner}
-              </span>
-              <span className={`${p.nameFontClass} lp__name lp-gold lp-in`} style={delay(2500)} aria-hidden="true">
+              {p.namesJoiner && (
+                <span className={`${p.andFontClass} lp__and lp-gold lp-in`} style={delay(2350)} aria-hidden="true">
+                  {p.namesJoiner}
+                </span>
+              )}
+              <span className={`${p.nameFontClass} lp__name lp-gold lp-in`} style={delay(2350)} aria-hidden="true">
                 {p.brideName}
               </span>
             </h2>
             {p.dateText && (
               <p className="lp__date lp-in" style={delay(2750)}>
                 <span className="lp__rule lp__rule--long" />
-                <span className={`${p.nameFontClass} lp-gold`}>{p.dateText}</span>
+                <span className={`${p.nameFontClass} lp-gold lp-gold--warm`}>{p.dateText}</span>
                 <span className="lp__rule lp__rule--long" />
               </p>
             )}

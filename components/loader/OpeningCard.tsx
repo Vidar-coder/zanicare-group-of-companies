@@ -5,7 +5,6 @@ import { preload } from 'react-dom';
 import { useReducedMotion } from 'motion/react';
 import { useSiteConfig } from '@/hooks/use-site-config';
 import { siteConfig as defaultSiteConfig } from '@/content/site';
-import { GoldGlint } from './GoldGlint';
 import './opening-card.css';
 
 /** Screens that get the opening card when `openingCard.mobileOnly` is on */
@@ -13,7 +12,6 @@ export const OPENING_CARD_MOBILE_MEDIA = '(max-width: 767px)';
 
 // Choreography after the tap (ms) — keep in sync with the delays in opening-card.css
 // (modelled on public/loading-deco/sampleribbonanimationwhenclick.mp4)
-//   0–1200    a shimmer runs up the card (GoldGlint when a gold map is set)
 //   0–300     the bow tightens as the tail is tugged
 //   150–1050  the bow is pulled apart: the band halves slide out to the far left and right,
 //             opening the middle; the loops compress and collapse into the knot; the tails
@@ -22,8 +20,6 @@ export const OPENING_CARD_MOBILE_MEDIA = '(max-width: 767px)';
 //   1250–1650 a line of light kindles down the seam between the doors
 //   1750–3850 the latch gives and the two halves of the front card swing open on their hinges
 //             (3D); warm light and sparkles spill out and the invitation is revealed behind
-const GLINT_MS = 1200;
-
 // Sparkles that drift out of the opening doors (deterministic, so SSR and client agree)
 const MOTES = Array.from({ length: 22 }, (_, i) => {
   const side = i % 2 === 0 ? -1 : 1;
@@ -90,9 +86,6 @@ export const OpeningCard: React.FC<OpeningCardProps> = ({ onOpenStart, onOpened,
 
   const reduceMotion = useReducedMotion();
   const [opening, setOpening] = useState(false);
-  // Falls back to the CSS shimmer when WebGL (or the gold map) isn't available
-  const [glintFallback, setGlintFallback] = useState(false);
-  const handleGlintUnavailable = useCallback(() => setGlintFallback(true), []);
   const openingRef = useRef(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -126,7 +119,7 @@ export const OpeningCard: React.FC<OpeningCardProps> = ({ onOpenStart, onOpened,
 
   return (
     <div
-      className={`opening-card${mobileOnly ? ' opening-card--mobile-only' : ''}${opening ? ' is-opening' : ''}${reduceMotion ? ' is-reduced-motion' : ''}${glintFallback || !IMG.goldMap ? ' opening-card--no-glint' : ''}`}
+      className={`opening-card${mobileOnly ? ' opening-card--mobile-only' : ''}${opening ? ' is-opening' : ''}${reduceMotion ? ' is-reduced-motion' : ''}`}
       style={
         {
           '--oc-card': IMG.card ? `url("${IMG.card}")` : 'none',
@@ -188,19 +181,6 @@ export const OpeningCard: React.FC<OpeningCardProps> = ({ onOpenStart, onOpened,
             ))}
           </div>
         )}
-
-        {/* Light running up through the gold filigree on tap (CSS shimmer as a fallback) */}
-        {!reduceMotion && !glintFallback && IMG.goldMap && (
-          <GoldGlint
-            src={IMG.goldMap}
-            media={mobileOnly ? OPENING_CARD_MOBILE_MEDIA : undefined}
-            active={opening}
-            durationMs={GLINT_MS}
-            className="opening-card__glint"
-            onUnavailable={handleGlintUnavailable}
-          />
-        )}
-        <div className="opening-card__shimmer" aria-hidden="true" />
 
         {/* Ribbon band wrapped around the card: the band art on each side, meeting under the bow
             (the right half is mirrored so the satin's sheen is symmetrical) */}

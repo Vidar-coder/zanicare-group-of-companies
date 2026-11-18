@@ -5,6 +5,7 @@ import { cinzel } from "@/lib/fonts"
 import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock"
 import { Button } from "@/components/ui/button"
 import { proposalRoleDefinitions } from "@/content/proposal-roles"
+import { siteConfig } from "@/content/site"
 import {
   AlertCircle,
   AlertTriangle,
@@ -51,6 +52,10 @@ interface EntourageSponsorsProps {
 }
 
 type Tab = "entourage" | "sponsors"
+// Second tab: branch manager + officer-in-charge pairs (stored in the principal-sponsor sheet:
+// MalePrincipalSponsor = Branch Manager, FemalePrincipalSponsor = Officer-in-Charge)
+const SHOW_SPONSORS = true
+const SHOW_SPONSORS_LIST_SWITCH = false
 type Confirm = { kind: "entourage"; member: Entourage } | { kind: "sponsor"; sponsor: PrincipalSponsor }
 type Done = { title: string; eyebrow: string; name: string; text: string; deleted?: boolean }
 
@@ -58,8 +63,11 @@ const EMPTY_MEMBER = { Name: "", RoleCategory: "", RoleTitle: "", Email: "" }
 const EMPTY_SPONSOR = { MalePrincipalSponsor: "", FemalePrincipalSponsor: "" }
 
 // Suggestions for the role field: categories used by the proposal invites + common ones
+// Branch names first (the invitation groups representatives by branch), then leadership
 const DEFAULT_ROLE_CATEGORIES = [
   ...new Set([
+    ...siteConfig.entourage.leadershipCategories.slice(0, 1),
+    ...siteConfig.branches.list.map((b) => b.name),
     ...proposalRoleDefinitions.map((r) => r.roleCategory).filter((c): c is string => Boolean(c) && c !== "Principal Sponsors"),
     "Maid of Honor",
     "Matron of Honor",
@@ -72,7 +80,7 @@ const FIELD =
   "w-full rounded-xl border border-dash-border bg-dash-bg px-3 py-2.5 outline-none transition-colors focus:border-dash-focus focus:bg-white focus:ring-2 focus:ring-dash-focus/40"
 
 const sponsorLabel = (s: PrincipalSponsor) =>
-  [s.MalePrincipalSponsor, s.FemalePrincipalSponsor].filter((n) => n && n.trim()).join(" & ") || "Sponsor pair"
+  [s.MalePrincipalSponsor, s.FemalePrincipalSponsor].filter((n) => n && n.trim()).join(" & ") || "Manager & OIC"
 
 function FieldLabel({ htmlFor, children, required = false }: { htmlFor?: string; children: ReactNode; required?: boolean }) {
   return (
@@ -154,14 +162,14 @@ function RoleCombobox({
             setOpen(false)
           }
         }}
-        placeholder="Type to search roles…"
+        placeholder="Type or pick a branch…"
         className={`${FIELD} pr-9`}
       />
       <button
         type="button"
         tabIndex={-1}
         onClick={() => setOpen((o) => !o)}
-        aria-label="Show roles"
+        aria-label="Show branches"
         className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-gray-400 hover:text-dash-primary"
       >
         <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
@@ -197,7 +205,7 @@ function RoleCombobox({
               onClick={() => pick(value.trim())}
               className="cursor-pointer border-t border-dash-tint px-3 py-2 text-xs text-gray-500 hover:bg-dash-surface"
             >
-              Use &ldquo;<span className="font-medium text-dash-ink">{value.trim()}</span>&rdquo; as a new role
+              Use &ldquo;<span className="font-medium text-dash-ink">{value.trim()}</span>&rdquo; as a new group
             </li>
           )}
         </ul>
@@ -456,25 +464,26 @@ export function EntourageSponsors({
       return
     }
     if (!entourageFormData.RoleCategory.trim()) {
-      showError("Please choose a role")
+      showError("Please choose a branch")
       return
     }
     const editing = editingEntourage
     const ok = editing
       ? await run("Saving changes…", "/api/entourage", "PUT", { action: "update", originalName: editing.Name, ...entourageFormData })
-      : await run("Adding member…", "/api/entourage", "POST", entourageFormData)
+      : await run("Adding representative…", "/api/entourage", "POST", entourageFormData)
     if (!ok) {
       showError(editing ? "We couldn't update this member. Please try again." : "We couldn't add this member. Please try again.")
       return
     }
     const name = entourageFormData.Name
-    const role = entourageFormData.RoleTitle || entourageFormData.RoleCategory
     closeEntourageForm()
     setDone({
-      eyebrow: "Entourage updated",
+      eyebrow: "Representatives updated",
       title: editing ? "Changes Saved" : "Member Added",
       name,
-      text: editing ? "is up to date in your entourage." : `is now part of your entourage${role ? ` as ${role}` : ""}.`,
+      text: editing
+        ? "is up to date on the invitation."
+        : `now represents ${entourageFormData.RoleCategory.trim() || "their branch"}${entourageFormData.RoleTitle.trim() ? ` as ${entourageFormData.RoleTitle.trim()}` : ""}.`,
     })
     onRefreshEntourage()
     window.dispatchEvent(new Event("entourageUpdated"))
@@ -491,7 +500,7 @@ export function EntourageSponsors({
 
   const saveSponsor = async () => {
     if (!sponsorFormData.MalePrincipalSponsor.trim() && !sponsorFormData.FemalePrincipalSponsor.trim()) {
-      showError("Add at least one sponsor name")
+      showError("Add a branch manager or an officer-in-charge")
       return
     }
     const editing = editingSponsor
@@ -501,18 +510,18 @@ export function EntourageSponsors({
           originalFemale: editing.FemalePrincipalSponsor,
           ...sponsorFormData,
         })
-      : await run("Adding sponsors…", sponsorsApi, "POST", sponsorFormData)
+      : await run("Adding manager & OIC…", sponsorsApi, "POST", sponsorFormData)
     if (!ok) {
-      showError(editing ? "We couldn't update these sponsors. Please try again." : "We couldn't add these sponsors. Please try again.")
+      showError(editing ? "We couldn't update this pair. Please try again." : "We couldn't add this pair. Please try again.")
       return
     }
     const name = sponsorLabel(sponsorFormData)
     closeSponsorForm()
     setDone({
-      eyebrow: "Principal sponsors updated",
-      title: editing ? "Changes Saved" : "Sponsors Added",
+      eyebrow: "Branch managers updated",
+      title: editing ? "Changes Saved" : "Manager & OIC Added",
       name,
-      text: editing ? "are up to date in your principal sponsors." : "are now listed as your principal sponsors.",
+      text: editing ? "are up to date." : "are now listed as a branch manager & officer-in-charge.",
     })
     onRefreshSponsors()
   }
@@ -524,22 +533,22 @@ export function EntourageSponsors({
     setConfirm(null)
 
     if (target.kind === "entourage") {
-      const ok = await run("Removing member…", "/api/entourage", "DELETE", { Name: target.member.Name })
+      const ok = await run("Removing representative…", "/api/entourage", "DELETE", { Name: target.member.Name })
       if (!ok) return showError("We couldn't remove this member. Please try again.")
-      setDone({ eyebrow: "Entourage updated", title: "Member Removed", name: target.member.Name, text: "has been removed from your entourage.", deleted: true })
+      setDone({ eyebrow: "Representatives updated", title: "Representative Removed", name: target.member.Name, text: "has been removed from the invitation.", deleted: true })
       onRefreshEntourage()
       window.dispatchEvent(new Event("entourageUpdated"))
     } else {
-      const ok = await run("Removing sponsors…", sponsorsApi, "DELETE", {
+      const ok = await run("Removing manager & OIC…", sponsorsApi, "DELETE", {
         MalePrincipalSponsor: target.sponsor.MalePrincipalSponsor,
         FemalePrincipalSponsor: target.sponsor.FemalePrincipalSponsor,
       })
-      if (!ok) return showError("We couldn't remove these sponsors. Please try again.")
+      if (!ok) return showError("We couldn't remove this pair. Please try again.")
       setDone({
-        eyebrow: "Principal sponsors updated",
-        title: "Sponsors Removed",
+        eyebrow: "Branch managers updated",
+        title: "Pair Removed",
         name: sponsorLabel(target.sponsor),
-        text: "have been removed from your principal sponsors.",
+        text: "have been removed from the branch managers list.",
         deleted: true,
       })
       onRefreshSponsors()
@@ -571,7 +580,7 @@ export function EntourageSponsors({
     <div className="space-y-4 sm:space-y-6">
       {/* Heading */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-xl font-bold text-dash-ink sm:text-2xl">Entourage & Principal Sponsors</h2>
+        <h2 className="text-xl font-bold text-dash-ink sm:text-2xl">{SHOW_SPONSORS ? "Representatives & Branch Managers" : "Branch Representatives"}</h2>
         <button
           type="button"
           onClick={() => (activeSubTab === "entourage" ? onRefreshEntourage() : onRefreshSponsors())}
@@ -594,12 +603,16 @@ export function EntourageSponsors({
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+      <div className={`grid grid-cols-2 gap-2.5 sm:gap-4 ${SHOW_SPONSORS ? "lg:grid-cols-4" : ""}`}>
         {[
-          { label: "Entourage", value: entourage.length, tone: "border-dash-border bg-white text-dash-primary" },
-          { label: "Role groups", value: roleCategories.length, tone: "border-amber-200 bg-amber-50 text-amber-700" },
-          { label: "Sponsor pairs", value: principalSponsors.length, tone: "border-purple-200 bg-purple-50 text-purple-700" },
-          { label: "Sponsors", value: sponsorPeople, tone: "border-blue-200 bg-blue-50 text-blue-700" },
+          { label: "Representatives", value: entourage.length, tone: "border-dash-border bg-white text-dash-primary" },
+          { label: "Branches & groups", value: roleCategories.length, tone: "border-amber-200 bg-amber-50 text-amber-700" },
+          ...(SHOW_SPONSORS
+            ? [
+                { label: "Manager pairs", value: principalSponsors.length, tone: "border-purple-200 bg-purple-50 text-purple-700" },
+                { label: "Managers & OICs", value: sponsorPeople, tone: "border-blue-200 bg-blue-50 text-blue-700" },
+              ]
+            : []),
         ].map((stat) => (
           <div key={stat.label} className={`rounded-lg border p-3 shadow-sm sm:p-4 ${stat.tone}`}>
             <div className="text-xl font-bold sm:text-2xl">{stat.value}</div>
@@ -609,11 +622,12 @@ export function EntourageSponsors({
       </div>
 
       {/* Segmented switch */}
+      {SHOW_SPONSORS && (
       <div className="grid grid-cols-2 gap-1 rounded-xl border border-dash-border bg-dash-surface p-1" role="tablist">
         {(
           [
-            { id: "entourage", label: "Entourage", short: "Entourage", count: entourage.length, icon: <Crown className="h-4 w-4 shrink-0" /> },
-            { id: "sponsors", label: "Principal Sponsors", short: "Sponsors", count: principalSponsors.length, icon: <UserCheck className="h-4 w-4 shrink-0" /> },
+            { id: "entourage", label: "Representatives", short: "People", count: entourage.length, icon: <Crown className="h-4 w-4 shrink-0" /> },
+            { id: "sponsors", label: "Managers & OICs", short: "Managers", count: principalSponsors.length, icon: <UserCheck className="h-4 w-4 shrink-0" /> },
           ] as const
         ).map((tab) => {
           const active = activeSubTab === tab.id
@@ -640,6 +654,7 @@ export function EntourageSponsors({
           )
         })}
       </div>
+      )}
 
       {/* Search + add */}
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
@@ -649,20 +664,20 @@ export function EntourageSponsors({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={activeSubTab === "entourage" ? "Search by name, role or email..." : "Search sponsors..."}
+            placeholder={activeSubTab === "entourage" ? "Search by name, branch or position..." : "Search managers or OICs..."}
             className="w-full rounded-lg border border-dash-border bg-white py-2.5 pl-10 pr-4 outline-none focus:ring-2 focus:ring-dash-focus"
           />
         </div>
         <Button onClick={openAdd} className="h-11 rounded-full bg-dash-primary px-6 text-white hover:brightness-110 sm:h-10">
           <Plus className="mr-1.5 h-4 w-4" />
-          {activeSubTab === "entourage" ? "Add Member" : "Add Sponsors"}
+          {activeSubTab === "entourage" ? "Add Representative" : "Add Manager & OIC"}
         </Button>
       </div>
 
-      {/* Sponsor sheet switch: which invite page's sponsors are being edited */}
-      {activeSubTab === "sponsors" && (
+      {/* Sheet switch (Invite One / Two) — a wedding feature; the party uses one managers list */}
+      {SHOW_SPONSORS_LIST_SWITCH && activeSubTab === "sponsors" && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-gray-500">Editing sponsors for</span>
+          <span className="text-xs font-medium text-gray-500">Editing managers for</span>
           {(
             [
               { id: "one", label: "Invite One", path: "/inviteone" },
@@ -702,7 +717,7 @@ export function EntourageSponsors({
                   active ? "border-dash-accent bg-dash-accent text-white" : "border-dash-border bg-white text-gray-600 hover:text-dash-ink"
                 }`}
               >
-                {cat === "all" ? "All roles" : cat} <span className={active ? "text-white/80" : "text-gray-400"}>{count}</span>
+                {cat === "all" ? "All branches" : cat} <span className={active ? "text-white/80" : "text-gray-400"}>{count}</span>
               </button>
             )
           })}
@@ -713,12 +728,12 @@ export function EntourageSponsors({
       {activeSubTab === "entourage" &&
         (filteredEntourage.length === 0 ? (
           emptyState(
-            query || roleFilter !== "all" ? "No matching members" : "No entourage yet",
+            query || roleFilter !== "all" ? "No matching representatives" : "No representatives yet",
             isLoading
-              ? "Loading entourage..."
+              ? "Loading representatives..."
               : query || roleFilter !== "all"
-                ? "Try a different name or role."
-                : "Add your wedding party, or send proposal invites — confirmed roles appear here.",
+                ? "Try a different name or branch."
+                : "Add the people representing each branch — they appear on the invitation under their branch heading.",
             <Crown className="h-7 w-7" />,
           )
         ) : (
@@ -762,7 +777,7 @@ export function EntourageSponsors({
                 <thead className="bg-dash-border text-dash-ink">
                   <tr>
                     <th className="px-4 py-3 text-xs font-semibold uppercase lg:px-6">Name</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase lg:px-6">Role</th>
+                    <th className="px-4 py-3 text-xs font-semibold uppercase lg:px-6">Branch</th>
                     <th className="px-4 py-3 text-xs font-semibold uppercase lg:px-6">Title</th>
                     <th className="px-4 py-3 text-xs font-semibold uppercase lg:px-6">Email</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold uppercase lg:px-6">Actions</th>
@@ -816,8 +831,8 @@ export function EntourageSponsors({
       {activeSubTab === "sponsors" &&
         (filteredSponsors.length === 0 ? (
           emptyState(
-            query ? "No matching sponsors" : "No principal sponsors yet",
-            isLoading ? "Loading principal sponsors..." : query ? "Try a different name." : "Add your Ninong and Ninang pairs here.",
+            query ? "No matching managers" : "No branch managers yet",
+            isLoading ? "Loading branch managers..." : query ? "Try a different name." : "Add each branch's manager and officer-in-charge here.",
             <HeartHandshake className="h-7 w-7" />,
           )
         ) : (
@@ -830,14 +845,14 @@ export function EntourageSponsors({
                 </div>
                 <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                   <div className="min-w-0 rounded-xl bg-dash-surface px-3 py-2.5 text-center">
-                    <p className="text-[10px] font-medium uppercase tracking-wide text-gray-500">Ninong</p>
+                    <p className="text-[10px] font-medium uppercase tracking-wide text-gray-500">Branch Manager</p>
                     <p className={`${playfair.className} mt-0.5 text-sm font-semibold text-dash-ink [overflow-wrap:anywhere]`}>
                       {sponsor.MalePrincipalSponsor || "—"}
                     </p>
                   </div>
                   <span className={`${playfair.className} text-lg italic text-dash-line`} aria-hidden>&amp;</span>
                   <div className="min-w-0 rounded-xl bg-dash-surface px-3 py-2.5 text-center">
-                    <p className="text-[10px] font-medium uppercase tracking-wide text-gray-500">Ninang</p>
+                    <p className="text-[10px] font-medium uppercase tracking-wide text-gray-500">Officer-in-Charge</p>
                     <p className={`${playfair.className} mt-0.5 text-sm font-semibold text-dash-ink [overflow-wrap:anywhere]`}>
                       {sponsor.FemalePrincipalSponsor || "—"}
                     </p>
@@ -859,29 +874,29 @@ export function EntourageSponsors({
       {/* ── Forms ──────────────────────────────────────────────────────── */}
       {entourageFormOpen && (
         <FormSheet
-          eyebrow="Wedding Party"
-          title={editingEntourage ? "Edit Member" : "Add Member"}
-          subtitle={editingEntourage ? "Update this member's name or role." : "Add someone to your entourage."}
+          eyebrow="Our People"
+          title={editingEntourage ? "Edit Representative" : "Add Representative"}
+          subtitle={editingEntourage ? "Update this person's name, branch or position." : "Add someone representing a branch."}
           onClose={closeEntourageForm}
           onSubmit={() => void saveEntourage()}
           busy={Boolean(busy)}
-          submitLabel={editingEntourage ? "Save Changes" : "Add Member"}
+          submitLabel={editingEntourage ? "Save Changes" : "Add Representative"}
           help={{
             title: (
               <>
-                <span className="text-dash-primary">{entourageFormData.Name.trim() || "This member"}</span> will appear in the Entourage section of
-                your invitation.
+                <span className="text-dash-primary">{entourageFormData.Name.trim() || "This person"}</span> will appear in the Branch
+                Representatives section of your invitation.
               </>
             ),
             points: [
               <>
-                <span className="font-medium">Role</span> is the group heading they&apos;re listed under (e.g., Bridesmaids).
+                <span className="font-medium">Branch</span> is the heading they&apos;re listed under (e.g., Molino, Cebu City).
               </>,
               <>
-                <span className="font-medium">Title</span> is their own label within the group (e.g., Maid of Honor).
+                <span className="font-medium">Position</span> is shown under their name (e.g., Branch Manager).
               </>,
-              "Pick a role from the list so they land in the right group; a new role shows as its own group.",
-              "People who accept a proposal invite are added here automatically.",
+              "Pick a branch from the list so they land under the right heading. Use \"Leadership\" for the Founder and executives — they're listed first.",
+              "Anything that isn't a branch (e.g., a department) gets its own heading after the branches.",
             ],
           }}
         >
@@ -899,7 +914,7 @@ export function EntourageSponsors({
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-1">
-              <FieldLabel htmlFor="ent-role" required>Role</FieldLabel>
+              <FieldLabel htmlFor="ent-role" required>Branch</FieldLabel>
               <RoleCombobox
                 value={entourageFormData.RoleCategory}
                 onChange={(v) => setEntourageFormData((f) => ({ ...f, RoleCategory: v }))}
@@ -907,12 +922,12 @@ export function EntourageSponsors({
               />
             </div>
             <div className="space-y-1">
-              <FieldLabel htmlFor="ent-title">Title</FieldLabel>
+              <FieldLabel htmlFor="ent-title">Position</FieldLabel>
               <input
                 id="ent-title"
                 value={entourageFormData.RoleTitle}
                 onChange={(e) => setEntourageFormData({ ...entourageFormData, RoleTitle: e.target.value })}
-                placeholder="e.g., Maid of Honor"
+                placeholder="e.g., Branch Manager"
                 className={FIELD}
               />
             </div>
@@ -933,25 +948,25 @@ export function EntourageSponsors({
 
       {sponsorFormOpen && (
         <FormSheet
-          eyebrow="Principal Sponsors"
-          title={editingSponsor ? "Edit Sponsors" : "Add Sponsors"}
-          subtitle="Add a Ninong and Ninang pair. At least one name is needed."
+          eyebrow="Branch Managers"
+          title={editingSponsor ? "Edit Manager & OIC" : "Add Manager & OIC"}
+          subtitle="Add a branch manager and officer-in-charge pair. At least one name is needed."
           onClose={closeSponsorForm}
           onSubmit={() => void saveSponsor()}
           busy={Boolean(busy)}
-          submitLabel={editingSponsor ? "Save Changes" : "Add Sponsors"}
+          submitLabel={editingSponsor ? "Save Changes" : "Add Pair"}
           help={{
-            title: "Each pair appears together under Principal Sponsors on your invitation.",
+            title: "Each pair is kept together as one branch's leadership.",
             points: [
-              "Ninong is listed on the left, Ninang on the right.",
+              "The branch manager is listed on the left, the officer-in-charge on the right.",
               "Add titles you'd like shown (e.g., Mr., Mrs., Dr.).",
               "If one side is still unknown, leave it blank and fill it in later.",
-              "Sponsors who accept a proposal invite are added here automatically.",
+              "Tip: add the branch after the name, e.g. \"Maria Santos (Molino)\".",
             ],
           }}
         >
           <div className="space-y-1">
-            <FieldLabel htmlFor="sp-male">Ninong</FieldLabel>
+            <FieldLabel htmlFor="sp-male">Branch Manager</FieldLabel>
             <input
               id="sp-male"
               autoComplete="off"
@@ -962,7 +977,7 @@ export function EntourageSponsors({
             />
           </div>
           <div className="space-y-1">
-            <FieldLabel htmlFor="sp-female">Ninang</FieldLabel>
+            <FieldLabel htmlFor="sp-female">Officer-in-Charge</FieldLabel>
             <input
               id="sp-female"
               autoComplete="off"
@@ -994,10 +1009,10 @@ export function EntourageSponsors({
                 <AlertTriangle className="h-6 w-6 text-dash-danger-text" />
               </span>
               <p className={`${cinzel.className} mt-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-dash-danger-text/80`}>
-                {confirm.kind === "entourage" ? "Remove member" : "Remove sponsors"}
+                {confirm.kind === "entourage" ? "Remove representative" : "Remove manager & OIC"}
               </p>
               <h3 id="ent-confirm-title" className={`${playfair.className} mt-1 text-[1.4rem] font-semibold leading-tight text-dash-ink`}>
-                {confirm.kind === "entourage" ? "Remove from entourage?" : "Remove this sponsor pair?"}
+                {confirm.kind === "entourage" ? "Remove this representative?" : "Remove this manager & OIC pair?"}
               </h3>
               <div className="mx-auto mt-4 max-w-[17rem] rounded-2xl border border-dash-border bg-white px-4 py-3">
                 <p className={`${playfair.className} text-base font-semibold text-dash-ink [overflow-wrap:anywhere]`}>
@@ -1009,8 +1024,8 @@ export function EntourageSponsors({
               </div>
               <p className="mx-auto mt-3 max-w-[17rem] text-sm leading-relaxed text-gray-600">
                 {confirm.kind === "entourage"
-                  ? "They'll no longer appear in your entourage on the invitation. This can't be undone."
-                  : "They'll no longer appear as principal sponsors on the invitation. This can't be undone."}
+                  ? "They'll no longer appear under their branch on the invitation. This can't be undone."
+                  : "They'll be removed from the branch managers list. This can't be undone."}
               </p>
               <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row">
                 <Button

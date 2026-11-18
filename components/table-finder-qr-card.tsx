@@ -104,7 +104,7 @@ export function TableFinderQrCard() {
     if (!canvas) return
 
     const link = document.createElement("a")
-    link.download = `${fileSlug || "wedding"}-find-your-table-qr.png`
+    link.download = `${fileSlug || "christmas-party"}-find-your-table-qr.png`
     link.href = canvas.toDataURL("image/png")
     link.click()
   }

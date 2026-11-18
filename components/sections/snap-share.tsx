@@ -11,6 +11,7 @@ import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import Image from "next/image"
 import { PuhonBanner } from "@/components/puhon-closing"
 import { SilkScreen } from "@/components/silk-screen"
+import { MonogramMark } from "@/components/monogram-mark"
 
 
 const theSeasons = localFont({
@@ -29,26 +30,27 @@ const aboveTheBeyond = localFont({
 // with a deep olive halo.
 const OUTSIDE_TEXT = "#FFFFFF"
 const OUTSIDE_TEXT_MUTED = "rgb(255 255 255 / 92%)"
-const OUTSIDE_SCRIPT = "#F6E9DF"
+const OUTSIDE_SCRIPT = "#F5F5F5"
 const OUTSIDE_TITLE_SHADOW =
   "0 1px 1px rgb(18 22 14 / 60%), 0 2px 10px rgb(18 22 14 / 55%), 0 8px 28px rgb(18 22 14 / 40%)"
 const READABLE_SHADOW = "0 1px 2px rgb(18 22 14 / 70%), 0 2px 10px rgb(18 22 14 / 50%)"
 
-// Card palette — light motif: white / sage-mist cards, sage edges, charcoal headings,
-// deep-sage labels, yellow + orange accents. Burgundy stays on buttons only.
-const YELLOW = "#F2C230"
-const ORANGE = "#E8833A"
-const SUN_LINE = `linear-gradient(to right, transparent, ${YELLOW}, ${ORANGE}, transparent)`
+// Card palette — black-tie ivory & gold (matches the RSVP modals and lib/lux-dark.ts):
+// ivory cards with fine gold edges, charcoal headings, antique-gold labels, black satin buttons.
+const YELLOW = "#E2B75A" // champagne gold — glows, rings
+const ORANGE = "#B8862B" // deep gold — active edges
+const SUN_LINE = `linear-gradient(to right, transparent, ${ORANGE}, #F3D27A, ${ORANGE}, transparent)`
 const TEAL = "var(--color-welcome-text)" // charcoal headings
 const BUTTON =
-  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
-const BLUE = "color-mix(in srgb, var(--color-motif-silver) 62%, #1F2618)" // deep sage labels
-const IVORY = "#FFF8F2"
-const HAIRLINE = "color-mix(in srgb, var(--color-motif-silver) 55%, transparent)"
-const PALE = "color-mix(in srgb, var(--color-motif-silver) 14%, white)"
-const TEAL_SOFT = "color-mix(in srgb, var(--color-welcome-text) 75%, white)"
+  "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)"
+const BLUE = "#8A6A22" // antique gold labels (readable on ivory)
+const IVORY = "#FBF7EE"
+const HAIRLINE = "rgb(201 162 74 / 45%)"
+const PALE = "color-mix(in srgb, #C9A24A 12%, white)"
+const TEAL_SOFT = "color-mix(in srgb, var(--color-welcome-text) 70%, white)"
+const BUTTON_EDGE = "rgb(201 162 74 / 80%)"
 const BUTTON_SHADOW =
-  `0 0 0 3px color-mix(in srgb, ${YELLOW} 28%, transparent), 0 12px 24px -12px color-mix(in srgb, var(--color-welcome-navy) 50%, transparent)`
+  `0 0 0 3px color-mix(in srgb, ${YELLOW} 28%, transparent), 0 12px 24px -12px rgb(0 0 0 / 55%)`
 
 const palette = {
   body: "var(--color-welcome-text)",
@@ -75,19 +77,23 @@ const ct = {
 
 const cardStyle = {
   background:
-    "radial-gradient(90% 35% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-silver) 12%, white) 100%)",
+    `radial-gradient(90% 35% at 50% 0%, color-mix(in srgb, ${YELLOW} 14%, white) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, ${IVORY} 60%, ${PALE} 100%)`,
   border: `1px solid ${HAIRLINE}`,
   boxShadow:
-    "0 0 0 5px rgb(255 255 255 / 25%), 0 24px 50px -28px rgb(31 38 24 / 50%)",
+    "0 0 0 5px rgb(0 0 0 / 25%), 0 0 0 6px rgb(201 162 74 / 35%), 0 24px 50px -28px rgb(0 0 0 / 70%)",
 } as const
 
 
 function OutsideDivider() {
   return (
-    <div className="flex items-center justify-center gap-1.5">
-      <span className="h-px w-6 sm:w-10" style={outsideDividerLineStyle} />
-      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: YELLOW, boxShadow: "0 1px 3px rgb(18 22 14 / 50%)" }} aria-hidden />
-      <span className="h-px w-6 sm:w-10" style={outsideDividerLineStyle} />
+    <div
+      className="flex items-center justify-center gap-2"
+      style={{ filter: "drop-shadow(0 1px 3px rgb(18 22 14 / 55%))" }}
+      aria-hidden
+    >
+      <span className="h-px w-8 sm:w-14" style={outsideDividerLineStyle} />
+      <MonogramMark color="#FFFFFF" className="h-4 w-[1.15rem] sm:h-[1.15rem] sm:w-5" />
+      <span className="h-px w-8 sm:w-14" style={outsideDividerLineStyle} />
     </div>
   )
 }
@@ -162,7 +168,7 @@ function PrimaryButton({
       className={`${cinzel.className} inline-flex items-center justify-center gap-1.5 rounded-full border px-5 py-2.5 font-semibold uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-motif-accent)] sm:px-6 ${ct.btn}`}
       style={{
         background: active ? TEAL : BUTTON,
-        borderColor: "rgb(255 255 255 / 70%)",
+        borderColor: BUTTON_EDGE,
         color: IVORY,
         boxShadow: BUTTON_SHADOW,
       }}
@@ -179,7 +185,7 @@ function MomentPhoto({ src, alt, sizes, className = "" }: { src: string; alt: st
       className={`group relative h-full w-full overflow-hidden rounded-xl ${className}`}
       style={{
         background: PALE,
-        boxShadow: `0 0 0 1px ${HAIRLINE}, 0 10px 22px -16px rgb(31 38 24 / 55%)`,
+        boxShadow: `0 0 0 1px ${HAIRLINE}, 0 10px 22px -16px rgb(0 0 0 / 55%)`,
       }}
     >
       <Image
@@ -202,7 +208,7 @@ const SOCIAL = {
   instagram: { Icon: Instagram, label: "Instagram" },
   facebook: { Icon: Facebook, label: "Facebook" },
   tiktok: { Icon: Share2, label: "TikTok" },
-  twitter: { Icon: Twitter, label: "Twitter" },
+  twitter: { Icon: Twitter, label: "X" },
 } as const
 
 export function SnapShare() {
@@ -213,6 +219,7 @@ export function SnapShare() {
   const [copiedAllHashtags, setCopiedAllHashtags] = useState(false)
   const [copiedDriveLink, setCopiedDriveLink] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [captionCopiedFor, setCaptionCopiedFor] = useState<string | null>(null)
 
   const { groomNickname, brideNickname } = siteConfig.couple
   const coupleDisplayName = `${groomNickname} & ${brideNickname}`
@@ -222,8 +229,6 @@ export function SnapShare() {
   const uploadLink = content.googleDriveLink
   const hashtags = content.hashtag
   const allHashtagsText = hashtags.join(" ")
-  const sanitizedGroomName = groomNickname.replace(/\s+/g, "")
-  const sanitizedBrideName = brideNickname.replace(/\s+/g, "")
   const shareText = `${fill(content.social.shareText)} ${websiteUrl} ${allHashtagsText}`
 
   // Plain display mode never shows the photo card
@@ -248,6 +253,13 @@ export function SnapShare() {
       tiktok: "https://www.tiktok.com/",
     }
     const target = urls[platform]
+    // Instagram and TikTok have no share link — copy the caption + hashtags so guests can paste it
+    if (platform === "instagram" || platform === "tiktok") {
+      void copyText(shareText, () => {
+        setCaptionCopiedFor(platform)
+        setTimeout(() => setCaptionCopiedFor(null), 2500)
+      })
+    }
     if (target) window.open(target, "_blank", "width=600,height=400")
   }
 
@@ -277,7 +289,7 @@ export function SnapShare() {
   ) => (
     <div
       className="mx-auto flex w-full max-w-[240px] flex-col items-center rounded-2xl p-3 sm:p-4"
-      style={{ background: "#FFFFFF", boxShadow: `0 0 0 1px ${HAIRLINE}, 0 0 0 5px color-mix(in srgb, ${YELLOW} 18%, transparent), 0 14px 28px -20px rgb(31 38 24 / 45%)` }}
+      style={{ background: "#FFFFFF", boxShadow: `0 0 0 1px ${HAIRLINE}, 0 0 0 5px color-mix(in srgb, ${YELLOW} 16%, transparent), 0 14px 28px -20px rgb(0 0 0 / 45%)` }}
     >
       <div className="flex w-full max-w-full justify-center overflow-hidden rounded-xl bg-white">
         <QRCodeCanvas
@@ -311,7 +323,7 @@ export function SnapShare() {
           onClick={() =>
             downloadCanvas(
               "snapshare-qr",
-              `${sanitizedGroomName.toLowerCase()}-${sanitizedBrideName.toLowerCase()}-wedding-qr.png`,
+              "zanicare-christmas-party-invitation-qr.png",
             )
           }
         >
@@ -355,7 +367,7 @@ export function SnapShare() {
               </span>
               <span
                 className={`${cinzel.className} flex flex-shrink-0 items-center gap-1 whitespace-nowrap ${sectionType.label} font-semibold uppercase tracking-wider`}
-                style={{ color: isCopied ? "color-mix(in srgb, #E8833A 75%, #44413C)" : BLUE }}
+                style={{ color: BLUE }}
               >
                 {isCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 {isCopied ? content.hashtags.copied : content.hashtags.copy}
@@ -398,22 +410,33 @@ export function SnapShare() {
       <div className="grid w-full min-w-0 grid-cols-2 gap-2 sm:gap-3">
         {content.social.platforms.map((platform) => {
           const { Icon, label } = SOCIAL[platform]
+          const captionCopied = captionCopiedFor === platform
           return (
             <button
               key={platform}
               type="button"
               onClick={() => shareOnSocial(platform)}
               className="group flex w-full min-w-0 items-center justify-center gap-2 rounded-xl px-3 py-3 transition-all duration-200 hover:-translate-y-0.5"
-              style={{ background: BUTTON, boxShadow: BUTTON_SHADOW }}
+              style={{ background: BUTTON, boxShadow: BUTTON_SHADOW, border: `1px solid ${BUTTON_EDGE}` }}
+              aria-label={`Share on ${label}`}
             >
-              <Icon className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5" style={{ color: IVORY }} />
+              {captionCopied ? (
+                <Check className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5" style={{ color: YELLOW }} />
+              ) : (
+                <Icon className="h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5" style={{ color: IVORY }} />
+              )}
               <span className={`${cinzel.className} ${ct.btn} truncate font-semibold uppercase tracking-[0.08em]`} style={{ color: IVORY }}>
-                {label}
+                {captionCopied ? content.social.captionCopied : label}
               </span>
             </button>
           )
         })}
       </div>
+      {content.social.note ? (
+        <p className={`font-goudy-italic ${ct.body} text-center`} style={{ color: TEAL_SOFT }}>
+          {content.social.note}
+        </p>
+      ) : null}
     </ContentCard>
   )
 
@@ -443,7 +466,7 @@ export function SnapShare() {
           {copiedDriveLink ? <Check className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" /> : <Copy className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" />}
           {copiedDriveLink ? content.upload.copied : content.upload.copyLink}
         </PrimaryButton>
-        <PrimaryButton onClick={() => downloadCanvas("album-qr", "album-qr.png")}>
+        <PrimaryButton onClick={() => downloadCanvas("album-qr", "zanicare-photo-album-qr.png")}>
           <Download className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" />
           {content.upload.downloadQr}
         </PrimaryButton>
@@ -452,7 +475,7 @@ export function SnapShare() {
           target="_blank"
           rel="noopener noreferrer"
           className={`${cinzel.className} inline-flex items-center justify-center gap-1.5 rounded-full px-5 py-2.5 font-semibold uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 sm:px-6 ${ct.btn}`}
-          style={{ background: BUTTON, color: IVORY, boxShadow: BUTTON_SHADOW, border: "1px solid rgb(255 255 255 / 70%)" }}
+          style={{ background: BUTTON, color: IVORY, boxShadow: BUTTON_SHADOW, border: `1px solid ${BUTTON_EDGE}` }}
         >
           <Share2 className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" />
           {content.upload.uploadButton}
@@ -506,16 +529,16 @@ export function SnapShare() {
                 {momentA ? (
                   <MomentPhoto
                     src={momentA}
-                    alt={`${coupleDisplayName} — favorite moment 1`}
+                    alt={`${content.moments.title} — photo 1`}
                     sizes="(max-width: 1024px) 55vw, 27vw"
                     className={momentB || momentC ? "col-span-3 row-span-2 aspect-[3/4]" : "col-span-5 row-span-2 aspect-[3/4]"}
                   />
                 ) : null}
                 {[momentB, momentC].filter(Boolean).map((src, i) => (
                   <MomentPhoto
-                    key={src}
+                    key={`${src}-${i}`}
                     src={src}
-                    alt={`${coupleDisplayName} — favorite moment ${i + 2}`}
+                    alt={`${content.moments.title} — photo ${i + 2}`}
                     sizes="(max-width: 1024px) 38vw, 18vw"
                     className={momentB && momentC ? "col-span-2" : "col-span-2 row-span-2"}
                   />

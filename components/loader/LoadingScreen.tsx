@@ -274,8 +274,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
           sideLeft={poster.sideLeft ?? []}
           sideRight={poster.sideRight ?? []}
           weddingOf={poster.weddingOf}
-          groomName={siteConfig.couple.groomNickname}
-          brideName={siteConfig.couple.brideNickname}
+          groomName={poster.titleTop || siteConfig.couple.groomNickname}
+          brideName={poster.titleBottom || siteConfig.couple.brideNickname}
           nameFontClass={theSeasons.className}
           andFontClass={aboveTheBeyond.className}
           dateText={
@@ -283,13 +283,13 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
               ? weddingDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
               : ''
           }
-          weekday={silkDate?.weekday ?? ''}
-          time={ceremonyLine}
-          arrivalTime={arrivalLine}
+          weekday={poster.showTime ? (silkDate?.weekday ?? '') : ''}
+          time={poster.showTime ? ceremonyLine : ''}
+          arrivalTime={poster.showTime ? arrivalLine : ''}
           venueName={poster.showVenue ? venueName : ''}
           venueAddress={poster.showVenue ? venueAddress : ''}
           corners={cornerDecos}
-          namesJoiner={namesJoiner}
+          namesJoiner={poster.titleTop || poster.titleBottom ? poster.titleJoiner : namesJoiner}
           photoVeil={poster.photoVeil}
           showProgress={poster.showProgress ?? true}
           showPercent={poster.showPercent ?? true}

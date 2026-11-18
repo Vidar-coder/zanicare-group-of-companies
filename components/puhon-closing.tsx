@@ -16,8 +16,8 @@ const theSeasons = localFont({
 })
 
 const BURGUNDY = "var(--color-welcome-navy)"
-const ROSE = "#44413C"
-const INK = "#44413C" // soft cocoa for the long verse line — gentler than burgundy, still high contrast
+const ROSE = "#1C1C1E"
+const INK = "#1C1C1E" // soft cocoa for the long verse line — gentler than burgundy, still high contrast
 const QUOTE_MARK = "color-mix(in srgb, #D9A08C 70%, transparent)"
 // Soft ivory edge keeps burgundy text crisp over pink or photos
 const glow = "0 1px 0 rgb(255 248 242 / 90%), 0 0 14px rgb(255 248 242 / 85%)"
@@ -44,6 +44,16 @@ const TONES = {
     // Layered deep-sage shadow: crisp edge plus a soft halo so ivory reads on any photo
     shadow:
       "0 1px 2px rgb(31 38 24 / 90%), 0 2px 8px rgb(31 38 24 / 65%), 0 0 22px rgb(31 38 24 / 50%)",
+  },
+  // Luxury dark: white and ivory lettering with gold accents, black shadow (About Us section)
+  gold: {
+    title: "#F5F5F5",
+    accent: "#E2B75A",
+    lead: "#F5F5F5",
+    body: "#EDE6D6",
+    mark: "rgb(226 183 90 / 55%)",
+    rule: "#C9A24A",
+    shadow: "0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%)",
   },
 } as const
 
@@ -143,7 +153,7 @@ export function PuhonBanner() {
     >
       {images.map((src, i) => (
         <div
-          key={src}
+          key={`${src}-${i}`}
           aria-hidden
           className="absolute inset-0 -z-20 transition-opacity duration-[1800ms] ease-in-out"
           style={{ opacity: i === active ? 1 : 0 }}

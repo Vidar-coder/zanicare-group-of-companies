@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, type CSSProperties, type ReactNode } from "react"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, MessageCircleQuestion } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { cinzel } from "@/lib/fonts"
 import localFont from "next/font/local"
@@ -10,6 +10,7 @@ import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
+import { LUX, LUX_CARD, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 
 const theSeasons = localFont({
@@ -24,34 +25,39 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Palette lives in globals.css → motif / welcome tokens.
-// White card, navy questions, body-blue answers; dusty blue marks the open question,
-// dusty-blue hairlines and a slate-blue diamond for ornaments.
-const TEAL = "var(--color-welcome-navy)"
-const BUTTON = "var(--color-welcome-heading)" // dusty blue — open question number
-const IVORY = "#FFF8F2"
-const BODY = "var(--color-welcome-text)"
-const ACCENT = "var(--color-welcome-heading)"
-const SKY_TINT = (pct: number) => `color-mix(in srgb, var(--color-motif-medium) ${pct}%, white)`
+// Luxury dark palette (lib/lux-dark.ts): black card with a gold edge, white questions, soft white
+// answers; gold marks the open question, gold hairlines and diamonds for ornaments.
+const BODY = LUX.body
+const ACCENT = LUX.gold
+// Row fills: a whisper of gold over black
+const SKY_TINT = (pct: number) => `rgb(226 183 90 / ${Math.max(3, Math.round(pct * 0.6))}%)`
 
-// Text sitting directly on the circle pattern: navy (or dusty blue) with a soft white edge
-const textGlow = "0 1px 0 rgb(255 255 255 / 90%), 0 0 12px rgb(255 255 255 / 75%)"
+// Text sitting directly on the pattern: white (or gold) with a dark edge
+const textGlow = LUX_TEXT_SHADOW
 const onBg = {
-  color: "var(--color-welcome-navy)",
+  color: LUX.white,
   textShadow: textGlow,
 } as const
-const onBgBlue = { color: "var(--color-welcome-heading)", textShadow: textGlow } as const
+const onBgBlue = { color: LUX.gold, textShadow: textGlow } as const
 
 const cardStyle = {
-  background:
-    "radial-gradient(90% 30% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-medium) 10%, white) 100%)",
-  border: "1px solid color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
-  boxShadow:
-    "0 0 0 6px rgb(255 255 255 / 45%), 0 26px 56px -30px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+  ...LUX_CARD,
+  boxShadow: `0 0 0 6px rgb(0 0 0 / 35%), ${LUX_CARD.boxShadow}`,
 } as const
 
+// Soft gold hairline
+const GOLD_HAIRLINE = "rgb(201 162 74 / 45%)"
 const dividerLineStyle = {
-  background: "linear-gradient(to right, transparent, var(--color-motif-yellow), transparent)",
+  background: `linear-gradient(to right, transparent, ${GOLD_HAIRLINE}, transparent)`,
+} as const
+
+// Open question: a quiet gold accent (tinted, not solid gold) so the answer stays the focus
+const OPEN = {
+  rowBorder: "rgb(201 162 74 / 38%)",
+  rowBar: "rgb(201 162 74 / 55%)",
+  badgeBg: "rgb(226 183 90 / 14%)",
+  badgeRing: "inset 0 0 0 1px rgb(201 162 74 / 65%)",
+  chevronBg: "rgb(226 183 90 / 12%)",
 } as const
 
 const ct = {
@@ -81,13 +87,13 @@ function DecoImg({ src, className }: { src: string; className: string }) {
   return <TintedDeco src={src} className={className} />
 }
 
-// Dusty-blue hairlines either side of a slate-blue diamond
+// Gold hairlines either side of a small gold diamond
 function DiamondDivider() {
   return (
     <div className="flex items-center justify-center gap-2" aria-hidden>
-      <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-yellow))" }} />
-      <span className="h-1.5 w-1.5 rotate-45" style={{ background: "var(--color-motif-accent)" }} />
-      <span className="h-px w-10 sm:w-16" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-yellow))" }} />
+      <span className="h-px w-10 sm:w-16" style={{ background: `linear-gradient(to right, transparent, ${GOLD_HAIRLINE})` }} />
+      <span className="h-1.5 w-1.5 rotate-45" style={{ background: LUX.gold }} />
+      <span className="h-px w-10 sm:w-16" style={{ background: `linear-gradient(to left, transparent, ${GOLD_HAIRLINE})` }} />
     </div>
   )
 }
@@ -138,7 +144,7 @@ function renderInline(text: string): ReactNode[] {
         key={i}
         href={href}
         {...(isAnchor ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-        className="font-semibold underline decoration-[color-mix(in_srgb,var(--color-motif-yellow)_70%,transparent)] underline-offset-2 transition-opacity hover:opacity-80"
+        className="font-semibold underline decoration-[rgb(201_162_74_/_55%)] underline-offset-2 transition-opacity hover:opacity-80"
         style={{ color: "var(--color-welcome-heading)" }}
         onClick={
           isAnchor
@@ -170,7 +176,7 @@ function FaqAnswer({ answer }: { answer: string }) {
                   <span
                     aria-hidden
                     className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rotate-45"
-                    style={{ background: "var(--color-motif-yellow)" }}
+                    style={{ background: "rgb(201 162 74 / 75%)" }}
                   />
                   <span>{renderInline(line.replace(/^\s*•\s*/, ""))}</span>
                 </li>
@@ -216,8 +222,8 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={background ? ivorySectionStyle : undefined}
     >
-      {/* Cream lace ground with lace edging + double border (on the invitation page the shared
-          wrapper paints these instead — see invitation-page.tsx) */}
+      {/* Dark ground with gold pattern + lace edging and double border (on the invitation page the
+          shared wrapper paints these instead — see invitation-page.tsx) */}
       {background && <IvoryBackdrop />}
       {background && content.showFrame && <div className="deco-frame" aria-hidden="true" />}
       <section
@@ -235,11 +241,11 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {/* Soft white glow so the heading reads cleanly over the circles */}
+          {/* Soft dark pool so the heading reads cleanly over the pattern */}
           <span
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[120%] w-[min(40rem,110%)] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-            style={{ background: "radial-gradient(ellipse at center, rgb(255 255 255 / 70%) 0%, rgb(255 255 255 / 30%) 50%, transparent 72%)" }}
+            style={{ background: "radial-gradient(ellipse at center, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 25%) 50%, transparent 72%)" }}
           />
           <DecoImg
             src={decos.headerOrnament}
@@ -295,17 +301,18 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
                     variants={itemVariants}
                     className="relative overflow-hidden rounded-2xl transition-all duration-300"
                     style={{
-                      background: isOpen ? SKY_TINT(14) : SKY_TINT(5),
-                      border: `1px solid ${isOpen ? "color-mix(in srgb, var(--color-motif-medium) 70%, transparent)" : "color-mix(in srgb, var(--color-motif-medium) 30%, transparent)"}`,
+                      background: isOpen ? SKY_TINT(9) : SKY_TINT(4),
+                      border: `1px solid ${isOpen ? OPEN.rowBorder : "rgb(142 142 147 / 28%)"}`,
                       boxShadow: isOpen
-                        ? "inset 3px 0 0 var(--color-motif-yellow), 0 12px 24px -16px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)"
+                        ? `inset 2px 0 0 ${OPEN.rowBar}, 0 12px 24px -16px rgb(0 0 0 / 80%)`
                         : "none",
                     }}
                   >
                     <button
                       type="button"
                       onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className="group flex w-full items-center gap-3 px-3.5 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-motif-accent)] sm:px-5 sm:py-3.5"
+                      id={`${contentId}-button`}
+                      className="group flex w-full items-center gap-3 rounded-2xl px-3.5 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[rgb(201_162_74_/_70%)] sm:px-5 sm:py-3.5"
                       aria-expanded={isOpen}
                       aria-controls={contentId}
                     >
@@ -313,16 +320,11 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
                         className={`${cinzel.className} flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[0.66rem] font-semibold tabular-nums tracking-[0.02em] transition-all duration-300 sm:h-8 sm:w-8 sm:text-[0.72rem]`}
                         style={
                           isOpen
-                            ? {
-                                background:
-                                  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",
-                                color: IVORY,
-                                boxShadow: "0 0 0 2px #FFFFFF, 0 0 0 3px color-mix(in srgb, var(--color-motif-medium) 70%, transparent)",
-                              }
+                            ? { background: OPEN.badgeBg, color: LUX.gold, boxShadow: OPEN.badgeRing }
                             : {
-                                background: "#FFFFFF",
-                                color: TEAL,
-                                boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--color-motif-yellow) 70%, transparent)",
+                                background: "rgb(0 0 0 / 45%)",
+                                color: LUX.gold,
+                                boxShadow: "inset 0 0 0 1px rgb(201 162 74 / 45%)",
                               }
                         }
                         aria-hidden
@@ -331,25 +333,28 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
                       </span>
                       <span
                         className={`${cinzel.className} ${ct.question} flex-1 font-semibold leading-snug transition-colors duration-200 ${
-                          isOpen
-                            ? "text-[var(--color-welcome-heading)]"
-                            : "text-[var(--color-welcome-navy)] group-hover:text-[var(--color-welcome-heading)]"
+                          isOpen ? "text-[#EBD7A6]" : "text-[var(--color-welcome-navy)] group-hover:text-[#EBD7A6]"
                         }`}
                       >
                         {item.question}
                       </span>
                       <span
                         className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${isOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
-                        style={{ background: isOpen ? BUTTON : SKY_TINT(22) }}
+                        style={{
+                          background: isOpen ? OPEN.chevronBg : SKY_TINT(16),
+                          boxShadow: isOpen ? "inset 0 0 0 1px rgb(201 162 74 / 40%)" : "none",
+                        }}
                         aria-hidden
                       >
-                        <ChevronDown className="h-4 w-4" style={{ color: isOpen ? IVORY : ACCENT }} />
+                        <ChevronDown className="h-4 w-4" style={{ color: ACCENT }} />
                       </span>
                     </button>
 
                     <div
                       id={contentId}
                       role="region"
+                      aria-labelledby={`${contentId}-button`}
+                      inert={!isOpen}
                       className={`grid transition-all duration-300 ease-out ${
                         isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                       }`}
@@ -367,6 +372,30 @@ export function FAQ({ background = true }: { background?: boolean } = {}) {
                 )
               })}
             </motion.ul>
+
+            {content.contactNote ? (
+              <div className="relative z-20 px-4 pb-6 sm:px-6 sm:pb-8 md:px-8">
+                <span className="mb-4 block h-px w-full sm:mb-5" style={dividerLineStyle} aria-hidden />
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-full"
+                    style={{ background: "rgb(0 0 0 / 45%)", boxShadow: "inset 0 0 0 1px rgb(201 162 74 / 45%)" }}
+                    aria-hidden
+                  >
+                    <MessageCircleQuestion className="h-4 w-4" style={{ color: LUX.gold }} />
+                  </span>
+                  <p
+                    className={`${cinzel.className} text-[0.66rem] font-semibold uppercase tracking-[0.2em] sm:text-xs`}
+                    style={{ color: LUX.gold }}
+                  >
+                    {content.contactTitle}
+                  </p>
+                  <div className="max-w-md">
+                    <FaqAnswer answer={fillAnswer(content.contactNote)} />
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </motion.div>
 
           <DecoImg

@@ -42,13 +42,13 @@ export function Narrative() {
         >
           <div className="space-y-2 sm:space-y-3">
             <p
-              className={`${cormorant.className} text-[0.7rem] sm:text-xs md:text-sm uppercase tracking-[0.28em] text-[#44413C]`}
+              className={`${cormorant.className} text-[0.7rem] sm:text-xs md:text-sm uppercase tracking-[0.28em] text-[#1C1C1E]`}
               style={{ textShadow: "0 2px 10px rgba(255,255,255,0.45)" }}
             >
               Francis &amp; Monique&apos;s Love Story
             </p>
             <h2
-              className="style-script-regular text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#44413C]"
+              className="style-script-regular text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#1C1C1E]"
               style={{ textShadow: "0 4px 18px rgba(255,255,255,0.6)" }}
             >
               Our Story
@@ -61,7 +61,7 @@ export function Narrative() {
                 animate={{ scale: [1, 1.15, 1], rotate: [0, 8, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#44413C]/80" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 md:w-6 md:h-6 text-[#1C1C1E]/80" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
               </motion.div>
@@ -107,7 +107,7 @@ export function Narrative() {
               />
 
               <motion.p 
-                className="text-center text-xs md:text-sm text-[#44413C] mt-4 font-sans font-medium tracking-wide"
+                className="text-center text-xs md:text-sm text-[#1C1C1E] mt-4 font-sans font-medium tracking-wide"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -131,7 +131,7 @@ export function Narrative() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <div className="flex flex-col items-center text-center gap-3 md:gap-5 mb-8 md:mb-12">
-            <p className={`${cormorant.className} text-[0.7rem] sm:text-xs md:text-sm text-[#44413C] tracking-[0.16em] uppercase`}>
+            <p className={`${cormorant.className} text-[0.7rem] sm:text-xs md:text-sm text-[#1C1C1E] tracking-[0.16em] uppercase`}>
               Two hearts, one promise
             </p>
           </div>
@@ -148,14 +148,14 @@ export function Narrative() {
               >
                 {/* First paragraph with drop cap */}
                 {index === 0 ? (
-                  <p className="text-sm md:text-base leading-relaxed text-[#44413C] text-pretty font-sans font-light pl-3 md:pl-6">
-                    <span className="float-left text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-[#44413C] leading-none mr-2 mt-1 drop-shadow-[0_4px_16px_rgba(197,189,181,0.45)]">
+                  <p className="text-sm md:text-base leading-relaxed text-[#1C1C1E] text-pretty font-sans font-light pl-3 md:pl-6">
+                    <span className="float-left text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-[#1C1C1E] leading-none mr-2 mt-1 drop-shadow-[0_4px_16px_rgba(197,189,181,0.45)]">
                       {paragraph.charAt(0)}
                     </span>
                     {paragraph.slice(1)}
                   </p>
                 ) : (
-                  <p className="text-sm md:text-base leading-relaxed text-[#44413C] text-pretty font-sans font-light pl-3 md:pl-6">
+                  <p className="text-sm md:text-base leading-relaxed text-[#1C1C1E] text-pretty font-sans font-light pl-3 md:pl-6">
                     {paragraph}
                   </p>
                 )}
@@ -195,7 +195,7 @@ export function Narrative() {
             <div className="flex justify-center">
               <motion.a
                 href="#guest-list"
-                className="group relative w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-[#44413C] font-sans font-bold text-sm sm:text-base md:text-lg rounded-[2rem] transition-all duration-500 text-center overflow-hidden shadow-xl hover:shadow-2xl border-2 border-[#D9A08C] hover:border-[#D9A08C]"
+                className="group relative w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-[#1C1C1E] font-sans font-bold text-sm sm:text-base md:text-lg rounded-[2rem] transition-all duration-500 text-center overflow-hidden shadow-xl hover:shadow-2xl border-2 border-[#D9A08C] hover:border-[#D9A08C]"
                 style={{ 
                   backgroundImage: "linear-gradient(135deg, #F1C8B8, #B97865)",
                   boxShadow: "0 10px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(197,189,181,0.45)"
@@ -269,7 +269,7 @@ export function Narrative() {
                       ease: "easeInOut",
                     }}
                   >
-                    <svg className="w-3 h-3 text-[#44413C]/70" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3 text-[#1C1C1E]/70" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                   </motion.div>
@@ -308,10 +308,10 @@ export function Narrative() {
                 </motion.div>
                 
                 {/* Button content */}
-                <span className="relative z-10 tracking-wide uppercase inline-flex items-center gap-3 font-bold text-[#44413C]">
+                <span className="relative z-10 tracking-wide uppercase inline-flex items-center gap-3 font-bold text-[#1C1C1E]">
                   Join Our Celebration
                   <motion.svg 
-                    className="w-5 h-5 md:w-6 md:h-6 text-[#44413C]"
+                    className="w-5 h-5 md:w-6 md:h-6 text-[#1C1C1E]"
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"

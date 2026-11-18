@@ -12,6 +12,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { GlyphText } from "@/lib/glyph-text"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
+import { LUX, LUX_CARD, LUX_GOLD_BUTTON, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 
 const theSeasons = localFont({
@@ -26,41 +27,39 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Palette lives in globals.css → motif / welcome tokens. No yellow for text (hard to read):
-// deep slate headings, slate body text, slate-blue buttons and guest names.
-const TEAL = "var(--color-welcome-navy)"
-const IVORY = "#FFF8F2"
-const PAPER = "#FFF8F2"
+// Luxury dark palette (lib/lux-dark.ts): white headings, gold labels and accents, soft white text,
+// black cards with a fine gold edge. Names kept from the earlier palette so the markup below is unchanged.
+const TEAL = LUX.white
+const IVORY = "#111111" // lettering on gold buttons / avatars
+const PAPER = LUX.card
 const NAVY = TEAL
-const BODY = "var(--color-welcome-text)"
-const ACCENT = "var(--color-welcome-heading)"
-// Sage green motif (globals.css → --color-motif-silver #8A9A72)
-const SAGE = "var(--color-motif-silver)"
-// Darker sage for small text and initials — plain sage is too light to read on white
-const SAGE_DEEP = "color-mix(in srgb, var(--color-motif-silver) 62%, #1F2618)"
-const SAGE_MIST = (pct: number) => `color-mix(in srgb, var(--color-motif-silver) ${pct}%, white)`
-const HAIRLINE = "color-mix(in srgb, var(--color-motif-silver) 55%, transparent)"
+const BODY = LUX.body
+const ACCENT = LUX.gold
+const SAGE = LUX.goldLine
+// Small text and initials
+const SAGE_DEEP = LUX.muted
+// Dark gold-tinted fills (chips, party size)
+const SAGE_MIST = (pct: number) => `color-mix(in srgb, ${LUX.goldLine} ${Math.round(pct * 0.6)}%, ${LUX.cardDeep})`
+const HAIRLINE = "rgb(201 162 74 / 35%)"
 const TEAL_SOFT = SAGE_DEEP
-// Summer accents from the guests' dress code palette (content/site.ts → DRESS_CODE_PALETTE)
-const YELLOW = "#F2C230"
-const ORANGE = "#E8833A"
-const SUN_GRADIENT = `linear-gradient(135deg, ${YELLOW} 0%, ${ORANGE} 100%)`
-const SUN_RING = `color-mix(in srgb, ${YELLOW} 75%, ${ORANGE})`
-// Burgundy — guest names
-const LEAF = "var(--color-motif-accent)"
-const DEEP_GRADIENT =
-  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
-// Sage → deep sage — avatars (white initials stay readable on the darker lower half)
-const SAGE_GRADIENT =
-  "linear-gradient(160deg, color-mix(in srgb, var(--color-motif-silver) 88%, white) 0%, var(--color-motif-silver) 45%, color-mix(in srgb, var(--color-motif-silver) 70%, #1F2618) 100%)"
+// Gold accents (were the summer yellow / orange)
+const YELLOW = LUX.goldLight
+const ORANGE = LUX.goldLine
+const SUN_GRADIENT = LUX_GOLD_BUTTON
+const SUN_RING = LUX.goldLine
+// Guest names
+const LEAF = LUX.gold
+const DEEP_GRADIENT = LUX_GOLD_BUTTON
+// Avatars: gold medallions with black initials
+const SAGE_GRADIENT = LUX_GOLD_BUTTON
 
-// Text sitting directly on the circle pattern: navy (or dusty blue) with a soft white edge
-const textGlow = "0 1px 0 rgb(255 255 255 / 90%), 0 0 12px rgb(255 255 255 / 75%)"
+// Text sitting directly on the pattern: white (or gold) with a dark edge
+const textGlow = LUX_TEXT_SHADOW
 const onBg = {
-  color: "var(--color-welcome-navy)",
+  color: LUX.white,
   textShadow: textGlow,
 } as const
-const onBgBlue = { color: "var(--color-welcome-heading)", textShadow: textGlow } as const
+const onBgBlue = { color: LUX.gold, textShadow: textGlow } as const
 
 const palette = {
   body: BODY,
@@ -69,28 +68,22 @@ const palette = {
   accent: ACCENT,
 } as const
 
-const cardStyle = {
-  background:
-    "radial-gradient(90% 40% at 50% 0%, rgb(255 255 255 / 95%) 0%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-silver) 12%, white) 100%)",
-  border: "1px solid color-mix(in srgb, var(--color-motif-silver) 60%, transparent)",
-  boxShadow:
-    "0 22px 48px -26px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
-} as const
+const cardStyle = LUX_CARD
 
 const refreshButtonStyle = {
-  borderColor: "rgb(255 255 255 / 70%)",
+  borderColor: "rgb(255 241 194 / 60%)",
   background: DEEP_GRADIENT,
-  boxShadow: "0 4px 14px -4px color-mix(in srgb, var(--color-welcome-navy) 45%, transparent)",
+  boxShadow: "0 4px 14px -4px rgb(0 0 0 / 70%)",
 } as const
 
 const chipPrimaryStyle = {
-  color: "#FFFFFF",
+  color: "#111111",
   borderColor: "transparent",
   background: SAGE_GRADIENT,
 } as const
 
 const chipSecondaryStyle = {
-  color: SAGE_DEEP,
+  color: LUX.gold,
   borderColor: HAIRLINE,
   backgroundColor: SAGE_MIST(14),
 } as const
@@ -125,7 +118,7 @@ function DiamondDivider() {
   return (
     <div className="flex items-center justify-center gap-2" aria-hidden>
       <span className="h-px w-10 sm:w-16" style={{ background: `linear-gradient(to right, transparent, ${line})` }} />
-      <span className="h-2 w-2 rotate-45" style={{ background: SUN_GRADIENT, boxShadow: `0 0 0 1.5px #FFFFFF, 0 0 0 2.5px ${HAIRLINE}` }} />
+      <span className="h-2 w-2 rotate-45" style={{ background: SUN_GRADIENT, boxShadow: `0 0 0 1.5px ${LUX.cardDeep}, 0 0 0 2.5px ${HAIRLINE}` }} />
       <span className="h-px w-10 sm:w-16" style={{ background: `linear-gradient(to left, transparent, ${line})` }} />
     </div>
   )
@@ -358,8 +351,8 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative isolate z-10 overflow-hidden pt-12 pb-10 sm:pt-14 sm:pb-12 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16`}
       style={background ? ivorySectionStyle : undefined}
     >
-      {/* Cream lace ground with lace edging + double border (on the invitation page the shared
-          wrapper paints these instead — see invitation-page.tsx) */}
+      {/* Dark ground with gold pattern + lace edging and double border (on the invitation page the
+          shared wrapper paints these instead — see invitation-page.tsx) */}
       {background && <IvoryBackdrop />}
       {background && copy.showFrame && <div className="deco-frame" aria-hidden="true" />}
 
@@ -374,11 +367,11 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
       >
-        {/* Soft white glow so the heading reads cleanly over the circles */}
+        {/* Soft dark pool so the heading reads cleanly over the pattern */}
         <span
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[120%] w-[min(40rem,110%)] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-          style={{ background: "radial-gradient(ellipse at center, rgb(255 255 255 / 70%) 0%, rgb(255 255 255 / 30%) 50%, transparent 72%)" }}
+          style={{ background: "radial-gradient(ellipse at center, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 25%) 50%, transparent 72%)" }}
         />
         <DecoImg
           src={decos.headerOrnament}
@@ -591,7 +584,7 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
                       {/* Hairline inner frame — turns dusty blue on hover */}
                       <span
                         aria-hidden
-                        className="pointer-events-none absolute inset-1.5 rounded-[0.85rem] border transition-colors duration-300 group-hover:border-[color-mix(in_srgb,#E8833A_70%,transparent)]"
+                        className="pointer-events-none absolute inset-1.5 rounded-[0.85rem] border transition-colors duration-300 group-hover:border-[rgb(226_183_90/70%)]"
                         style={{ borderColor: HAIRLINE }}
                       />
 
@@ -601,11 +594,11 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
                           className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full transition-transform duration-500 group-hover:scale-105 sm:h-[3.25rem] sm:w-[3.25rem]"
                           style={{
                             background: SAGE_GRADIENT,
-                            boxShadow: `0 0 0 2px #FFFFFF, 0 0 0 3.5px ${SUN_RING}, 0 6px 14px -6px color-mix(in srgb, var(--color-motif-silver) 80%, #1F2618)`,
+                            boxShadow: `0 0 0 2px ${LUX.cardDeep}, 0 0 0 3.5px ${SUN_RING}, 0 6px 14px -6px rgb(0 0 0 / 80%)`,
                           }}
                           aria-hidden
                         >
-                          <span className={`${cinzel.className} text-[0.95rem] font-semibold tracking-[0.06em]`} style={{ color: "#FFFFFF", textShadow: "0 1px 2px rgb(31 38 24 / 35%)" }}>
+                          <span className={`${cinzel.className} text-[0.95rem] font-semibold tracking-[0.06em]`} style={{ color: "#111111" }}>
                             {getInitials(guest.name)}
                           </span>
                         </div>
@@ -614,7 +607,7 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
                           {guest.isVip && (
                             <span
                               className={`${cinzel.className} mb-1 inline-flex items-center gap-1 rounded-full px-2 py-[3px] text-[0.55rem] font-semibold uppercase leading-none tracking-[0.14em]`}
-                              style={{ background: SUN_GRADIENT, color: "var(--color-motif-accent)" }}
+                              style={{ background: SUN_GRADIENT, color: "#111111" }}
                             >
                               <Crown className="h-2.5 w-2.5" aria-hidden />
                               {copy.vipLabel}
@@ -681,7 +674,7 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
                                 >
                                   <span
                                     className={`${cinzel.className} flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.55rem] font-semibold leading-none`}
-                                    style={{ background: SAGE_GRADIENT, color: "#FFFFFF" }}
+                                    style={{ background: SAGE_GRADIENT, color: "#111111" }}
                                     aria-hidden
                                   >
                                     {getInitials(companion.name).slice(0, 1)}
@@ -760,7 +753,7 @@ export function BookOfGuests({ background = true }: { background?: boolean } = {
                           className="h-1.5 rounded-full transition-all duration-500"
                           style={{
                             width: isActive ? "1.5rem" : "0.375rem",
-                            background: isActive ? SUN_GRADIENT : "color-mix(in srgb, var(--color-motif-silver) 45%, transparent)",
+                            background: isActive ? SUN_GRADIENT : "rgb(201 162 74 / 35%)",
                           }}
                         />
                       </button>

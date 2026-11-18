@@ -20,11 +20,11 @@ export function WeddingDetails() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#44413C]">Wedding Details</h2>
+        <h2 className="text-2xl font-bold text-[#1C1C1E]">Wedding Details</h2>
       </div>
 
       {/* Hero Card */}
-      <div className="bg-gradient-to-br from-[#44413C] to-[#44413C] rounded-2xl p-8 shadow-lg text-white">
+      <div className="bg-gradient-to-br from-[#1C1C1E] to-[#1C1C1E] rounded-2xl p-8 shadow-lg text-white">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
             <Heart className="h-8 w-8 text-white" />
@@ -48,24 +48,24 @@ export function WeddingDetails() {
         <div className="bg-white rounded-xl shadow-sm border border-[#C5BDB5] p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-[#F1C8B8] rounded-lg flex items-center justify-center">
-              <Users className="h-5 w-5 text-[#44413C]" />
+              <Users className="h-5 w-5 text-[#1C1C1E]" />
             </div>
-            <h3 className="text-xl font-bold text-[#44413C]">The Couple</h3>
+            <h3 className="text-xl font-bold text-[#1C1C1E]">The Couple</h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-[#745E58] block mb-1">Groom</label>
-              <p className="text-lg font-semibold text-[#44413C]">
+              <label className="text-sm font-medium text-[#5E5E62] block mb-1">Groom</label>
+              <p className="text-lg font-semibold text-[#1C1C1E]">
                 {siteConfig.couple.groom}
               </p>
-              <p className="text-sm text-[#745E58]">&quot;{siteConfig.couple.groomNickname}&quot;</p>
+              <p className="text-sm text-[#5E5E62]">&quot;{siteConfig.couple.groomNickname}&quot;</p>
             </div>
             <div className="border-t border-[#C5BDB5] pt-4">
-              <label className="text-sm font-medium text-[#745E58] block mb-1">Bride</label>
-              <p className="text-lg font-semibold text-[#44413C]">
+              <label className="text-sm font-medium text-[#5E5E62] block mb-1">Bride</label>
+              <p className="text-lg font-semibold text-[#1C1C1E]">
                 {siteConfig.couple.bride}
               </p>
-              <p className="text-sm text-[#745E58]">&quot;{siteConfig.couple.brideNickname}&quot;</p>
+              <p className="text-sm text-[#5E5E62]">&quot;{siteConfig.couple.brideNickname}&quot;</p>
             </div>
           </div>
         </div>
@@ -74,23 +74,23 @@ export function WeddingDetails() {
         <div className="bg-white rounded-xl shadow-sm border border-[#C5BDB5] p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-[#F1C8B8] rounded-lg flex items-center justify-center">
-              <Calendar className="h-5 w-5 text-[#44413C]" />
+              <Calendar className="h-5 w-5 text-[#1C1C1E]" />
             </div>
-            <h3 className="text-xl font-bold text-[#44413C]">Event Details</h3>
+            <h3 className="text-xl font-bold text-[#1C1C1E]">Event Details</h3>
           </div>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <Calendar className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <label className="text-sm font-medium text-[#745E58] block">Date</label>
-                <p className="text-[#44413C] font-medium">{siteConfig.wedding.date}</p>
+                <label className="text-sm font-medium text-[#5E5E62] block">Date</label>
+                <p className="text-[#1C1C1E] font-medium">{siteConfig.wedding.date}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Clock className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <Clock className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <label className="text-sm font-medium text-[#745E58] block">Time</label>
-                <p className="text-[#44413C] font-medium">{siteConfig.ceremony.time}</p>
+                <label className="text-sm font-medium text-[#5E5E62] block">Time</label>
+                <p className="text-[#1C1C1E] font-medium">{siteConfig.ceremony.time}</p>
               </div>
             </div>
           </div>
@@ -105,14 +105,14 @@ export function WeddingDetails() {
             <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
               <Church className="h-5 w-5 text-purple-600" />
             </div>
-            <h3 className="text-xl font-bold text-[#44413C]">Ceremony</h3>
+            <h3 className="text-xl font-bold text-[#1C1C1E]">Ceremony</h3>
           </div>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <MapPin className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-[#44413C] font-medium">{siteConfig.ceremony.location}</p>
-                <p className="text-sm text-[#745E58] mt-1">{siteConfig.ceremony.venue}</p>
+                <p className="text-[#1C1C1E] font-medium">{siteConfig.ceremony.location}</p>
+                <p className="text-sm text-[#5E5E62] mt-1">{siteConfig.ceremony.venue}</p>
               </div>
             </div>
             {siteConfig.ceremony.map && (
@@ -120,7 +120,7 @@ export function WeddingDetails() {
                 href={siteConfig.ceremony.map}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-[#44413C] hover:text-[#44413C] font-medium transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-[#1C1C1E] hover:text-[#1C1C1E] font-medium transition-colors"
               >
                 <MapPin className="h-4 w-4" />
                 View on Google Maps
@@ -135,14 +135,14 @@ export function WeddingDetails() {
             <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
               <Utensils className="h-5 w-5 text-green-600" />
             </div>
-            <h3 className="text-xl font-bold text-[#44413C]">Reception</h3>
+            <h3 className="text-xl font-bold text-[#1C1C1E]">Reception</h3>
           </div>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <MapPin className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-[#44413C] font-medium">{siteConfig.reception.location}</p>
-                <p className="text-sm text-[#745E58] mt-1">{siteConfig.reception.venue}</p>
+                <p className="text-[#1C1C1E] font-medium">{siteConfig.reception.location}</p>
+                <p className="text-sm text-[#5E5E62] mt-1">{siteConfig.reception.venue}</p>
               </div>
             </div>
             {siteConfig.reception.map && (
@@ -150,7 +150,7 @@ export function WeddingDetails() {
                 href={siteConfig.reception.map}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-[#44413C] hover:text-[#44413C] font-medium transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-[#1C1C1E] hover:text-[#1C1C1E] font-medium transition-colors"
               >
                 <MapPin className="h-4 w-4" />
                 View on Google Maps
@@ -166,19 +166,19 @@ export function WeddingDetails() {
           <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
             <Phone className="h-5 w-5 text-blue-600" />
           </div>
-          <h3 className="text-xl font-bold text-[#44413C]">Contact Information</h3>
+          <h3 className="text-xl font-bold text-[#1C1C1E]">Contact Information</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {siteConfig.contact.groomPhone && (
             <div className="flex items-start gap-3">
-              <Phone className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <Phone className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <label className="text-sm font-medium text-[#745E58] block">
+                <label className="text-sm font-medium text-[#5E5E62] block">
                   {siteConfig.couple.groomNickname}&apos;s Phone
                 </label>
                 <a
                   href={`tel:${siteConfig.contact.groomPhone}`}
-                  className="text-[#44413C] hover:text-[#44413C] font-medium transition-colors"
+                  className="text-[#1C1C1E] hover:text-[#1C1C1E] font-medium transition-colors"
                 >
                   {siteConfig.contact.groomPhone}
                 </a>
@@ -187,14 +187,14 @@ export function WeddingDetails() {
           )}
           {siteConfig.contact.bridePhone && (
             <div className="flex items-start gap-3">
-              <Phone className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <Phone className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <label className="text-sm font-medium text-[#745E58] block">
+                <label className="text-sm font-medium text-[#5E5E62] block">
                   {siteConfig.couple.brideNickname}&apos;s Phone
                 </label>
                 <a
                   href={`tel:${siteConfig.contact.bridePhone}`}
-                  className="text-[#44413C] hover:text-[#44413C] font-medium transition-colors"
+                  className="text-[#1C1C1E] hover:text-[#1C1C1E] font-medium transition-colors"
                 >
                   {siteConfig.contact.bridePhone}
                 </a>
@@ -203,12 +203,12 @@ export function WeddingDetails() {
           )}
           {siteConfig.contact.email && (
             <div className="flex items-start gap-3">
-              <Mail className="h-5 w-5 text-[#745E58] mt-0.5 flex-shrink-0" />
+              <Mail className="h-5 w-5 text-[#5E5E62] mt-0.5 flex-shrink-0" />
               <div>
-                <label className="text-sm font-medium text-[#745E58] block">Email</label>
+                <label className="text-sm font-medium text-[#5E5E62] block">Email</label>
                 <a
                   href={`mailto:${siteConfig.contact.email}`}
-                  className="text-[#44413C] hover:text-[#44413C] font-medium transition-colors break-all"
+                  className="text-[#1C1C1E] hover:text-[#1C1C1E] font-medium transition-colors break-all"
                 >
                   {siteConfig.contact.email}
                 </a>
@@ -221,23 +221,23 @@ export function WeddingDetails() {
       {/* Additional Information */}
       <div className="bg-gradient-to-br from-[#F1C8B8] to-[#FFF8F2] rounded-xl border border-[#C5BDB5] p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#44413C] to-[#44413C] rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-[#1C1C1E] to-[#1C1C1E] rounded-lg flex items-center justify-center">
             <ImageIcon className="h-5 w-5 text-white" />
           </div>
-          <h3 className="text-xl font-bold text-[#44413C]">Quick Info</h3>
+          <h3 className="text-xl font-bold text-[#1C1C1E]">Quick Info</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-white/60 rounded-lg p-4 backdrop-blur-sm">
-            <label className="text-sm font-medium text-[#745E58] block mb-1">Theme</label>
-            <p className="text-[#44413C] font-semibold">{siteConfig.wedding.theme}</p>
+            <label className="text-sm font-medium text-[#5E5E62] block mb-1">Theme</label>
+            <p className="text-[#1C1C1E] font-semibold">{siteConfig.wedding.theme}</p>
           </div>
           <div className="bg-white/60 rounded-lg p-4 backdrop-blur-sm">
-            <label className="text-sm font-medium text-[#745E58] block mb-1">Dress Code</label>
-            <p className="text-[#44413C] font-semibold">{siteConfig.dressCode.theme}</p>
+            <label className="text-sm font-medium text-[#5E5E62] block mb-1">Dress Code</label>
+            <p className="text-[#1C1C1E] font-semibold">{siteConfig.dressCode.theme}</p>
           </div>
           <div className="bg-white/60 rounded-lg p-4 backdrop-blur-sm">
-            <label className="text-sm font-medium text-[#745E58] block mb-1">Hashtag</label>
-            <p className="text-[#44413C] font-semibold">{siteConfig.snapShare.hashtag[0]}</p>
+            <label className="text-sm font-medium text-[#5E5E62] block mb-1">Hashtag</label>
+            <p className="text-[#1C1C1E] font-semibold">{siteConfig.snapShare.hashtag[0]}</p>
           </div>
         </div>
       </div>

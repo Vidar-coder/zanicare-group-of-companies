@@ -11,8 +11,8 @@ import { cinzel } from "@/lib/fonts"
 import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
-import { HEART_PATH } from "@/components/rising-hearts"
 import { SilkScreen } from "@/components/silk-screen"
+import { MonogramMark } from "@/components/monogram-mark"
 
 
 const theSeasons = localFont({
@@ -75,7 +75,7 @@ const silkGlowStyle = {
 
 // Primary button: burgundy satin with a soft blush ring
 const buttonStyle = {
-  background: "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",
+  background: "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)",
   borderColor: "rgb(255 255 255 / 70%)",
   color: "#FFFFFF",
   boxShadow:
@@ -116,7 +116,7 @@ interface MessageFormProps {
   onMessageSent?: (message: Message) => void
 }
 
-/** White hairlines with a small white heart and two dots — reads on the peach silk */
+/** White hairlines with the white monogram and two dots — reads on the silk */
 function OutsideDivider() {
   return (
     <div
@@ -126,9 +126,7 @@ function OutsideDivider() {
     >
       <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, rgb(255 255 255 / 90%))" }} />
       <span className="h-1 w-1 rounded-full bg-white" />
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="#FFFFFF">
-        <path d={HEART_PATH} />
-      </svg>
+      <MonogramMark color="#FFFFFF" className="h-4 w-[1.15rem] sm:h-[1.15rem] sm:w-5" />
       <span className="h-1 w-1 rounded-full bg-white" />
       <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, rgb(255 255 255 / 90%))" }} />
     </div>
@@ -140,9 +138,7 @@ function CardOrnament() {
     <div className="mx-auto mb-3 flex items-center justify-center gap-1.5 sm:mb-4" aria-hidden>
       <span className="h-px w-10 sm:w-14" style={{ background: `linear-gradient(to right, transparent, ${SAGE})` }} />
       <span className="h-1 w-1 rounded-full" style={{ background: YELLOW }} />
-      <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill={ORANGE}>
-        <path d={HEART_PATH} />
-      </svg>
+      <MonogramMark color={ORANGE} className="h-3.5 w-4 sm:h-4 sm:w-[1.15rem]" />
       <span className="h-1 w-1 rounded-full" style={{ background: YELLOW }} />
       <span className="h-px w-10 sm:w-14" style={{ background: `linear-gradient(to left, transparent, ${SAGE})` }} />
     </div>
@@ -160,7 +156,7 @@ function MessagesTitle() {
         } as React.CSSProperties
       }
     >
-      <span className="sr-only">Love Notes and Prayers — Share your love with us</span>
+      <span className="sr-only">Notes of Thanks &amp; Christmas wishes</span>
       <span
         aria-hidden
         className={`${theSeasons.className} block uppercase leading-[0.9] tracking-[0.04em] min-[400px]:tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em]`}
@@ -170,7 +166,7 @@ function MessagesTitle() {
           textShadow: silkTitleShadow,
         }}
       >
-        Love Notes
+        Notes of Thanks
       </span>
       <span
         aria-hidden
@@ -181,7 +177,7 @@ function MessagesTitle() {
           textShadow: silkScriptShadow,
         }}
       >
-        and prayers
+        &amp; Christmas wishes
       </span>
     </h2>
   )
@@ -189,8 +185,6 @@ function MessagesTitle() {
 
 function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
   const siteConfig = useSiteConfig()
-  const { brideNickname, groomNickname } = siteConfig.couple
-  const coupleDisplayName = `${groomNickname} & ${brideNickname}`
 
   const formRef = useRef<HTMLFormElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -234,16 +228,16 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
       })
 
       toast({
-        title: "Message sent",
-        description: "Thank you for your kind words.",
+        title: "Your note is on the wall",
+        description: "Thank you for sharing your kind words with the Zanicare family.",
         duration: 3000,
       })
 
       onSuccess?.()
     } catch {
       toast({
-        title: "Unable to send message",
-        description: "Please try again in a moment.",
+        title: "We couldn't send your note",
+        description: "Please check your connection and try again in a moment.",
         variant: "destructive",
         duration: 3000,
       })
@@ -295,7 +289,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
               className={`${cinzel.className} font-semibold ${sectionType.subheader}`}
               style={{ color: palette.heading }}
             >
-              Sent!
+              Thank you!
             </p>
           </div>
         )}
@@ -307,10 +301,10 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
               className={`${theSeasons.className} ${sectionType.subheader} mb-1.5 font-semibold tracking-[0.08em] uppercase`}
               style={{ color: NAVY }}
             >
-              Share Your Love
+              Write a Note
             </h3>
             <p className={`font-goudy-italic ${sectionType.text}`} style={{ color: BODY }}>
-              Leave a note for {coupleDisplayName} to read and keep.
+              A few kind words go a long way — for your team, your branch or the whole Zanicare family.
             </p>
           </div>
 
@@ -335,7 +329,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                 onChange={(e) => setNameValue(e.target.value)}
                 onFocus={() => setFocusedField("name")}
                 onBlur={() => setFocusedField(null)}
-                placeholder="Full name"
+                placeholder="Your name (and branch, if you like)"
                 className={inputClass("name")}
                 style={{
                   color: NAVY,
@@ -373,7 +367,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                 }}
                 onFocus={() => setFocusedField("message")}
                 onBlur={() => setFocusedField(null)}
-                placeholder={`Write your wishes, prayer, or kind words for ${coupleDisplayName}...`}
+                placeholder="Thank a colleague, share a Christmas wish, or offer a prayer for the year ahead…"
                 className={`message-form-textarea ${inputClass("message")} min-h-[90px] resize-none placeholder:leading-relaxed sm:min-h-[110px] md:min-h-[130px]`}
                 style={{
                   color: NAVY,
@@ -395,10 +389,10 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Sending...
+                  Sending…
                 </span>
               ) : (
-                "Send Message"
+                "Post My Note"
               )}
             </Button>
           </form>
@@ -409,10 +403,6 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
 }
 
 export function Messages() {
-  const siteConfig = useSiteConfig()
-  const { brideNickname, groomNickname } = siteConfig.couple
-  const coupleDisplayName = `${groomNickname} & ${brideNickname}`
-
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [freshKey, setFreshKey] = useState<string | null>(null)
@@ -484,7 +474,7 @@ export function Messages() {
             className={`font-goudy-italic mx-auto mt-4 max-w-2xl px-2 sm:mt-5 md:mt-6 ${sectionType.textRelaxed}`}
             style={{ color: OUTSIDE_TEXT, textShadow: silkBodyShadow }}
           >
-            Share a short note, wish, or prayer for {coupleDisplayName}. Every message becomes part of our story.
+            Leave a word of thanks, a Christmas wish or a prayer for the people you work beside. Every note becomes part of our year-end keepsake.
           </p>
           <div className="mt-4 flex items-center justify-center sm:mt-5">
             <span className="h-px w-16 sm:w-24 md:w-32" style={lightLineStyle} />
@@ -505,13 +495,13 @@ export function Messages() {
               className={`${theSeasons.className} mb-1.5 font-semibold tracking-[0.08em] uppercase sm:mb-2 ${sectionType.subheader}`}
               style={{ color: OUTSIDE_TEXT, textShadow: silkTitleShadow }}
             >
-              Messages from Loved Ones
+              The Wall of Thanks
             </h3>
             <p
               className={`font-goudy-italic ${sectionType.text}`}
               style={{ color: OUTSIDE_TEXT, textShadow: silkBodyShadow }}
             >
-              Warm words from family and friends
+              Kind words from colleagues, partners and friends
             </p>
             <div className="mt-4 sm:mt-5">
               <OutsideDivider />

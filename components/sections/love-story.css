@@ -1,9 +1,9 @@
 /* Love story — scrapbook roadmap */
 
 .love-story-section {
-  --ls-forest: var(--color-motif-deep, #44413C);
+  --ls-forest: var(--color-motif-deep, #1C1C1E);
   --ls-cream: var(--color-motif-cream, #FFF8F2);
-  --ls-ink: var(--color-welcome-text, #44413C);
+  --ls-ink: var(--color-welcome-text, #1C1C1E);
 }
 
 .love-story-timeline__track {

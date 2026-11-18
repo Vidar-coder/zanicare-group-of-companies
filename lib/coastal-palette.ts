@@ -5,11 +5,11 @@ export const coastalPalette = {
   peach: "#D9A08C",
   lavenderBlue: "#FFF8F2",
   blueGray: "#C5BDB5",
-  dustyRose: "#44413C",
-  teal: "#44413C",
-  body: "#44413C",
-  title: "#44413C",
-  deep: "#44413C",
+  dustyRose: "#1C1C1E",
+  teal: "#1C1C1E",
+  body: "#1C1C1E",
+  title: "#1C1C1E",
+  deep: "#1C1C1E",
   cream: "#FFF8F2",
 } as const
 

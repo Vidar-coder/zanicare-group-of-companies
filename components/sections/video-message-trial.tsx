@@ -24,7 +24,7 @@ const aboveTheBeyond = localFont({
 const FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfeGlEl4CMXWefdvCw6AOPHFS1ROku_rs-Gbofa2LkVJ0sLGQ/viewform"
 
-const forest = "#44413C"
+const forest = "#1C1C1E"
 const heading = "#FFFFFF"
 const body = "#FFF8F2"
 

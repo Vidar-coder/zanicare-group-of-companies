@@ -8,15 +8,6 @@ import Image from "next/image"
 import { TornPaperEdge } from "./TornPaperEdge"
 import { TintedDeco } from "@/components/tinted-deco"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
-import { RisingHearts, HEART_PATH } from "@/components/rising-hearts"
-
-// Love story motif: golden yellow · cream · olive sage · warm taupe
-const STORY_HEART_COLORS = [
-  "#F6C44F", // golden yellow
-  "#7A8F5A", // olive sage
-  "#C4B49A", // warm taupe
-  "color-mix(in srgb, #F6C44F 60%, #C4B49A)", // honey
-] as const
 
 const theSeasons = localFont({
   src: "../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -150,9 +141,8 @@ function PlainOpenChapter({
 
   return (
     <div className={`${theSeasons.variable} story-open relative z-[2] px-5 sm:px-8 md:px-10`}>
-      {/* Soft powder-blue wash behind each chapter, on the photo's side */}
+      {/* Soft wash behind each chapter, on the photo's side */}
       <span className={`story-open-wash ${photoLeft ? "story-open-wash--left" : "story-open-wash--right"}`} aria-hidden />
-      <RisingHearts colors={STORY_HEART_COLORS} />
       <div
         className={`relative mx-auto flex max-w-5xl items-center gap-5 py-10 sm:gap-10 sm:py-14 md:gap-14 md:py-16 ${
           photoLeft ? "flex-row" : "flex-row-reverse"
@@ -223,19 +213,13 @@ function PlainOpenChapter({
 
       {showDivider && !isLast && (
         <div className="story-open-divider flex items-center justify-center gap-2" aria-hidden>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #C4B49A)" }} />
-          {/* Golden heart with an olive edge — the one accent between chapters */}
-          <svg
-            viewBox="0 0 24 24"
-            className="h-3.5 w-3.5 sm:h-4 sm:w-4"
-            fill="#F6C44F"
-            stroke="#7A8F5A"
-            strokeWidth="1.4"
-            style={{ filter: "drop-shadow(0 1px 1.5px rgb(122 143 90 / 35%))" }}
-          >
-            <path d={HEART_PATH} />
-          </svg>
-          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #C4B49A)" }} />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to right, transparent, #C9A24A)" }} />
+          {/* Small gold diamond — the one accent between chapters */}
+          <span
+            className="h-1.5 w-1.5 rotate-45 sm:h-2 sm:w-2"
+            style={{ background: "#E2B75A", boxShadow: "0 0 8px rgb(226 183 90 / 45%)" }}
+          />
+          <span className="h-px w-12 sm:w-20" style={{ background: "linear-gradient(to left, transparent, #C9A24A)" }} />
         </div>
       )}
     </div>

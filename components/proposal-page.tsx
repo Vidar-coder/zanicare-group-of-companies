@@ -100,7 +100,7 @@ const dividerLineStyle = {
 // Dusty blue → navy pill with white text (matches the rest of the invitation)
 const primaryBtnStyle: CSSProperties = {
   background:
-    "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",
+    "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)",
   borderColor: "rgb(255 255 255 / 70%)",
   color: "#FFFFFF",
   boxShadow:
@@ -619,7 +619,7 @@ function FlowHeader({
         className="relative flex h-14 w-14 items-center justify-center rounded-full border sm:h-16 sm:w-16"
         style={{
           borderColor: "rgb(255 255 255 / 70%)",
-          background: "radial-gradient(circle at 35% 30%, #A8324F 0%, #84183A 45%, #540920 100%)",
+          background: "radial-gradient(circle at 35% 30%, #A8324F 0%, #2C2C2E 45%, #000000 100%)",
           color: "#FFF8F2",
           boxShadow: `0 0 0 4px ${IVORY}, 0 0 0 5px ${GOLD_BORDER_SOFT}, 0 16px 30px -14px color-mix(in srgb, var(--color-motif-accent) 60%, transparent)`,
         }}

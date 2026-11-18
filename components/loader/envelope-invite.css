@@ -2749,11 +2749,11 @@
    ========================================================================== */
 .env-invite-screen--plain {
   --env-sky: var(--color-motif-medium);        /* #C5BDB5 */
-  --env-blue: var(--color-welcome-heading);    /* #44413C */
-  --env-navy: var(--color-welcome-navy);       /* #44413C */
-  --env-ink: var(--color-welcome-text);        /* #44413C */
+  --env-blue: var(--color-welcome-heading);    /* #1C1C1E */
+  --env-navy: var(--color-welcome-navy);       /* #1C1C1E */
+  --env-ink: var(--color-welcome-text);        /* #1C1C1E */
   --env-leaf: var(--color-motif-yellow);       /* #C5BDB5 sage */
-  --env-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 55%, #44413C);
+  --env-leaf-ink: color-mix(in srgb, var(--color-motif-yellow) 55%, #1C1C1E);
   --env-sun: var(--color-motif-blush);         /* #D9A08C — keyboard focus ring */
   --env-shadow-tint: var(--env-navy);
 }
@@ -2921,19 +2921,19 @@
    ========================================================================== */
 .env-invite-screen--plain {
   --env-sky: #D9A08C;
-  --env-blue: #44413C;
-  --env-navy: #44413C;
-  --env-ink: #44413C;
+  --env-blue: #1C1C1E;
+  --env-navy: #1C1C1E;
+  --env-ink: #1C1C1E;
   --env-leaf: #B97865;
-  --env-leaf-ink: #44413C;
+  --env-leaf-ink: #1C1C1E;
   --env-sun: #B97865;
-  --env-shadow-tint: #44413C;
+  --env-shadow-tint: #1C1C1E;
   --env-plain-bg: #FFF8F2;
   --env-plain-accent: #B97865;
   --env-paper: #FFF8F2;
-  --env-base: color-mix(in srgb, #D9A08C 88%, #44413C);
+  --env-base: color-mix(in srgb, #D9A08C 88%, #1C1C1E);
   --env-highlight: #FFF8F2;
-  --env-fold: color-mix(in srgb, #D9A08C 70%, #44413C);
+  --env-fold: color-mix(in srgb, #D9A08C 70%, #1C1C1E);
   --env-envelope: #D9A08C;
   --env-border: color-mix(in srgb, #B97865 45%, transparent);
 }
@@ -2944,7 +2944,7 @@
 
 .env-invite-screen--plain .env-invite-envelope {
   filter:
-    drop-shadow(0 26px 40px color-mix(in srgb, #44413C 14%, transparent))
+    drop-shadow(0 26px 40px color-mix(in srgb, #1C1C1E 14%, transparent))
     drop-shadow(0 8px 14px color-mix(in srgb, #C5BDB5 22%, transparent));
 }
 
@@ -2963,8 +2963,8 @@
 
 .env-invite-screen--plain .env-invite-seal-btn {
   filter:
-    drop-shadow(0 8px 14px color-mix(in srgb, #44413C 22%, transparent))
-    drop-shadow(0 2px 4px color-mix(in srgb, #44413C 14%, transparent));
+    drop-shadow(0 8px 14px color-mix(in srgb, #1C1C1E 22%, transparent))
+    drop-shadow(0 2px 4px color-mix(in srgb, #1C1C1E 14%, transparent));
 }
 
 .env-invite-screen--plain .env-invite-hint {
@@ -2979,8 +2979,8 @@
     linear-gradient(180deg, #FFF8F2 0%, #FFF8F2 60%, color-mix(in srgb, #D9A08C 55%, #FFF8F2) 100%);
   border: 1px solid color-mix(in srgb, #B97865 45%, transparent);
   box-shadow:
-    0 18px 40px color-mix(in srgb, #44413C 12%, transparent),
-    0 6px 14px color-mix(in srgb, #44413C 16%, transparent),
+    0 18px 40px color-mix(in srgb, #1C1C1E 12%, transparent),
+    0 6px 14px color-mix(in srgb, #1C1C1E 16%, transparent),
     inset 0 1px 0 rgb(255 248 242 / 90%);
 }
 
@@ -3004,18 +3004,18 @@
 
 /* "View the invitation": burgundy pill, the one strong accent on screen */
 .env-invite-screen--plain .env-invite-enter-btn {
-  color: #F6E9DF;
-  background: linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%);
+  color: #F5F5F5;
+  background: linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%);
   border: 1px solid color-mix(in srgb, #D4B07A 60%, transparent);
   box-shadow:
     0 0 0 4px rgb(246 233 223 / 60%),
     inset 0 1px 0 rgb(255 214 222 / 22%),
-    0 12px 26px color-mix(in srgb, #6A0D28 35%, transparent);
+    0 12px 26px color-mix(in srgb, #111111 35%, transparent);
 }
 
 .env-invite-screen--plain .env-invite-enter-btn:hover {
-  color: #F6E9DF;
-  background: linear-gradient(180deg, #6A0D28 0%, #4E0A1E 100%);
+  color: #F5F5F5;
+  background: linear-gradient(180deg, #111111 0%, #000000 100%);
 }
 
 .env-invite-screen--plain .env-invite-enter-btn:focus-visible {
@@ -3095,7 +3095,7 @@
   border: 1px solid color-mix(in srgb, #C5BDB5 50%, transparent);
   background: #FFF8F2;
   box-shadow:
-    0 18px 32px -14px color-mix(in srgb, #44413C 30%, transparent),
+    0 18px 32px -14px color-mix(in srgb, #1C1C1E 30%, transparent),
     0 4px 10px color-mix(in srgb, #C5BDB5 18%, transparent);
 }
 
@@ -3160,8 +3160,8 @@
 
 .env-invite-screen--plain .env-invite-letter-label__word {
   background: none;
-  color: #44413C;
-  -webkit-text-fill-color: #44413C;
+  color: #1C1C1E;
+  -webkit-text-fill-color: #1C1C1E;
 }
 
 /* Mobile: keep both portraits inside the screen, a little higher above the pocket */
@@ -3214,7 +3214,7 @@
   border: 1px solid color-mix(in srgb, #C5BDB5 40%, transparent);
   background: #FFF8F2;
   box-shadow:
-    0 14px 26px -12px color-mix(in srgb, #44413C 28%, transparent),
+    0 14px 26px -12px color-mix(in srgb, #1C1C1E 28%, transparent),
     0 3px 8px color-mix(in srgb, #C5BDB5 16%, transparent);
 }
 
@@ -3242,7 +3242,7 @@
   width: var(--env-flowers-w);
   max-width: none;
   height: auto;
-  filter: drop-shadow(0 6px 10px color-mix(in srgb, #44413C 14%, transparent));
+  filter: drop-shadow(0 6px 10px color-mix(in srgb, #1C1C1E 14%, transparent));
   /* Entrance: hidden inside the pocket until the photos come out */
   opacity: 0;
   transform: translateY(70%);
@@ -3326,30 +3326,30 @@
 
 /* ==========================================================================
    warm gray crumpled-paper envelope (plain). Kept last so it wins.
-   Paper built around warm gray #C5BDB5, deepening toward slate #44413C in the
+   Paper built around warm gray #C5BDB5, deepening toward slate #1C1C1E in the
    folds, with a fine grain and a soft crumpled relief (light ridges, slate
    creases) on every panel.
    ========================================================================== */
 .env-invite-screen--plain {
   --env-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --env-paper-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016 0.022' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' surfaceScale='2' lighting-color='%23F1C8B8' result='l'%3E%3CfeDistantLight azimuth='225' elevation='52'/%3E%3C/feDiffuseLighting%3E%3CfeColorMatrix in='l' result='dark' values='0 0 0 0 0.09 0 0 0 0 0.18 0 0 0 0 0.31 -0.75 0 0 0 0.5'/%3E%3CfeColorMatrix in='l' result='lite' values='0 0 0 0 0.97 0 0 0 0 0.95 0 0 0 0 0.95 0.9 0 0 0 -0.72'/%3E%3CfeMerge%3E%3CfeMergeNode in='dark'/%3E%3CfeMergeNode in='lite'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
-  --env-highlight: color-mix(in srgb, #44413C 82%, #B97865);
-  --env-base: #44413C;
-  --env-fold: color-mix(in srgb, #44413C 88%, #44413C);
-  --env-shadow: color-mix(in srgb, #44413C 92%, #44413C);
-  --env-envelope: #44413C;
+  --env-highlight: color-mix(in srgb, #1C1C1E 82%, #B97865);
+  --env-base: #1C1C1E;
+  --env-fold: color-mix(in srgb, #1C1C1E 88%, #1C1C1E);
+  --env-shadow: color-mix(in srgb, #1C1C1E 92%, #1C1C1E);
+  --env-envelope: #1C1C1E;
   --env-border: color-mix(in srgb, #B97865 40%, transparent);
 }
 
 .env-invite-screen--plain .env-invite-envelope {
-  --env-highlight: color-mix(in srgb, #44413C 82%, #B97865);
-  --env-base: #44413C;
-  --env-fold: color-mix(in srgb, #44413C 88%, #44413C);
-  --env-shadow: color-mix(in srgb, #44413C 92%, #44413C);
-  --env-envelope: #44413C;
+  --env-highlight: color-mix(in srgb, #1C1C1E 82%, #B97865);
+  --env-base: #1C1C1E;
+  --env-fold: color-mix(in srgb, #1C1C1E 88%, #1C1C1E);
+  --env-shadow: color-mix(in srgb, #1C1C1E 92%, #1C1C1E);
+  --env-envelope: #1C1C1E;
   filter:
-    drop-shadow(0 26px 40px color-mix(in srgb, #44413C 22%, transparent))
-    drop-shadow(0 8px 14px color-mix(in srgb, #44413C 22%, transparent));
+    drop-shadow(0 26px 40px color-mix(in srgb, #1C1C1E 22%, transparent))
+    drop-shadow(0 8px 14px color-mix(in srgb, #1C1C1E 22%, transparent));
 }
 
 /* One paper surface for every panel (front, inside, flap, pocket) so the
@@ -3395,20 +3395,20 @@
 /* Depth comes from soft shadows only, never a different paper color */
 .env-invite-screen--plain .env-invite-flap {
   box-shadow:
-    inset 0 -10px 18px color-mix(in srgb, #44413C 18%, transparent),
+    inset 0 -10px 18px color-mix(in srgb, #1C1C1E 18%, transparent),
     inset 0 2px 0 rgb(255 248 242 / 40%);
 }
 
 .env-invite-screen--plain .env-invite-pocket-front {
-  box-shadow: inset 0 10px 16px color-mix(in srgb, #44413C 14%, transparent);
+  box-shadow: inset 0 10px 16px color-mix(in srgb, #1C1C1E 14%, transparent);
 }
 
 .env-invite-screen--plain .env-invite-pocket-left {
-  box-shadow: inset -4px 0 10px color-mix(in srgb, #44413C 10%, transparent);
+  box-shadow: inset -4px 0 10px color-mix(in srgb, #1C1C1E 10%, transparent);
 }
 
 .env-invite-screen--plain .env-invite-pocket-right {
-  box-shadow: inset 4px 0 10px color-mix(in srgb, #44413C 10%, transparent);
+  box-shadow: inset 4px 0 10px color-mix(in srgb, #1C1C1E 10%, transparent);
 }
 
 /* Crease lines: deeper rose so they read on the pink paper */
@@ -3449,8 +3449,8 @@
   background: none;
   border: none;
   box-shadow: none;
-  color: #44413C;
-  -webkit-text-fill-color: #44413C;
+  color: #1C1C1E;
+  -webkit-text-fill-color: #1C1C1E;
   font-weight: 700;
   -webkit-font-smoothing: antialiased;
   text-shadow:
@@ -3467,8 +3467,8 @@
 }
 
 .env-invite-screen--plain .env-invite-days-to-go {
-  color: #44413C;
-  -webkit-text-fill-color: #44413C;
+  color: #1C1C1E;
+  -webkit-text-fill-color: #1C1C1E;
   font-size: clamp(1.05rem, 4.5vw, 1.42rem);
   letter-spacing: 0.1em;
 }
@@ -3745,7 +3745,7 @@
 
 .env-invite-paper-folds__shadow {
   fill: none;
-  stroke: #44413C;
+  stroke: #1C1C1E;
   stroke-opacity: 0.32;
 }
 
@@ -3802,7 +3802,7 @@
   opacity: 0;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='7' cy='7' r='1.3' fill='%23002059' fill-opacity='0.28'/%3E%3Ccircle cx='21' cy='21' r='1.3' fill='%23002059' fill-opacity='0.28'/%3E%3Cpath d='M14 3.5 l1.2 2.3 -1.2 2.3 -1.2 -2.3z M14 17.5 l1.2 2.3 -1.2 2.3 -1.2 -2.3z' fill='%23F1C8B8' fill-opacity='0.55'/%3E%3C/svg%3E"),
-    linear-gradient(0deg, #44413C 0%, color-mix(in srgb, #44413C 80%, #FFF8F2) 100%);
+    linear-gradient(0deg, #1C1C1E 0%, color-mix(in srgb, #1C1C1E 80%, #FFF8F2) 100%);
   background-size: 28px 28px, 100% 100%;
   box-shadow: inset 0 0 0 4px var(--env-base);
   transition: opacity 0s linear 0.55s;

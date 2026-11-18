@@ -81,24 +81,13 @@ const GUIDE: {
   },
   {
     tab: "entourage",
-    title: "Entourage & Sponsors",
+    title: "Representatives & Managers",
     icon: <Crown className="h-5 w-5" />,
-    about: "Your wedding party and principal sponsors, exactly as shown on the invitation.",
+    about: "The people representing each branch, plus each branch's manager and officer-in-charge.",
     highlights: [
-      "Add members by role (e.g., Bridesmaids) and title",
-      "Add Ninong & Ninang pairs",
-      "Filter by role; updates show on the invitation",
-    ],
-  },
-  {
-    tab: "proposals",
-    title: "Proposal Invites",
-    icon: <Heart className="h-5 w-5" />,
-    about: "Personal “Will you be my…?” links for your entourage and sponsors.",
-    highlights: [
-      "Personalize a link with the person's name",
-      "Share by Messenger, Viber or text in one tap",
-      "A yes adds them to your entourage automatically",
+      "Add representatives by branch and position",
+      "Add the Founder and leadership under \"Leadership\"",
+      "Pair each branch manager with its officer-in-charge",
     ],
   },
 ]
@@ -128,7 +117,7 @@ export function DashboardOverview({ stats, onNavigate }: DashboardOverviewProps)
       {/* Heading */}
       <div>
         <p className={`${cinzel.className} text-[10px] font-semibold uppercase tracking-[0.24em] text-dash-faint`}>At a glance</p>
-        <h1 className="mt-0.5 text-2xl font-bold text-dash-ink sm:text-3xl">Wedding Overview</h1>
+        <h1 className="mt-0.5 text-2xl font-bold text-dash-ink sm:text-3xl">Christmas Party Overview</h1>
       </div>
 
       {/* RSVP progress */}
@@ -166,8 +155,8 @@ export function DashboardOverview({ stats, onNavigate }: DashboardOverviewProps)
         <StatTile label="Not attending" value={declined} tone="border-red-200 bg-red-50 text-red-700" icon={<XCircle className="h-4 w-4" />} />
         <StatTile label="Pending RSVP" value={pending} tone="border-amber-200 bg-amber-50 text-amber-700" icon={<Clock className="h-4 w-4" />} />
         <StatTile label="Join requests" value={stats.joinRequests} tone="border-purple-200 bg-purple-50 text-purple-700" icon={<UserPlus className="h-4 w-4" />} />
-        <StatTile label="Entourage" value={stats.entourage ?? 0} tone="border-dash-border bg-dash-surface text-dash-primary" icon={<Crown className="h-4 w-4" />} />
-        <StatTile label="Principal sponsors" value={stats.principalSponsors ?? 0} tone="border-dash-border bg-dash-surface text-dash-primary" icon={<Heart className="h-4 w-4" />} />
+        <StatTile label="Representatives" value={stats.entourage ?? 0} tone="border-dash-border bg-dash-surface text-dash-primary" icon={<Crown className="h-4 w-4" />} />
+        <StatTile label="Managers & OICs" value={stats.principalSponsors ?? 0} tone="border-dash-border bg-dash-surface text-dash-primary" icon={<Heart className="h-4 w-4" />} />
       </div>
 
       <TableFinderQrCard />

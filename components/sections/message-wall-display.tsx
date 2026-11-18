@@ -28,7 +28,7 @@ const AVATAR_GRADIENT =
 // Cards are white paper with navy text; buttons are dusty blue with white text.
 const TEAL = CHARCOAL
 const BLUE = ORANGE
-const BUTTON = "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
+const BUTTON = "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)"
 const BUTTON_EDGE = "rgb(255 255 255 / 70%)"
 const SUN = ORANGE
 const PAPER = "#FFFFFF"
@@ -275,7 +275,7 @@ function MessageCard({
               <button
                 type="button"
                 onClick={() => onOpen(msg)}
-                aria-label={`Read the full message from ${msg.name}`}
+                aria-label={`Read the full note from ${msg.name}`}
                 className={`${cinzel.className} group/read relative inline-flex h-full items-center gap-1.5 overflow-hidden rounded-full border pl-1 pr-3 text-[0.58rem] font-semibold uppercase leading-none tracking-[0.14em] transition-all duration-300 hover:-translate-y-px hover:shadow-[0_8px_18px_-8px_color-mix(in_srgb,var(--color-welcome-navy)_55%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-motif-accent)_45%,transparent)] active:translate-y-0 sm:pr-3.5 sm:text-[0.62rem]`}
                 style={{ color: IVORY, background: BUTTON, borderColor: BUTTON_EDGE }}
               >
@@ -292,7 +292,7 @@ function MessageCard({
                 >
                   <BookOpen className="h-2.5 w-2.5 sm:h-3 sm:w-3" style={{ color: IVORY }} />
                 </span>
-                <span className="relative">Read full message</span>
+                <span className="relative">Read more</span>
                 <ArrowRight
                   aria-hidden
                   className="relative h-3 w-3 transition-transform duration-300 group-hover/read:translate-x-0.5"
@@ -399,13 +399,13 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
           className={`${cinzel.className} mb-2 font-semibold uppercase tracking-[0.16em] sm:mb-3 ${sectionType.subheader}`}
           style={{ color: NAVY }}
         >
-          No messages yet
+          The wall is waiting
         </h3>
         <p
           className={`font-goudy-italic mx-auto mb-5 max-w-md sm:mb-6 ${sectionType.textRelaxed}`}
           style={{ color: BODY }}
         >
-          Be the first to leave a note for the happy couple.
+          Be the first to leave a note of thanks or a Christmas wish for the Zanicare family.
         </p>
         <div className="flex justify-center">
           <span
@@ -416,7 +416,7 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
               borderColor: SAGE_LINE,
             }}
           >
-            Your message will appear here
+            Your note will appear here
           </span>
         </div>
       </div>
@@ -480,7 +480,7 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
                   width: isActive ? "1.5rem" : "0.375rem",
                   background: isActive ? SUN_GRADIENT : "rgb(255 255 255 / 55%)",
                 }}
-                aria-label={`Show messages page ${idx + 1} of ${pageCount}`}
+                aria-label={`Show notes page ${idx + 1} of ${pageCount}`}
                 aria-current={isActive ? "true" : undefined}
               />
             )
@@ -500,7 +500,7 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
         >
           {openMessage && (
             <div className="relative">
-              <DialogTitle className="sr-only">Message from {openMessage.name}</DialogTitle>
+              <DialogTitle className="sr-only">Note from {openMessage.name}</DialogTitle>
               <MessageCard msg={openMessage} full />
               <DialogClose
                 className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 hover:rotate-90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-motif-accent)_45%,transparent)] sm:right-4 sm:top-4 sm:h-9 sm:w-9"

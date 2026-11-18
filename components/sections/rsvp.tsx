@@ -121,14 +121,14 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
               <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 sm:p-10 md:p-12 border border-[#B97865]/30 shadow-2xl">
                 <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
   
-                  <h3 className="text-xl sm:text-3xl md:text-4xl font-sans font-bold text-[#44413C]">
+                  <h3 className="text-xl sm:text-3xl md:text-4xl font-sans font-bold text-[#1C1C1E]">
                     We Reserved Seats for You
                   </h3>
                 </div>
                 
-                <p className="text-sm sm:text-lg md:text-xl text-[#44413C]/80 font-sans font-light leading-relaxed">
+                <p className="text-sm sm:text-lg md:text-xl text-[#1C1C1E]/80 font-sans font-light leading-relaxed">
                   The favor of your reply is kindly requested on or before{" "}
-                  <span className="font-semibold text-[#44413C] bg-[#44413C]/10 px-2 py-1 rounded-lg text-sm md:text-base">
+                  <span className="font-semibold text-[#1C1C1E] bg-[#1C1C1E]/10 px-2 py-1 rounded-lg text-sm md:text-base">
                     {siteConfig.details.rsvp.deadline}
                   </span>
                 </p>
@@ -147,7 +147,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-5 sm:space-y-9">
                 {/* Full Name Field */}
                 <div className="space-y-1 sm:space-y-3">
-                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#44413C] font-sans">
+                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#1C1C1E] font-sans">
                     <User className="h-3 w-3 sm:h-4 sm:w-4" />
                     Full Name *
                   </label>
@@ -156,7 +156,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
                       name="name"
                       required
                       placeholder="Enter your full name"
-                      className="w-full px-3 sm:px-6 py-2 sm:py-4 border-2 border-[#44413C]/20 focus:border-[#44413C] rounded-lg sm:rounded-2xl text-sm sm:text-lg font-sans placeholder:text-[#44413C]/40 transition-all duration-300 hover:border-[#44413C]/40 focus:ring-4 focus:ring-[#44413C]/10 bg-white/80 backdrop-blur-sm"
+                      className="w-full px-3 sm:px-6 py-2 sm:py-4 border-2 border-[#1C1C1E]/20 focus:border-[#1C1C1E] rounded-lg sm:rounded-2xl text-sm sm:text-lg font-sans placeholder:text-[#1C1C1E]/40 transition-all duration-300 hover:border-[#1C1C1E]/40 focus:ring-4 focus:ring-[#1C1C1E]/10 bg-white/80 backdrop-blur-sm"
                     />
                     <div className="absolute inset-0 rounded-lg sm:rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                   </div>
@@ -164,7 +164,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
 
                 {/* Number of Guests Field */}
                 <div className="space-y-1.5 sm:space-y-3.5">
-                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#44413C] font-sans">
+                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#1C1C1E] font-sans">
                     <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                     Number of Guests *
                   </label>
@@ -172,7 +172,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
                     <select
                       name="guests"
                       required
-                      className="w-full px-3 sm:px-6 py-2.5 sm:py-4 border-2 border-[#44413C]/20 focus:border-[#44413C] rounded-lg sm:rounded-2xl text-sm sm:text-lg font-sans bg-white/80 backdrop-blur-sm transition-all duration-300 hover:border-[#44413C]/40 focus:ring-4 focus:ring-[#44413C]/10 cursor-pointer appearance-none"
+                      className="w-full px-3 sm:px-6 py-2.5 sm:py-4 border-2 border-[#1C1C1E]/20 focus:border-[#1C1C1E] rounded-lg sm:rounded-2xl text-sm sm:text-lg font-sans bg-white/80 backdrop-blur-sm transition-all duration-300 hover:border-[#1C1C1E]/40 focus:ring-4 focus:ring-[#1C1C1E]/10 cursor-pointer appearance-none"
                     >
                       <option value="">Select number of guests</option>
                       <option value="1">1 Guest</option>
@@ -187,7 +187,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
 
                 {/* Message Field */}
                 <div className="space-y-1.5 sm:space-y-3.5">
-                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#44413C] font-sans">
+                  <label className="flex items-center gap-2 text-xs sm:text-base font-medium text-[#1C1C1E] font-sans">
                     <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
                     Message (Optional)
                   </label>
@@ -196,7 +196,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
                       name="message"
                       placeholder="Any special requests or dietary restrictions?"
                       rows={3}
-                      className="w-full px-3 sm:px-6 py-2.5 sm:py-4 border-2 border-[#44413C]/20 focus:border-[#44413C] rounded-lg sm:rounded-2xl min-h-[100px] sm:min-h-[160px] text-sm sm:text-lg font-sans placeholder:text-[#44413C]/40 transition-all duration-300 hover:border-[#44413C]/40 focus:ring-4 focus:ring-[#44413C]/10 resize-none bg-white/80 backdrop-blur-sm"
+                      className="w-full px-3 sm:px-6 py-2.5 sm:py-4 border-2 border-[#1C1C1E]/20 focus:border-[#1C1C1E] rounded-lg sm:rounded-2xl min-h-[100px] sm:min-h-[160px] text-sm sm:text-lg font-sans placeholder:text-[#1C1C1E]/40 transition-all duration-300 hover:border-[#1C1C1E]/40 focus:ring-4 focus:ring-[#1C1C1E]/10 resize-none bg-white/80 backdrop-blur-sm"
                     />
                     <div className="absolute inset-0 rounded-lg sm:rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                   </div>
@@ -207,7 +207,7 @@ export function RSVP({ onSuccess }: RSVPFormProps) {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#44413C] via-[#44413C] to-[#44413C] hover:from-[#44413C] hover:to-[#44413C] text-[#FFF8F2] border-2 border-[#FFF8F2] px-6 sm:px-10 py-3 sm:py-5 rounded-lg sm:rounded-2xl text-base sm:text-xl font-sans font-semibold shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed relative overflow-hidden tracking-wide"
+                    className="w-full bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E] to-[#1C1C1E] hover:from-[#1C1C1E] hover:to-[#1C1C1E] text-[#FFF8F2] border-2 border-[#FFF8F2] px-6 sm:px-10 py-3 sm:py-5 rounded-lg sm:rounded-2xl text-base sm:text-xl font-sans font-semibold shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed relative overflow-hidden tracking-wide"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                     {isSubmitting ? (

@@ -452,7 +452,7 @@ export function CoupleVideo(_props: { skyBackdrop?: boolean } = {}) {
           </div>
           <p
             className={`font-goudy-italic mx-auto mt-4 max-w-xl sm:mt-5 md:mt-6 ${sectionType.textSnug}`}
-            style={{ color: "#44413C", textShadow: onBgGlow, fontWeight: 600 }}
+            style={{ color: "#1C1C1E", textShadow: onBgGlow, fontWeight: 600 }}
           >
             {content.subtitle}
           </p>
@@ -538,7 +538,7 @@ export function CoupleVideo(_props: { skyBackdrop?: boolean } = {}) {
                       <span
                         className="relative flex h-16 w-16 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-105 sm:h-20 sm:w-20 md:h-24 md:w-24"
                         style={{
-                          background: "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)",
+                          background: "linear-gradient(180deg, #2C2C2E 0%, #111111 55%, #000000 100%)",
                           border: "2px solid #E9D3A6",
                           boxShadow:
                             "0 0 0 6px rgb(251 246 238 / 35%), 0 10px 26px rgb(58 4 20 / 35%)",

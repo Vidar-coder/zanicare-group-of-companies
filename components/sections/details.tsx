@@ -5,15 +5,34 @@ import { useState, useEffect, type ReactNode } from "react"
 import { useQrColors } from "@/hooks/use-css-color"
 import { QRCodeSVG } from "qrcode.react"
 import { useSiteConfig } from "@/hooks/use-site-config"
-import type { AttireColor } from "@/content/site"
+import type { AttireColor, ProgramIconName, ReminderIconName } from "@/content/site"
 import Image from "next/image"
 import localFont from "next/font/local"
 import { cinzel } from "@/lib/fonts"
-import { Shirt, Copy, Check, Navigation, Heart, MapPin } from "lucide-react"
+import {
+  Shirt,
+  Copy,
+  Check,
+  Navigation,
+  MapPin,
+  Clock,
+  ClipboardCheck,
+  HandHeart,
+  Mic,
+  MessageSquareQuote,
+  Sparkles,
+  UtensilsCrossed,
+  Trophy,
+  Gift,
+  Music,
+  Camera,
+  type LucideIcon,
+} from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
+import { LUX, LUX_CARD, LUX_GOLD_BUTTON, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 
 const theSeasons = localFont({
@@ -28,7 +47,8 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Palette lives in globals.css → motif / welcome tokens.
+// Palette: the dark theme tokens set by ivorySectionStyle (lib/lux-dark.ts) — white headings,
+// gold labels, soft white body text.
 const C = {
   heading: "var(--color-welcome-navy)",
   body: "var(--color-welcome-text)",
@@ -42,31 +62,30 @@ const C = {
   light: "var(--color-motif-soft)",
 } as const
 
-// Soft white edge so text stays crisp over the circles (matches the gallery)
-const onBgGlow = "0 1px 0 rgb(255 255 255 / 85%), 0 0 12px rgb(255 255 255 / 70%)"
+// Dark edge so text stays crisp over the pattern
+const onBgGlow = LUX_TEXT_SHADOW
 
 // Text sitting directly on the background: deep slate titles, slate-blue labels
 const onBg = { color: C.heading, textShadow: onBgGlow } as const
 const onBgLabel = { color: C.blue, textShadow: onBgGlow } as const
 const onBgBody = { color: C.body, textShadow: onBgGlow } as const
 
-const hairline = "color-mix(in srgb, var(--color-motif-medium) 55%, transparent)"
-const blushEdge = "color-mix(in srgb, var(--color-motif-blush) 90%, transparent)"
+const hairline = "rgb(201 162 74 / 45%)"
+const blushEdge = "rgb(201 162 74 / 45%)" // gold card edge
 
-// Paper cards with a blush edge (same paper as the love story / gallery photo frames)
+// Dark cards with a fine gold edge (lib/lux-dark.ts)
 const cardStyle = {
-  background: "var(--color-motif-soft)",
-  boxShadow:
-    `0 0 0 1px ${blushEdge}, 0 22px 48px -26px color-mix(in srgb, var(--color-welcome-navy) 40%, transparent), inset 0 1px 0 rgb(255 255 255 / 80%)`,
+  background: LUX_CARD.background as string,
+  boxShadow: `0 0 0 1px ${blushEdge}, ${LUX_CARD.boxShadow}`,
 } as const
 
+// Inner panel on a card (venue + QR, dress code chip)
 const softPanelStyle = {
-  backgroundColor: "color-mix(in srgb, var(--color-motif-blush) 28%, white)",
+  backgroundColor: "rgb(0 0 0 / 40%)",
 } as const
 
-// Primary button: dusty rose → charcoal with white text (matches the rest of the invitation)
-const primaryButtonBg =
-  "linear-gradient(180deg, #84183A 0%, #6A0D28 55%, #540920 100%)"
+// Primary button: gold with black lettering
+const primaryButtonBg = LUX_GOLD_BUTTON
 
 
 
@@ -187,7 +206,7 @@ function DressCodePaletteHeader({
 
       <div className="mx-auto mt-3 flex max-w-xs items-center justify-center gap-2 sm:mt-4 sm:max-w-sm md:max-w-md">
         <span className="h-px flex-1" style={{ background: "linear-gradient(to right, transparent, var(--color-motif-medium))" }} />
-        <Heart className="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" style={{ color: C.accent, fill: C.accent }} aria-hidden />
+        <span className="h-1.5 w-1.5 shrink-0 rotate-45" style={{ background: C.accent }} aria-hidden />
         <span className="h-px flex-1" style={{ background: "linear-gradient(to left, transparent, var(--color-motif-medium))" }} />
       </div>
 
@@ -224,9 +243,9 @@ function DressCodePaletteSwatches({ palette }: { palette: readonly PaletteColor[
             className="block h-14 w-14 rounded-full sm:h-[4.5rem] sm:w-[4.5rem] md:h-20 md:w-20"
             style={{
               backgroundColor: color.hex,
-              border: "3px solid #FFFFFF",
+              border: "3px solid #1c1c1e",
               boxShadow:
-                "0 0 0 1px color-mix(in srgb, var(--color-motif-blush) 90%, transparent), 0 8px 18px -10px color-mix(in srgb, var(--color-welcome-navy) 55%, transparent)",
+                "0 0 0 1px rgb(201 162 74 / 60%), 0 8px 18px -10px rgb(0 0 0 / 80%)",
             }}
             aria-hidden
           />
@@ -261,42 +280,6 @@ function ColorPalette({ colors }: { colors: readonly string[] }) {
   )
 }
 
-function CoupleImagesCarousel({
-  coupleImages,
-  currentImageIndex,
-  rotationOffset,
-}: {
-  coupleImages: readonly string[]
-  currentImageIndex: number
-  rotationOffset: number
-}) {
-  return (
-    // Phones: photos overlap like a small stack; tablet/desktop: spaced row
-    <div className="mb-4 flex justify-center sm:mb-5 sm:gap-2.5">
-      {coupleImages.map((image, index) => {
-        const isActive = index === currentImageIndex
-        const baseRotation = index % 2 === 0 ? -5 + index : 5 - index
-        const currentRotation = isActive
-          ? baseRotation + Math.sin((rotationOffset * Math.PI) / 180) * 2
-          : baseRotation
-        const scale = isActive ? "scale(1.1)" : "scale(1)"
-
-        return (
-          <div
-            key={image}
-            className={`relative h-16 w-16 overflow-hidden rounded-lg border-[3px] shadow-md transition-all duration-700 ease-in-out ${
-              index > 0 ? "-ml-2 sm:ml-0" : ""
-            } ${isActive ? "z-10" : "opacity-90 sm:opacity-75"}`}
-            style={{ transform: `rotate(${currentRotation}deg) ${scale}`, borderColor: C.light }}
-          >
-            <Image src={encodeURI(image)} alt={`Wedding couple ${index + 1}`} fill className="object-cover" sizes="64px" />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function FadeRule({ className = "" }: { className?: string }) {
   return (
     <span
@@ -319,9 +302,183 @@ const reminderItemVariants: Variants = {
   show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: revealEase } },
 }
 
-function ReminderItem({ title, children }: { title: string; children: ReactNode }) {
+const PROGRAM_ICONS: Record<ProgramIconName, LucideIcon> = {
+  registration: ClipboardCheck,
+  prayer: HandHeart,
+  welcome: Mic,
+  founder: MessageSquareQuote,
+  review: Sparkles,
+  dinner: UtensilsCrossed,
+  awards: Trophy,
+  raffle: Gift,
+  performance: Music,
+  closing: Camera,
+}
+
+const REMINDER_ICONS: Record<ReminderIconName, LucideIcon> = {
+  registration: ClipboardCheck,
+  dress: Shirt,
+  raffle: Gift,
+  share: Camera,
+}
+
+type ProgramItem = {
+  show: boolean
+  time: string
+  title: string
+  description: string
+  icon: ProgramIconName
+}
+
+// "What to Expect" — the evening's program as a gold-lined timeline on a dark card
+function ProgramCard({
+  title,
+  subtitle,
+  description,
+  footnote,
+  items,
+  reduceMotion,
+}: {
+  title: string
+  subtitle: string
+  description: string
+  footnote: string
+  items: readonly ProgramItem[]
+  reduceMotion: boolean
+}) {
+  const visible = items.filter((item) => item.show)
+  if (visible.length === 0) return null
+
+  return (
+    <motion.div
+      className="relative mx-auto max-w-3xl"
+      initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.9, ease: revealEase }}
+    >
+      <div
+        className="relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]"
+        style={{ background: cardStyle.background, boxShadow: cardStyle.boxShadow }}
+      >
+        <motion.div
+          className="relative z-10 px-4 py-7 sm:px-8 sm:py-9 md:px-12 md:py-11"
+          variants={reminderListVariants}
+          initial={reduceMotion ? false : "hidden"}
+          whileInView="show"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {/* Header */}
+          <motion.div variants={reminderItemVariants} className="flex flex-col items-center text-center">
+            <SectionIconDivider icon={<Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.blue }} aria-hidden />} />
+            <h3
+              className={`${theSeasons.className} ${ct.sectionTitle} mt-3 font-semibold uppercase tracking-[0.16em] sm:mt-4`}
+              style={{ color: C.heading }}
+            >
+              {title}
+            </h3>
+            {subtitle ? (
+              <p
+                className={`${aboveTheBeyond.className} mt-1 text-lg leading-none sm:mt-1.5 sm:text-xl md:text-2xl`}
+                style={{ color: C.blue }}
+              >
+                {subtitle}
+              </p>
+            ) : null}
+            {description ? (
+              <p className={`font-goudy-italic ${ct.body} mx-auto mt-2.5 max-w-md leading-relaxed`} style={{ color: C.soft }}>
+                {description}
+              </p>
+            ) : null}
+            <FadeRule className="mt-4 sm:mt-5" />
+          </motion.div>
+
+          {/* Timeline: time | gold dot on a vertical line | title + description */}
+          <ol className="mx-auto mt-6 max-w-xl sm:mt-8">
+            {visible.map((item, index) => {
+              const Icon = PROGRAM_ICONS[item.icon] ?? Sparkles
+              const isLast = index === visible.length - 1
+              return (
+                <motion.li
+                  key={`${item.time}-${item.title}`}
+                  variants={reminderItemVariants}
+                  className="grid grid-cols-[4.25rem_2.25rem_1fr] gap-x-2 sm:grid-cols-[5.5rem_2.75rem_1fr] sm:gap-x-4"
+                >
+                  <p
+                    className={`${cinzel.className} pt-2 text-right text-[0.68rem] font-semibold uppercase leading-tight tracking-[0.08em] sm:text-sm`}
+                    style={{ color: C.blue }}
+                  >
+                    {item.time}
+                  </p>
+                  <div className="relative flex flex-col items-center">
+                    <span
+                      className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10"
+                      style={{
+                        border: `1px solid ${blushEdge}`,
+                        background: "radial-gradient(circle at 50% 35%, #26231c 0%, #0d0d0e 100%)",
+                        boxShadow: "0 0 0 3px rgb(0 0 0 / 55%), 0 6px 14px -8px rgb(0 0 0 / 90%)",
+                      }}
+                      aria-hidden
+                    >
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: LUX.gold }} />
+                    </span>
+                    {!isLast && (
+                      <span
+                        className="w-px flex-1"
+                        style={{ background: "linear-gradient(to bottom, rgb(201 162 74 / 60%), rgb(201 162 74 / 15%))" }}
+                        aria-hidden
+                      />
+                    )}
+                  </div>
+                  <div className={`min-w-0 pt-1.5 sm:pt-2 ${isLast ? "" : "pb-5 sm:pb-7"}`}>
+                    <h4
+                      className={`${cinzel.className} text-[0.72rem] font-semibold uppercase leading-snug tracking-[0.12em] sm:text-sm md:text-base`}
+                      style={{ color: C.heading }}
+                    >
+                      {item.title}
+                    </h4>
+                    {item.description ? (
+                      <p
+                        className="font-goudy-italic mt-1 text-[0.78rem] leading-snug sm:text-sm md:text-[0.95rem]"
+                        style={{ color: C.body }}
+                      >
+                        {item.description}
+                      </p>
+                    ) : null}
+                  </div>
+                </motion.li>
+              )
+            })}
+          </ol>
+
+          {footnote ? (
+            <motion.p
+              variants={reminderItemVariants}
+              className="font-goudy-italic mt-6 text-center text-[0.72rem] sm:mt-8 sm:text-xs"
+              style={{ color: C.soft }}
+            >
+              {footnote}
+            </motion.p>
+          ) : null}
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
+
+function ReminderItem({ title, icon, children }: { title: string; icon?: ReminderIconName; children: ReactNode }) {
+  const Icon = icon ? REMINDER_ICONS[icon] : null
   return (
     <motion.div variants={reminderItemVariants} className="mx-auto flex max-w-xl flex-col items-center text-center">
+      {Icon ? (
+        <span
+          className="mb-2.5 flex h-8 w-8 items-center justify-center rounded-full sm:h-9 sm:w-9"
+          style={{ border: `1px solid ${blushEdge}`, background: "rgb(0 0 0 / 40%)" }}
+          aria-hidden
+        >
+          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: LUX.gold }} />
+        </span>
+      ) : null}
       <h4
         className={`${cinzel.className} ${ct.reminderHead} font-semibold uppercase tracking-[0.16em]`}
         style={{ color: C.heading }}
@@ -438,8 +595,8 @@ function AttireCard({
               className={`${cinzel.className} rounded-full px-2.5 py-0.5 text-[0.55rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.62rem]`}
               style={{
                 color: C.blue,
-                background: "color-mix(in srgb, var(--color-motif-blush) 35%, white)",
-                border: "1px solid color-mix(in srgb, var(--color-motif-blush) 90%, transparent)",
+                background: "rgb(226 183 90 / 10%)",
+                border: "1px solid rgb(201 162 74 / 55%)",
               }}
             >
               {dressCode}
@@ -452,7 +609,7 @@ function AttireCard({
             className="relative flex w-full shrink-0 items-center justify-center overflow-hidden"
             style={{
               background:
-                "radial-gradient(70% 80% at 50% 40%, #FFFFFF 0%, color-mix(in srgb, var(--color-motif-blush) 30%, white) 100%)",
+                "radial-gradient(70% 80% at 50% 40%, #1c1c1e 0%, #0b0b0c 100%)",
             }}
           >
             {/* Any image shape works: the 3/2 size is only a placeholder until the
@@ -549,7 +706,8 @@ function EventVenueCard({
   showDateDetails = true,
   labels,
 }: EventVenueCardProps) {
-  const { fg: qrFg, bg: qrBg } = useQrColors() // --color-qr-fg / --color-qr-bg in globals.css
+  // QR stays dark-on-white so every phone camera can read it (--color-qr-fg / --color-qr-bg in globals.css)
+  const { fg: qrFg, bg: qrBg } = useQrColors()
   const eventDate = showDateDetails ? new Date(dateString) : null
   const copied = copiedItems.has(copyId)
 
@@ -566,12 +724,12 @@ function EventVenueCard({
         className="relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]"
         style={{ background: cardStyle.background, boxShadow: cardStyle.boxShadow }}
       >
-        <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden" style={{ background: "color-mix(in srgb, var(--color-motif-blush) 40%, white)" }}>
+        <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden" style={{ background: "#0b0b0c" }}>
           {images.map((src, index) => {
             const isActive = index === activeImageIndex
             return (
               <div
-                key={src}
+                key={`${src}-${index}`}
                 className={`absolute inset-0 transition-[opacity,transform] duration-[1600ms] ease-[cubic-bezier(0.45,0.05,0.55,0.95)] ${
                   isActive ? "opacity-100 scale-100 z-10" : "opacity-0 scale-[1.06] z-0 pointer-events-none"
                 }`}
@@ -595,7 +753,7 @@ function EventVenueCard({
             className="absolute inset-0 z-20 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in srgb, var(--color-welcome-navy) 80%, transparent) 0%, color-mix(in srgb, var(--color-welcome-navy) 45%, transparent) 30%, color-mix(in srgb, var(--color-motif-medium) 12%, transparent) 60%, transparent 100%)",
+                "linear-gradient(to top, rgb(0 0 0 / 88%) 0%, rgb(0 0 0 / 55%) 32%, rgb(0 0 0 / 12%) 62%, transparent 100%)",
             }}
           />
 
@@ -604,8 +762,8 @@ function EventVenueCard({
               className={`${cinzel.className} inline-block mb-2.5 px-3 py-1 rounded-full backdrop-blur-sm text-[10px] sm:text-xs uppercase tracking-[0.2em] border`}
               style={{
                 color: "#FFFFFF",
-                background: "color-mix(in srgb, var(--color-motif-medium) 35%, transparent)",
-                borderColor: "color-mix(in srgb, var(--color-motif-blush) 70%, transparent)",
+                background: "rgb(0 0 0 / 45%)",
+                borderColor: "rgb(201 162 74 / 70%)",
               }}
             >
               {badge}
@@ -616,22 +774,22 @@ function EventVenueCard({
               style={{
                 ...serif,
                 color: "#FFFFFF",
-                textShadow: "0 1px 2px rgb(0 0 0 / 35%), 0 4px 18px color-mix(in srgb, var(--color-welcome-navy) 60%, transparent)",
+                textShadow: "0 1px 2px rgb(0 0 0 / 70%), 0 4px 18px rgb(0 0 0 / 60%)",
               }}
             >
               {toTitleCase(locationName)}
             </h3>
             <span
               className="my-2 block h-px w-14 sm:my-2.5 sm:w-20"
-              style={{ background: "linear-gradient(to right, var(--color-motif-blush), transparent)" }}
+              style={{ background: `linear-gradient(to right, ${LUX.gold}, transparent)` }}
               aria-hidden
             />
             <p
               className="flex items-start gap-1.5 text-[0.82rem] italic leading-snug sm:text-sm md:text-base"
               style={{
                 ...serif,
-                color: "color-mix(in srgb, var(--color-motif-blush) 78%, white)",
-                textShadow: "0 1px 6px color-mix(in srgb, var(--color-welcome-navy) 70%, transparent)",
+                color: LUX.ivory,
+                textShadow: "0 1px 6px rgb(0 0 0 / 70%)",
               }}
             >
               <MapPin className="mt-[0.2em] h-3.5 w-3.5 shrink-0 opacity-90 sm:h-4 sm:w-4" aria-hidden />
@@ -728,9 +886,9 @@ function EventVenueCard({
               className={`${cinzel.className} flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 rounded-full border font-semibold uppercase tracking-[0.12em] ${ct.btn} transition-all duration-300 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98]`}
               style={{
                 background: primaryButtonBg,
-                borderColor: "rgb(255 255 255 / 70%)",
-                color: "#FFFFFF",
-                boxShadow: "0 12px 24px -10px color-mix(in srgb, var(--color-welcome-navy) 60%, transparent)",
+                borderColor: "rgb(255 241 194 / 60%)",
+                color: "#111111",
+                boxShadow: "0 12px 24px -10px rgb(0 0 0 / 80%)",
               }}
               aria-label={`Get directions to ${badge.toLowerCase()} venue`}
             >
@@ -742,9 +900,9 @@ function EventVenueCard({
               onClick={() => onCopy(fullVenue, copyId)}
               className={`${cinzel.className} flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 border rounded-full font-semibold uppercase tracking-[0.12em] ${ct.btn} transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
               style={{
-                color: C.heading,
-                backgroundColor: "var(--color-motif-soft)",
-                borderColor: blushEdge,
+                color: LUX.gold,
+                backgroundColor: "rgb(0 0 0 / 35%)",
+                borderColor: "rgb(201 162 74 / 60%)",
               }}
               aria-label={`Copy ${badge.toLowerCase()} venue address`}
             >
@@ -765,22 +923,18 @@ function EventVenueCard({
 export function Details() {
   const siteConfig = useSiteConfig()
   const content = siteConfig.eventDetails
-  const { decos, venues, labels, attire, reminders } = content
+  const { decos, venues, labels, attire, program, reminders } = content
   const { ceremony, reception } = siteConfig
 
   const [copiedItems, setCopiedItems] = useState<Set<string>>(new Set())
   const [ceremonyImageIndex, setCeremonyImageIndex] = useState(0)
   const [receptionImageIndex, setReceptionImageIndex] = useState(0)
-  const [reminderImageIndex, setReminderImageIndex] = useState(0)
-  const [rotationOffset, setRotationOffset] = useState(0)
   const reduceMotion = useReducedMotion()
 
   // "combined" = one card for both events at the ceremony venue (eventDetails.venues.layout)
   const isCombined = venues.layout === "combined"
   const ceremonyImages = ceremony.image
   const receptionImages = isCombined ? [] : reception.image
-  // Photos above the reminders (shown in every display mode)
-  const reminderImages = reminders.images
   const paletteHexes = toPaletteColors(attire.palette).map((c) => c.hex)
   // Guard against null entries (e.g. a stray comma in ATTIRE.show)
   const attireGroups = attire.groups.filter(Boolean)
@@ -796,16 +950,6 @@ export function Details() {
     const timer = setInterval(() => setReceptionImageIndex((prev) => (prev + 1) % receptionImages.length), 4500)
     return () => clearInterval(timer)
   }, [receptionImages.length])
-
-  // Gentle reminders couple photos — subtle carousel + wobble animation
-  useEffect(() => {
-    if (reminderImages.length === 0) return
-    const interval = setInterval(() => {
-      setReminderImageIndex((prev) => (prev + 1) % reminderImages.length)
-      setRotationOffset((prev) => (prev + 10) % 360)
-    }, 2600)
-    return () => clearInterval(interval)
-  }, [reminderImages.length])
 
   const copyToClipboard = async (text: string, itemId: string) => {
     try {
@@ -839,7 +983,7 @@ export function Details() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={ivorySectionStyle}
     >
-      {/* Cream lace ground with lace edging, same as the welcome card / love story */}
+      {/* Dark ground: gold monogram pattern, gold lace edging and rule (components/ivory-backdrop.tsx) */}
       <IvoryBackdrop />
       <Section
         id="details"
@@ -973,6 +1117,20 @@ export function Details() {
           )}
         </div>
 
+        {/* What to Expect — the evening's program (content/site.ts → eventDetails.program) */}
+        {program.show && (
+          <div className="relative z-20 mx-auto mb-10 max-w-7xl px-4 sm:mb-12 sm:px-6 md:mb-14 md:px-8">
+            <ProgramCard
+              title={program.title}
+              subtitle={program.subtitle}
+              description={program.description}
+              footnote={program.footnote}
+              items={program.items}
+              reduceMotion={!!reduceMotion}
+            />
+          </div>
+        )}
+
         {/* Attire Guidelines */}
         <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
           {attireGroups.length > 0 && (
@@ -1057,20 +1215,9 @@ export function Details() {
                 viewport={{ once: true, amount: 0.15 }}
               >
                 <motion.div variants={reminderItemVariants} className="flex flex-col items-center">
-                  {reminderImages.length > 0 ? (
-                    <CoupleImagesCarousel
-                      coupleImages={reminderImages}
-                      currentImageIndex={reminderImageIndex}
-                      rotationOffset={rotationOffset}
-                    />
-                  ) : (
-                    <DecoImg
-                      src={decos.headerOrnament}
-                      className="mx-auto mb-3 block h-auto w-20 select-none sm:w-24"
-                    />
-                  )}
+                  <SectionIconDivider icon={<HandHeart className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: C.blue }} aria-hidden />} />
                   <h3
-                    className={`${theSeasons.className} ${ct.sectionTitle} font-semibold uppercase tracking-[0.18em]`}
+                    className={`${theSeasons.className} ${ct.sectionTitle} mt-3 font-semibold uppercase tracking-[0.18em] sm:mt-4`}
                     style={{ color: C.heading }}
                   >
                     {reminders.title}
@@ -1092,7 +1239,7 @@ export function Details() {
                           aria-hidden
                         />
                       ) : null}
-                      <ReminderItem title={item.title}>
+                      <ReminderItem title={item.title} icon={item.icon}>
                         <div className="space-y-2">
                           {item.paragraphs.map((text, i) => (
                             <div key={i} className="space-y-2.5">

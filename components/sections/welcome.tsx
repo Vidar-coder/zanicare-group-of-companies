@@ -5,11 +5,7 @@ import { motion } from "motion/react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { sectionType, welcomeTitleSize } from "@/lib/section-typography"
 import { cinzel } from "@/lib/fonts"
-import {
-  IVORY_GOLD as WELCOME_GOLD,
-  IVORY_LACE_FIELD as WELCOME_LACE_FIELD,
-  IVORY_LACE_EDGE as WELCOME_LACE_EDGE,
-} from "@/lib/ivory-lace"
+import { IVORY_LACE_EDGE as WELCOME_LACE_EDGE } from "@/lib/ivory-lace"
 import { SilkScreen } from "@/components/silk-screen"
 
 
@@ -25,26 +21,38 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Ivory-and-gold card: warm cream panel, a faint gold lace field, lace edging down both sides,
-// fine champagne-gold hairline frames and soft light from the top
+// Luxury dark card: black panel with a faint gold monogram pattern, gold lace edging down both
+// sides, gold hairline frames and a soft gold glow from the top — matches the home hero
+
+const GOLD = "#E2B75A" // lettering
+const GOLD_LINE = "#C9A24A" // rules, frames, ornaments
+const WHITE = "#F5F5F5"
+const IVORY = "#EDE6D6"
+const MUTED = "#B9B9BD"
+const PATTERN = "/monogram/monogram-liner-gold.png"
+
+// Three quick facts under the letter
+const HIGHLIGHTS = [
+  { value: "2022", label: "Founded in Molino, Bacoor" },
+  { value: "11", label: "Branches nationwide" },
+  { value: "1", label: "Zanicare family" },
+]
 
 function OrnamentalDivider({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`flex items-center justify-center ${compact ? "gap-1.5" : "gap-2"}`}>
       <span
         className={`h-px ${compact ? "w-6 sm:w-10" : "w-8 sm:w-12"}`}
-        style={{
-          background:
-            `linear-gradient(to right, transparent, color-mix(in srgb, ${WELCOME_GOLD} 70%, transparent))`,
-        }}
+        style={{ background: `linear-gradient(to right, transparent, ${GOLD_LINE})` }}
       />
-      <span className="h-1 w-1 rounded-full sm:h-1.5 sm:w-1.5" style={{ background: WELCOME_GOLD, boxShadow: "0 0 0 2px rgb(184 146 90 / 18%)" }} aria-hidden />
+      <span
+        className="h-1 w-1 rotate-45 sm:h-1.5 sm:w-1.5"
+        style={{ background: GOLD, boxShadow: "0 0 8px rgb(226 183 90 / 45%)" }}
+        aria-hidden
+      />
       <span
         className={`h-px ${compact ? "w-6 sm:w-10" : "w-8 sm:w-12"}`}
-        style={{
-          background:
-            `linear-gradient(to left, transparent, color-mix(in srgb, ${WELCOME_GOLD} 70%, transparent))`,
-        }}
+        style={{ background: `linear-gradient(to left, transparent, ${GOLD_LINE})` }}
       />
     </div>
   )
@@ -63,10 +71,17 @@ function LayeredWelcomeTitle() {
       }
     >
       <span
+        className={`${cinzel.className} mb-3 block text-[clamp(0.6rem,2.4vw,0.76rem)] font-semibold uppercase tracking-[0.34em] sm:mb-4`}
+        style={{ color: GOLD }}
+      >
+        A Message of Thanks
+      </span>
+      <span
         className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{
           fontSize: "var(--welcome-size)",
-          color: "var(--color-welcome-navy)",
+          color: WHITE,
+          textShadow: "0 2px 6px rgb(0 0 0 / 70%)",
         }}
       >
         Welcome
@@ -77,21 +92,21 @@ function LayeredWelcomeTitle() {
         className={`${aboveTheBeyond.className} relative z-10 mx-auto block w-fit max-w-full px-1 leading-[0.88] sm:leading-[0.9]`}
         style={{
           fontSize: "var(--script-size)",
-          color: "var(--color-welcome-navy)",
+          color: GOLD,
+          textShadow: "0 2px 4px rgb(0 0 0 / 80%), 0 0 20px rgb(226 183 90 / 25%)",
         }}
       >
-        to our love story
+        to a night of gratitude
       </span>
 
-      <span className="sr-only"> to our love story</span>
+      <span className="sr-only"> to a night of gratitude</span>
     </h2>
   )
 }
 
 export function Welcome() {
   const siteConfig = useSiteConfig()
-  const brideName = siteConfig.couple.brideNickname || siteConfig.couple.bride
-  const groomName = siteConfig.couple.groomNickname || siteConfig.couple.groom
+  const companyName = siteConfig.couple.groom
 
   return (
     <section
@@ -106,41 +121,51 @@ export function Welcome() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1] }}
-          className="relative @container/welcome overflow-visible rounded-xl border px-10 py-8 sm:rounded-2xl sm:px-12 sm:py-10 md:px-14 md:py-12"
+          className="relative @container/welcome overflow-hidden rounded-xl border px-10 py-8 sm:rounded-2xl sm:px-12 sm:py-10 md:px-14 md:py-12"
           style={{
-            borderColor: `color-mix(in srgb, ${WELCOME_GOLD} 55%, transparent)`,
+            borderColor: "rgb(201 162 74 / 55%)",
             background: [
-              // soft light falling from the top, a little shade toward the foot
-              "radial-gradient(120% 70% at 50% 0%, rgb(255 253 248 / 85%) 0%, transparent 60%)",
-              "radial-gradient(90% 50% at 50% 100%, rgb(214 190 150 / 18%) 0%, transparent 70%)",
-              WELCOME_LACE_FIELD,
-              "linear-gradient(180deg, #FBF6EE 0%, #F6EEE2 55%, #F0E5D5 100%)",
+              // soft gold light falling from the top, deeper black toward the foot
+              "radial-gradient(110% 60% at 50% 0%, rgb(226 183 90 / 12%) 0%, transparent 60%)",
+              "radial-gradient(90% 50% at 50% 100%, rgb(0 0 0 / 55%) 0%, transparent 70%)",
+              "linear-gradient(180deg, #161618 0%, #0f0f10 55%, #0a0a0b 100%)",
             ].join(", "),
-            backgroundSize: "100% 100%, 100% 100%, 44px 44px, 100% 100%",
             boxShadow: [
-              "inset 0 1px 0 rgb(255 255 255 / 80%)",
-              "inset 0 0 40px rgb(214 190 150 / 18%)",
-              "0 18px 40px -18px rgb(120 90 50 / 30%)",
-              "0 4px 12px rgb(120 90 50 / 10%)",
+              "inset 0 1px 0 rgb(243 210 122 / 18%)",
+              "inset 0 0 50px rgb(0 0 0 / 55%)",
+              "0 24px 50px -20px rgb(0 0 0 / 75%)",
+              "0 0 0 1px rgb(0 0 0 / 60%)",
             ].join(", "),
           }}
         >
-          {/* Lace edging down both sides (mirrored on the right) */}
+          {/* Faint gold monogram pattern, slightly visible */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: `url("${PATTERN}")`,
+              backgroundSize: "88px auto",
+              backgroundPosition: "center",
+              opacity: 0.16,
+            }}
+          />
+
+          {/* Gold lace edging down both sides (mirrored on the right) */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-y-3 left-1.5 w-[26px] sm:left-2.5"
-            style={{ background: `${WELCOME_LACE_EDGE} 0 0 / 26px 24px repeat-y` }}
+            style={{ background: `${WELCOME_LACE_EDGE} 0 0 / 26px 24px repeat-y`, opacity: 0.9 }}
           />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-y-3 right-1.5 w-[26px] -scale-x-100 sm:right-2.5"
-            style={{ background: `${WELCOME_LACE_EDGE} 0 0 / 26px 24px repeat-y` }}
+            style={{ background: `${WELCOME_LACE_EDGE} 0 0 / 26px 24px repeat-y`, opacity: 0.9 }}
           />
 
-          {/* Inner hairline frame in champagne gold */}
+          {/* Inner hairline frame in gold */}
           <div
             className="wedding-frame-inner hidden min-[400px]:block"
-            style={{ borderColor: `color-mix(in srgb, ${WELCOME_GOLD} 45%, transparent)` }}
+            style={{ borderColor: "rgb(201 162 74 / 38%)" }}
             aria-hidden
           />
 
@@ -149,75 +174,104 @@ export function Welcome() {
             aria-hidden
             className="pointer-events-none absolute inset-x-8 top-0 h-px sm:inset-x-10 md:inset-x-12"
             style={{
-              background: `linear-gradient(to right, transparent, ${WELCOME_GOLD}, #E9D3A6, ${WELCOME_GOLD}, transparent)`,
+              background: `linear-gradient(to right, transparent, ${GOLD_LINE}, #F3D27A, ${GOLD_LINE}, transparent)`,
             }}
           />
 
           <div className="relative flex flex-col gap-8 sm:gap-9 md:gap-10">
-            <header className="space-y-3 pt-2 text-center sm:space-y-3.5 sm:pt-3 md:space-y-4 md:pt-4">
+            <header className="space-y-4 pt-2 text-center sm:space-y-5 sm:pt-3 md:pt-4">
               <LayeredWelcomeTitle />
               <OrnamentalDivider compact />
             </header>
 
             <figure className="mx-auto max-w-[36rem] text-center">
               <blockquote>
-                <p
-                  className={`font-goudy-italic ${sectionType.textSnug}`}
-                  style={{ color: "var(--color-welcome-navy)" }}
-                >
-                  &ldquo;Clothe yourselves with love, for it is a perfect bond of union.&rdquo;
+                <p className={`font-goudy-italic ${sectionType.textSnug}`} style={{ color: IVORY }}>
+                  &ldquo;Give thanks to the Lord, for He is good; His love endures forever.&rdquo;
                 </p>
                 <figcaption className="mt-2 sm:mt-2.5">
                   <cite
                     className={`${cinzel.className} ${sectionType.label} not-italic uppercase tracking-[0.2em] sm:tracking-[0.24em]`}
-                    style={{ color: "var(--color-welcome-navy)" }}
+                    style={{ color: GOLD }}
                   >
-                    Colossians 3:14
+                    Psalm 107:1
                   </cite>
                 </figcaption>
               </blockquote>
             </figure>
 
-            {/* Body: Crimson Text (upright book serif), same reading style as the love story */}
+            {/* Body: Crimson Text (upright book serif) in soft white */}
             <div
-              className="mx-auto max-w-[36rem] space-y-3 text-center text-[clamp(0.875rem,1vw+0.6rem,0.96875rem)] leading-[1.7] sm:space-y-3.5 md:space-y-4"
+              className="mx-auto max-w-[36rem] space-y-3 text-center text-[clamp(0.9rem,1vw+0.62rem,1rem)] leading-[1.75] sm:space-y-3.5 md:space-y-4"
               style={{
-                color: "var(--color-welcome-navy)",
+                color: "#DCDCDE",
                 fontFamily: '"Crimson Text", "Cormorant Garamond", Georgia, serif',
               }}
             >
               <p>
-                Dear family and friends, we are overjoyed to begin this new chapter together and
-                grateful to God for every step that led us here. What began as a simple story has
-                grown into a love we cherish deeply — and we cannot imagine celebrating without you.
+                To our <span style={{ color: GOLD }}>Zanicare family</span>, partners and friends —
               </p>
               <p>
-                This invitation holds everything you may need for our wedding day: the schedule,
-                venue details, and a few gentle reminders along the way. Whether near or far, your
-                presence, prayers, and warm wishes will mean more to us than words can say.
+                What began in 2022 with a single clinic in Molino, Bacoor has grown into a network of
+                eleven animal bite clinics, caring for patients in communities across Metro Manila,
+                Cavite and Cebu. Every one of those patients was met by someone in this room.
               </p>
               <p>
-                Thank you for being part of our journey. We look forward to sharing this beautiful
-                day with the people who have shaped our lives and our hearts.
+                This Christmas, we set aside one evening to say thank you: for the early shifts and
+                late nights, for the calm you bring to worried patients, and for the trust our
+                partners place in us. Tonight we celebrate the year we built together — and the
+                people who made it possible.
+              </p>
+              <p>
+                Inside you will find the program, the venue and a few gentle reminders. Come
+                dressed to shine, and stay for the awards, the raffle and the music.
               </p>
             </div>
 
-            <footer className="space-y-2 border-t pt-8 text-center sm:space-y-2.5 sm:pt-9 md:pt-10"
-              style={{
-                borderColor: `color-mix(in srgb, ${WELCOME_GOLD} 40%, transparent)`,
-              }}
+            {/* Three quick facts */}
+            <dl className="mx-auto grid w-full max-w-[30rem] grid-cols-3 gap-2 sm:gap-4">
+              {HIGHLIGHTS.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center rounded-lg border px-1.5 py-3 text-center sm:px-3 sm:py-4"
+                  style={{ borderColor: "rgb(201 162 74 / 30%)", background: "rgb(0 0 0 / 35%)" }}
+                >
+                  <dt className="sr-only">{item.label}</dt>
+                  <dd
+                    className={`${theSeasons.className} text-[clamp(1.5rem,6vw,2.1rem)] leading-none`}
+                    style={{ color: GOLD }}
+                  >
+                    {item.value}
+                  </dd>
+                  <dd
+                    aria-hidden
+                    className={`${cinzel.className} mt-2 text-[0.5rem] font-semibold uppercase leading-snug tracking-[0.14em] sm:text-[0.58rem]`}
+                    style={{ color: MUTED }}
+                  >
+                    {item.label}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <footer
+              className="space-y-2 border-t pt-8 text-center sm:space-y-2.5 sm:pt-9 md:pt-10"
+              style={{ borderColor: "rgb(201 162 74 / 35%)" }}
             >
-              <p
-                className={`${aboveTheBeyond.className} ${sectionType.script}`}
-                style={{ color: "var(--color-welcome-navy)" }}
-              >
-                With all our love,
+              <p className={`${aboveTheBeyond.className} ${sectionType.script}`} style={{ color: GOLD }}>
+                With heartfelt gratitude,
               </p>
               <p
                 className={`${cinzel.className} ${sectionType.subheader} font-semibold tracking-[0.12em] sm:tracking-[0.16em] md:tracking-[0.18em]`}
-                style={{ color: "var(--color-welcome-navy)" }}
+                style={{ color: WHITE }}
               >
-                {groomName} &amp; {brideName}
+                The Management
+              </p>
+              <p
+                className={`${cinzel.className} text-[0.62rem] font-semibold uppercase tracking-[0.24em] sm:text-[0.7rem]`}
+                style={{ color: MUTED }}
+              >
+                {companyName}
               </p>
             </footer>
           </div>
