@@ -90,6 +90,10 @@ const inviteExitEase: Transition = { duration: 1.65, ease: [0.22, 1, 0.36, 1], d
 const inviteEnterEase: Transition = { duration: 1.2, ease: [0.22, 1, 0.36, 1] };
 const letterExitEase: Transition = { duration: 1.55, ease: [0.16, 1, 0.3, 1] };
 const inviteRevealLeadMs = 460;
+// Fast open: on "View the invitation" the page appears right away behind a short fade, instead of
+// the multi-second photo-pull / curtain sequence. Set false to bring back the full cinematic exit.
+const FAST_OPEN = true;
+const FAST_OPEN_FADE_MS = 450;
 const INVITE_EXIT_MS = 2500;
 // "View the invitation" photo reveal — the envelope, letter and portraits never move:
 //   pull   — right on click, a photo card slides up out of the pocket
@@ -220,7 +224,7 @@ export const Hero: React.FC<HeroProps> = ({
   // Same photo as the home hero cover, so the reveal flows straight into it
   const exitPhotoSrc = content.coverPhoto ?? defaultSiteConfig.loadingScreen.coverPhoto;
   const exitPhoto = exitPhotoSrc ? encodeURI(exitPhotoSrc) : '';
-  const usePhotoExit = Boolean(exitPhoto) && !reduceMotion;
+  const usePhotoExit = !FAST_OPEN && Boolean(exitPhoto) && !reduceMotion;
 
   const envelopePolaroids = useMemo(() => {
     const photos = (content.photos ?? []).map((src) => encodeURI(src));
@@ -340,6 +344,14 @@ export const Hero: React.FC<HeroProps> = ({
 
     if (reduceMotion) {
       onTransitionStart?.();
+      onOpen();
+      return;
+    }
+
+    if (FAST_OPEN) {
+      // The invitation is already mounted behind this screen — show it now and fade this away
+      onTransitionStart?.();
+      await wait(FAST_OPEN_FADE_MS);
       onOpen();
       return;
     }
@@ -643,7 +655,9 @@ export const Hero: React.FC<HeroProps> = ({
       }
       transition={
         isExiting
-          ? usePhotoExit
+          ? FAST_OPEN
+            ? { duration: FAST_OPEN_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }
+            : usePhotoExit
             ? { duration: PHOTO_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }
             : inviteExitEase
           : posterBackdrop && visible
@@ -817,7 +831,7 @@ export const Hero: React.FC<HeroProps> = ({
         </>
       )}
 
-      {isExiting && !reduceMotion && !usePhotoExit && (
+      {isExiting && !reduceMotion && !usePhotoExit && !FAST_OPEN && (
         <>
           <motion.div
             className="env-invite-exit-ring"

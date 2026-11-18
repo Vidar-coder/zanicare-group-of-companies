@@ -42,7 +42,8 @@ const SeeYouThere = dynamic(() => import("@/components/sections/see-you-there").
 const Footer = dynamic(() => import("@/components/sections/footer").then(mod => mod.Footer))
 
 const mainEntryEase = [0.22, 1, 0.36, 1] as const
-const CINEMATIC_ENTRY_MS = 3000
+// Quick entry once the invitation is opened (the page is already mounted behind the loader)
+const CINEMATIC_ENTRY_MS = 1200
 
 const detailsShellVariants = {
   hidden: { opacity: 0 },
@@ -57,7 +58,7 @@ const silkBackdropVariants = {
   show: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 1.45, ease: mainEntryEase, delay: 0.42 },
+    transition: { duration: 0.8, ease: mainEntryEase, delay: 0 },
   },
 }
 
@@ -66,28 +67,27 @@ const navbarRevealVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.88, ease: mainEntryEase, delay: 0.72 },
+    transition: { duration: 0.6, ease: mainEntryEase, delay: 0.15 },
   },
 }
 
 const heroRevealVariants = {
-  hidden: { opacity: 0, y: 52, scale: 1.05, filter: "blur(12px)" },
+  hidden: { opacity: 0, y: 24, scale: 1.02 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
-    transition: { duration: 1.28, ease: mainEntryEase, delay: 0.58 },
+    transition: { duration: 0.7, ease: mainEntryEase, delay: 0 },
   },
 }
 
 const sectionsRevealVariants = {
-  hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
+  // No blur here: blurring the whole page body is expensive and makes phones stutter
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 1.08, ease: mainEntryEase, delay: 0.86 },
+    transition: { duration: 0.7, ease: mainEntryEase, delay: 0.1 },
   },
 }
 
@@ -219,6 +219,31 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
     prefetchInvitationData({ sponsorsList, entourage: showEntourage })
   }, [sponsorsList, showEntourage])
 
+  // Download the section code while the opening card / loader is on screen, so the page is
+  // ready (and shows instantly) by the time the invitation is opened
+  useEffect(() => {
+    const warm = () => {
+      void import("@/components/sections/love-story")
+      void import("@/components/sections/branches-map")
+      void import("@/components/sections/countdown")
+      void import("@/components/sections/messages")
+      void import("@/components/sections/details")
+      void import("@/components/sections/entourage")
+      void import("@/components/sections/guest-list")
+      void import("@/components/sections/book-of-guests")
+      void import("@/components/sections/faq")
+      void import("@/components/sections/snap-share")
+      void import("@/components/sections/footer")
+      void import("@/components/silk")
+    }
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(warm, { timeout: 2000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const t = setTimeout(warm, 800)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
       <div className={`relative min-h-screen bg-cloud text-charcoal selection:bg-birch selection:text-nut font-sans ${pageScrollLocked ? "overflow-hidden" : ""}`}>
         {openingCardVisible && (
@@ -262,7 +287,7 @@ export function InvitationPage({ sponsorsList, showEntourage = true }: Invitatio
                 aria-hidden="true"
                 initial={{ clipPath: "circle(0% at 50% 46%)", opacity: 0.98 }}
                 animate={{ clipPath: "circle(145% at 50% 46%)", opacity: 0 }}
-                transition={{ duration: 1.55, delay: 0.12, ease: mainEntryEase }}
+                transition={{ duration: 0.7, delay: 0, ease: mainEntryEase }}
               />
             )}
 
