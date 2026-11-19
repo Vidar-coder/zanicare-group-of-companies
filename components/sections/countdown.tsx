@@ -7,9 +7,9 @@ import { cinzel } from "@/lib/fonts"
 import localFont from "next/font/local"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import Counter from "@/components/Counter"
-import Image from "next/image"
 import { parseWeddingDate } from "@/lib/wedding-date"
 import { SilkScreen } from "@/components/silk-screen"
+import { LUX, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 interface TimeLeft {
   days: number
@@ -36,32 +36,68 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Light palette — ivory tones from globals.css motif tokens.
-// Sits on the bright peach silk: everything white, with a navy halo (set on the section root)
+// Black-and-gold palette (lib/lux-dark.ts): white headings, gold script and accents
 const light = {
-  title: "#FFFFFF",
-  script: "#FFFFFF",
-  label: "#FFFFFF",
-} as const
-const ON_SILK_HALO =
-  "0 1px 2px color-mix(in srgb, var(--color-welcome-navy) 70%, transparent), 0 2px 12px color-mix(in srgb, var(--color-welcome-navy) 50%, transparent)"
-
-const outsideDividerLineStyle = {
-  background:
-    "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-soft) 70%, transparent), transparent)",
+  title: LUX.white,
+  script: LUX.gold,
+  label: LUX.gold,
+  soft: LUX.ivory,
 } as const
 
-const sectionDividerLineStyleLeft = {
-  background:
-    "linear-gradient(to left, transparent, color-mix(in srgb, var(--color-motif-soft) 70%, transparent), transparent)",
-} as const
+/** Polished gold for the logo and the day number */
+const GOLD_LEAF = `linear-gradient(115deg, #B8862B 0%, ${LUX.gold} 28%, ${LUX.goldLight} 45%, #FFF1C4 50%, ${LUX.goldLight} 55%, ${LUX.gold} 72%, #B8862B 100%)`
+
+/** Fine gold rule that fades out at the given end */
+const goldRule = (fadeTo: "left" | "right") => ({
+  background: `linear-gradient(to ${fadeTo}, ${LUX.goldLine}, transparent)`,
+})
+
+function GoldDiamond({ size = 5 }: { size?: number }) {
+  return (
+    <span
+      aria-hidden
+      className="inline-block rotate-45"
+      style={{
+        width: size,
+        height: size,
+        background: `linear-gradient(135deg, ${LUX.goldLight}, ${LUX.goldLine})`,
+        boxShadow: `0 0 6px rgb(243 210 122 / 55%)`,
+      }}
+    />
+  )
+}
 
 function OutsideDivider() {
   return (
-    <div className="flex items-center justify-center gap-1.5">
-      <span className="h-px w-6 sm:w-10" style={outsideDividerLineStyle} />
-      <span className="h-0.5 w-0.5 rounded-full bg-white sm:h-1 sm:w-1" aria-hidden />
-      <span className="h-px w-6 sm:w-10" style={sectionDividerLineStyleLeft} />
+    <div className="flex items-center justify-center gap-2">
+      <span className="h-px w-10 sm:w-16" style={goldRule("left")} />
+      <GoldDiamond />
+      <span className="h-px w-10 sm:w-16" style={goldRule("right")} />
+    </div>
+  )
+}
+
+/** The logo as a gold silhouette, with a slow shine sweeping across it */
+function GoldMonogram({ src, label }: { src: string; label: string }) {
+  const mask = `url("${encodeURI(src)}") center / contain no-repeat`
+  return (
+    <div
+      role="img"
+      aria-label={label}
+      className="relative h-full w-full"
+      style={{ filter: "drop-shadow(0 0 10px rgb(226 183 90 / 35%)) drop-shadow(0 6px 14px rgb(0 0 0 / 60%))" }}
+    >
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          WebkitMask: mask,
+          mask,
+          backgroundImage: GOLD_LEAF,
+          backgroundSize: "250% 100%",
+        }}
+        animate={{ backgroundPosition: ["100% 0%", "0% 0%", "100% 0%"] }}
+        transition={{ duration: 9, ease: "easeInOut", repeat: Infinity }}
+      />
     </div>
   )
 }
@@ -86,6 +122,16 @@ function CountdownTitle() {
       >
         Counting Down
       </span>
+      <span className="mt-2 flex items-center justify-center gap-3 sm:mt-3" aria-hidden>
+        <span className="h-px w-8 sm:w-14" style={goldRule("left")} />
+        <span
+          className="font-inter text-[0.6rem] font-semibold uppercase tracking-[0.42em] sm:text-[0.7rem]"
+          style={{ color: light.soft }}
+        >
+          to our
+        </span>
+        <span className="h-px w-8 sm:w-14" style={goldRule("right")} />
+      </span>
       <span
         aria-hidden
         className={`${aboveTheBeyond.className} mx-auto block w-fit max-w-full px-1 leading-[0.88] sm:leading-[0.9] mt-2 sm:mt-2.5 md:mt-3`}
@@ -94,9 +140,9 @@ function CountdownTitle() {
           color: light.script,
         }}
       >
-        To our forever
+        Christmas Celebration
       </span>
-      <span className="sr-only">To our forever</span>
+      <span className="sr-only">to our Christmas Celebration</span>
     </h2>
   )
 }
@@ -111,13 +157,13 @@ function CountdownUnit({ value, label }: CountdownUnitProps) {
     <div className="flex flex-col items-center gap-1.5 sm:gap-2">
       {/* Card container */}
       <div className="relative w-full max-w-[88px] sm:max-w-[96px] md:max-w-[110px] lg:max-w-[120px]">
-        {/* Main card */}
+        {/* Main card: black panel with a faint neutral edge */}
         <div
-          className="relative rounded-xl border border-white/80 px-2.5 py-2.5 sm:rounded-2xl sm:px-3.5 sm:py-3.5 md:px-4 md:py-4"
-          // Faint navy tint behind each number so it stands out on the peach silk
+          className="relative rounded-xl px-2.5 py-2.5 sm:rounded-2xl sm:px-3.5 sm:py-3.5 md:px-4 md:py-4"
           style={{
-            background: "rgb(18 22 14 / 45%)",
-            boxShadow: "0 6px 18px -10px rgb(0 0 0 / 55%)",
+            background: "linear-gradient(180deg, rgb(24 24 26 / 92%) 0%, rgb(11 11 12 / 92%) 100%)",
+            border: "1px solid rgb(255 255 255 / 10%)",
+            boxShadow: "inset 0 1px 0 rgb(255 255 255 / 6%), 0 10px 24px -12px rgb(0 0 0 / 80%)",
           }}
         >
           <div className="relative z-10 flex items-center justify-center">
@@ -148,7 +194,7 @@ function CountdownUnit({ value, label }: CountdownUnitProps) {
       </div>
 
       <span
-        className="text-[10px] font-inter font-semibold uppercase tracking-[0.16em] sm:text-xs md:text-sm"
+        className="text-[10px] font-inter font-semibold uppercase tracking-[0.22em] sm:text-xs md:text-sm"
         style={{ color: light.label }}
       >
         {label}
@@ -165,7 +211,6 @@ export function Countdown() {
   const ceremonyMonth = parsedDate.month
   const ceremonyDayNumber = parsedDate.day
   const ceremonyYear = parsedDate.year
-  const { brideNickname, groomNickname } = siteConfig.couple
   const ceremonyDay = siteConfig.ceremony.day || parsedDate.dayOfWeek
   const ceremonyDayShort = ceremonyDay.slice(0, 3).toUpperCase()
   // Parse the date: December 20, 2025 at 10:30 AM PH Time (GMT+0800)
@@ -249,8 +294,8 @@ export function Countdown() {
   return (
     <div
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full bg-transparent`}
-      // text-shadow is inherited, so every line of text in the countdown gets the navy halo
-      style={{ textShadow: ON_SILK_HALO }}
+      // text-shadow is inherited, so every line of text in the countdown stays crisp on the dark ground
+      style={{ textShadow: LUX_TEXT_SHADOW }}
     >
       {/* Soft screen over the silk so the white text reads (components/silk-screen.tsx) */}
       <SilkScreen shape="spotlight" strength={0.42} blur />
@@ -258,7 +303,7 @@ export function Countdown() {
       id="countdown"
       className="relative overflow-hidden py-10 sm:py-12 md:py-16 lg:py-20"
     >
-      {/* Monogram - centered at top */}
+      {/* Logo in gold - centered at top */}
       <div className="relative flex justify-center pt-8 sm:pt-10 md:pt-12 mb-6 sm:mb-8 md:mb-10 z-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -266,14 +311,8 @@ export function Countdown() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="relative"
         >
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] lg:w-[36rem] lg:h-[36rem] xl:w-[40rem] xl:h-[40rem] opacity-90">
-            <Image
-              src={siteConfig.couple.monogram}
-              alt={`${groomNickname} & ${brideNickname} Monogram`}
-              fill
-              className="object-contain brightness-0 invert"
-              priority={false}
-            />
+          <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] lg:w-[36rem] lg:h-[36rem] xl:w-[40rem] xl:h-[40rem]">
+            <GoldMonogram src={siteConfig.couple.monogram} label={`${siteConfig.couple.groom} logo`} />
           </div>
         </motion.div>
       </div>
@@ -284,8 +323,12 @@ export function Countdown() {
           <OutsideDivider />
         </div>
         <CountdownTitle />
-        <div className="mt-3 flex items-center justify-center sm:mt-4">
-          <span className="h-px w-16 sm:w-24 md:w-32 bg-white/90" />
+        <div className="mt-4 flex items-center justify-center gap-2 sm:mt-5">
+          <span className="h-px w-16 sm:w-24 md:w-32" style={goldRule("left")} />
+          <GoldDiamond size={4} />
+          <GoldDiamond size={6} />
+          <GoldDiamond size={4} />
+          <span className="h-px w-16 sm:w-24 md:w-32" style={goldRule("right")} />
         </div>
       </div>
 
@@ -318,7 +361,7 @@ export function Countdown() {
                   style={{ color: light.title }}
                 >
                   {/* Month */}
-                  <span className="text-[0.65rem] uppercase tracking-[0.4em] sm:text-xs sm:tracking-[0.5em] md:text-sm">
+                  <span className="text-[0.65rem] uppercase tracking-[0.4em] sm:text-xs sm:tracking-[0.5em] md:text-sm" style={{ color: LUX.gold }}>
                     {ceremonyMonth}
                   </span>
 
@@ -326,17 +369,26 @@ export function Countdown() {
                   <div className="flex w-full items-center gap-2 sm:gap-4 md:gap-5">
                     {/* Day of week & divider */}
                     <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-2.5">
-                      <span className="h-[0.5px] flex-1 bg-white/90" />
+                      <span className="h-px flex-1" style={{ background: `linear-gradient(to right, transparent, ${LUX.goldLine})` }} />
                       <span className="text-[0.6rem] uppercase tracking-[0.3em] sm:text-[0.7rem] sm:tracking-[0.4em] md:text-xs">
                         {ceremonyDayShort}
                       </span>
-                      <span className="h-[0.5px] w-6 bg-white/90 sm:w-8 md:w-10" />
+                      <span className="h-px w-6 sm:w-8 md:w-10" style={{ background: LUX.goldLine }} />
                     </div>
 
                     {/* Day number */}
                     <div className="relative flex items-center justify-center px-3 sm:px-4 md:px-5">
                       <span
                         className={`${cinzel.className} relative text-[3rem] font-bold leading-none tracking-wider sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem]`}
+                        // gold-leaf numerals (clipped gradient; the inherited text-shadow would show through, so drop it)
+                        style={{
+                          backgroundImage: GOLD_LEAF,
+                          WebkitBackgroundClip: "text",
+                          backgroundClip: "text",
+                          color: "transparent",
+                          textShadow: "none",
+                          filter: "drop-shadow(0 2px 6px rgb(0 0 0 / 70%)) drop-shadow(0 0 12px rgb(226 183 90 / 25%))",
+                        }}
                       >
                         {ceremonyDayNumber}
                       </span>
@@ -344,16 +396,16 @@ export function Countdown() {
 
                     {/* Time */}
                     <div className="flex flex-1 items-center gap-1.5 sm:gap-2.5">
-                      <span className="h-[0.5px] w-6 bg-white/90 sm:w-8 md:w-10" />
+                      <span className="h-px w-6 sm:w-8 md:w-10" style={{ background: LUX.goldLine }} />
                       <span className="text-[0.6rem] uppercase tracking-[0.3em] sm:text-[0.7rem] sm:tracking-[0.4em] md:text-xs">
                         {ceremonyTimeDisplay.split(",")[0]}
                       </span>
-                      <span className="h-[0.5px] flex-1 bg-white/90" />
+                      <span className="h-px flex-1" style={{ background: `linear-gradient(to left, transparent, ${LUX.goldLine})` }} />
                     </div>
                   </div>
 
                   {/* Year */}
-                  <span className="text-[0.65rem] uppercase tracking-[0.4em] sm:text-xs sm:tracking-[0.5em] md:text-sm">
+                  <span className="text-[0.65rem] uppercase tracking-[0.4em] sm:text-xs sm:tracking-[0.5em] md:text-sm" style={{ color: LUX.gold }}>
                     {ceremonyYear}
                   </span>
                 </div>

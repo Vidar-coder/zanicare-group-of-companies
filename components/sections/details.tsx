@@ -983,7 +983,7 @@ export function Details() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative w-full overflow-hidden`}
       style={ivorySectionStyle}
     >
-      {/* Dark ground: gold monogram pattern, gold lace edging and rule (components/ivory-backdrop.tsx) */}
+      {/* Dark ground: gold diamond lattice pattern, gold lace edging and rule (components/ivory-backdrop.tsx) */}
       <IvoryBackdrop />
       <Section
         id="details"

@@ -1,0 +1,273 @@
+/* Clinic showcase (components/sections/clinic-showcase.tsx) — black-and-gold, inside About Us.
+   Two rows of clinic photos glide in opposite directions on a slightly tilted band, with a gold
+   ribbon of branch names running between them. Hover / touch-hold pauses a row. */
+
+.clinic-showcase {
+  --cs-gold: #e2b75a;
+  --cs-gold-line: #c9a24a;
+  --cs-gold-light: #f3d27a;
+  --cs-white: #f5f5f5;
+  --cs-ivory: #ede6d6;
+  --cs-card-w: clamp(9.5rem, 42vw, 15rem);
+  --cs-gap: clamp(0.75rem, 2.5vw, 1.25rem);
+  padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(3rem, 8vw, 5.5rem);
+  overflow: hidden;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%);
+}
+
+/* ── Header ── */
+.clinic-showcase__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.9rem;
+  font-size: clamp(0.6rem, 2.2vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cs-gold);
+}
+.clinic-showcase__eyebrow-rule {
+  width: clamp(1.5rem, 6vw, 3rem);
+  height: 1px;
+  background: linear-gradient(to left, var(--cs-gold-line), transparent);
+}
+.clinic-showcase__eyebrow-rule--right {
+  background: linear-gradient(to right, var(--cs-gold-line), transparent);
+}
+.clinic-showcase__title {
+  margin: 0;
+  font-size: clamp(2.1rem, 10vw, 4.25rem);
+  line-height: 0.85;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-white);
+}
+.clinic-showcase__script {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.15rem, 5vw, 2.1rem);
+  line-height: 1;
+  color: var(--cs-gold);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 85%), 0 0 20px rgb(226 183 90 / 30%);
+}
+.clinic-showcase__text {
+  margin: 1.1rem auto 0;
+  max-width: 32rem;
+  font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--cs-ivory);
+}
+
+/* ── The tilted band ── */
+.clinic-showcase__band {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.6vw, 1.4rem);
+  margin-top: clamp(2.25rem, 6vw, 3.5rem);
+  /* wider than the screen so the tilt never shows an empty corner */
+  margin-inline: -8vw;
+  padding: clamp(1.25rem, 3.5vw, 2rem) 0;
+  rotate: -3deg;
+  background:
+    linear-gradient(180deg, rgb(226 183 90 / 7%), transparent 18%, transparent 82%, rgb(226 183 90 / 7%)),
+    rgb(5 5 6 / 55%);
+  border-block: 1px solid rgb(201 162 74 / 45%);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 60%),
+    0 30px 60px -30px rgb(0 0 0 / 90%),
+    0 -30px 60px -30px rgb(0 0 0 / 90%);
+}
+
+/* A slow beam of gold light sweeping across the band */
+.clinic-showcase__beam {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 40%, rgb(243 210 122 / 9%) 48%, rgb(255 241 196 / 14%) 50%, rgb(243 210 122 / 9%) 52%, transparent 60%);
+  background-size: 250% 100%;
+  animation: clinic-beam 9s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+/* ── Photo rows ── */
+.clinic-marquee {
+  overflow: hidden;
+  /* soft fade at both ends */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+.clinic-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: clinic-marquee var(--marquee-duration, 40s) linear infinite;
+}
+.clinic-marquee__track--reverse {
+  animation-direction: reverse;
+}
+.clinic-marquee:hover .clinic-marquee__track,
+.clinic-marquee:active .clinic-marquee__track {
+  animation-play-state: paused;
+}
+.clinic-marquee__set {
+  display: flex;
+  gap: var(--cs-gap);
+  padding-right: var(--cs-gap);
+}
+
+/* Reduced motion: a still row you can swipe */
+.clinic-marquee--still {
+  overflow-x: auto;
+  -webkit-mask-image: none;
+  mask-image: none;
+  scroll-snap-type: x mandatory;
+  padding-inline: 8vw;
+}
+.clinic-marquee--still .clinic-marquee__track {
+  animation: none;
+}
+.clinic-marquee--still .clinic-card {
+  scroll-snap-align: center;
+}
+
+/* ── Card ── */
+.clinic-card {
+  position: relative;
+  flex: none;
+  width: var(--cs-card-w);
+  margin: 0;
+  padding: 0.35rem;
+  background: linear-gradient(160deg, #1d1d20, #0b0b0c);
+  border: 1px solid rgb(201 162 74 / 50%);
+  box-shadow:
+    inset 0 1px 0 rgb(243 210 122 / 15%),
+    0 14px 28px -14px rgb(0 0 0 / 90%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.45s ease;
+}
+.clinic-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  border-color: rgb(243 210 122 / 85%);
+  box-shadow:
+    inset 0 1px 0 rgb(243 210 122 / 25%),
+    0 0 24px rgb(226 183 90 / 25%),
+    0 22px 36px -16px rgb(0 0 0 / 95%);
+}
+.clinic-card__photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #111;
+}
+.clinic-card__photo img {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+  filter: saturate(0.92) contrast(1.04);
+}
+.clinic-card:hover .clinic-card__photo img {
+  transform: scale(1.08);
+  filter: saturate(1.05) contrast(1.05);
+}
+/* dark foot so the badge always reads */
+.clinic-card__photo::after {
+  content: "";
+  position: absolute;
+  inset: 55% 0 0;
+  background: linear-gradient(180deg, transparent, rgb(0 0 0 / 75%));
+  pointer-events: none;
+}
+.clinic-card__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(115deg, transparent 35%, rgb(255 241 196 / 22%) 50%, transparent 65%);
+  translate: -120% 0;
+  transition: translate 0.9s ease;
+  pointer-events: none;
+}
+.clinic-card:hover .clinic-card__shine {
+  translate: 120% 0;
+}
+.clinic-card__badge {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.8rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: clamp(0.5rem, 1.8vw, 0.62rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cs-gold-light);
+}
+.clinic-card__diamond,
+.clinic-ribbon__diamond {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  rotate: 45deg;
+  background: linear-gradient(135deg, var(--cs-gold-light), var(--cs-gold-line));
+  box-shadow: 0 0 6px rgb(243 210 122 / 55%);
+}
+
+/* ── Gold ribbon of branch names ── */
+.clinic-ribbon {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  padding: 0.7rem 0;
+  rotate: 1.5deg; /* crosses the photo rows at a slight angle */
+  background: linear-gradient(90deg, #8a6a25, #c9a24a 20%, #f3d27a 50%, #c9a24a 80%, #8a6a25);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 50%),
+    0 10px 24px -10px rgb(0 0 0 / 90%),
+    0 0 30px rgb(226 183 90 / 18%);
+}
+.clinic-ribbon__track {
+  display: flex;
+  width: max-content;
+  animation: clinic-marquee 38s linear infinite reverse;
+}
+.clinic-ribbon__set {
+  display: flex;
+  align-items: center;
+}
+.clinic-ribbon__name {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 1.75rem);
+  padding-right: clamp(1rem, 3vw, 1.75rem);
+  font-size: clamp(0.7rem, 2.6vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #141416;
+  text-shadow: 0 1px 0 rgb(255 241 196 / 50%);
+}
+.clinic-ribbon__name .clinic-ribbon__diamond {
+  background: #141416;
+  box-shadow: none;
+}
+.clinic-ribbon--still .clinic-ribbon__track {
+  animation: none;
+  margin-inline: auto;
+}
+
+@keyframes clinic-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes clinic-beam {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clinic-showcase__beam,
+  .clinic-marquee__track,
+  .clinic-ribbon__track {
+    animation: none;
+  }
+}

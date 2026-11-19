@@ -21,7 +21,7 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Luxury dark card: black panel with a faint gold monogram pattern, gold lace edging down both
+// Luxury dark card: black panel with a gold diamond lattice pattern, gold lace edging down both
 // sides, gold hairline frames and a soft gold glow from the top — matches the home hero
 
 const GOLD = "#E2B75A" // lettering
@@ -29,7 +29,7 @@ const GOLD_LINE = "#C9A24A" // rules, frames, ornaments
 const WHITE = "#F5F5F5"
 const IVORY = "#EDE6D6"
 const MUTED = "#B9B9BD"
-const PATTERN = "/monogram/monogram-liner-gold.png"
+const PATTERN = "/patterns/hex-gold.svg"
 
 // Three quick facts under the letter
 const HIGHLIGHTS = [
@@ -138,15 +138,15 @@ export function Welcome() {
             ].join(", "),
           }}
         >
-          {/* Faint gold monogram pattern, slightly visible */}
+          {/* Gold diamond lattice pattern, fully visible */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               backgroundImage: `url("${PATTERN}")`,
-              backgroundSize: "88px auto",
+              backgroundSize: "180px auto",
               backgroundPosition: "center",
-              opacity: 0.16,
+              opacity: 0.85,
             }}
           />
 

@@ -221,7 +221,7 @@ export function Hero() {
   const cornerDecos = homeHero.decos ?? defaultSiteConfig.homeHero.decos
   const showFrame = homeHero.showFrame ?? defaultSiteConfig.homeHero.showFrame
   const coverVine = homeHero.coverVine ?? defaultSiteConfig.homeHero.coverVine
-  // Wording + faint background pattern (content/site.ts → homeHero)
+  // Wording + background pattern (content/site.ts → homeHero)
   const copy = { ...defaultSiteConfig.homeHero, ...homeHero }
   const backgroundPhotos = loading.backgroundPhotos ?? []
   // Same sliding photo marquee as the loader and envelope (plain mode)
@@ -270,7 +270,7 @@ export function Hero() {
       className={`${theSeasons.variable} ${aboveTheBeyond.variable} home-hero relative -mt-12 flex min-h-[100dvh] w-full flex-col overflow-hidden sm:-mt-14 md:-mt-16${isPlain ? " home-hero--plain" : " home-hero--photos"}`}
     >
       {copy.pattern && (
-        // Faint repeating monogram behind everything, fading out toward the edges
+        // Gold diamond lattice pattern behind everything
         <div
           className="home-hero-pattern"
           aria-hidden="true"

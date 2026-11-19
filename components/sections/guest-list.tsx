@@ -36,6 +36,37 @@ const theSeasons = localFont({
   variable: "--font-the-seasons",
 })
 
+/**
+ * The decorative fonts (The Seasons, Above the Beyond) are missing or mangle punctuation and accented
+ * letters — e.g. the apostrophe in "O'Brien" or the ñ in "Peña". This keeps letters, digits and spaces
+ * in the decorative font and sets every other character in a regular font that has it.
+ *   script  → Sorts Mill Goudy italic (sits well beside the script)
+ *   caps    → Cinzel (matches the all-caps titles)
+ */
+const SPECIAL_CHARS = /([^A-Za-z0-9\s]+)/
+function SafeGlyphs({ text, fallback = "script" }: { text: string | number | null | undefined; fallback?: "script" | "caps" }) {
+  if (text == null || text === "") return null
+  const parts = String(text).split(SPECIAL_CHARS)
+  if (parts.length === 1) return <>{text}</>
+  const fallbackClass =
+    fallback === "caps"
+      ? `${cinzel.className} font-normal tracking-normal`
+      : "font-goudy-italic tracking-normal"
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? (
+          <span key={i} className={`${fallbackClass} inline-block`} style={{ fontSize: "0.82em", lineHeight: 1 }}>
+            {part}
+          </span>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  )
+}
+
 const aboveTheBeyond = localFont({
   src: "../../Font/above-the-beyond-script.otf",
   display: "swap",
@@ -660,7 +691,7 @@ export function GuestList() {
               color: NAVY,
             }}
           >
-            {copy.title}
+            <SafeGlyphs text={copy.title} fallback="caps" />
           </span>
           <span
             aria-hidden
@@ -671,7 +702,7 @@ export function GuestList() {
               textShadow: "0 1px 0 #FFFFFF",
             }}
           >
-            {copy.script}
+            <SafeGlyphs text={copy.script} />
             <span className={`${cinzel.className} relative -top-[0.06em] ml-[0.04em] inline-block font-normal`}>
               ?
             </span>
@@ -695,7 +726,7 @@ export function GuestList() {
               className={`${theSeasons.className} mt-2 block text-[1.45rem] font-normal normal-case leading-tight tracking-[0.04em] sm:text-[1.75rem] md:text-[1.95rem]`}
               style={{ color: TEAL }}
             >
-              {siteConfig.details.rsvp.deadline.replace(/\.\s*$/, "")}
+              <SafeGlyphs text={siteConfig.details.rsvp.deadline.replace(/\.\s*$/, "")} />
             </span>
           </p>
         ) : null}
@@ -777,7 +808,7 @@ export function GuestList() {
                       color: palette.heading,
                     }}
                   >
-                    {copy.search.title}
+                    <SafeGlyphs text={copy.search.title} fallback="caps" />
                   </span>
                   <span
                     aria-hidden
@@ -787,7 +818,7 @@ export function GuestList() {
                       color: palette.accent,
                     }}
                   >
-                    {copy.search.script}
+                    <SafeGlyphs text={copy.search.script} />
                   </span>
                 </h2>
 
@@ -1037,7 +1068,7 @@ export function GuestList() {
                   className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] pb-1 sm:pb-1.5`}
                   style={{ fontSize: "var(--title-size)", color: CHARCOAL }}
                 >
-                  {copy.invite.title}
+                  <SafeGlyphs text={copy.invite.title} fallback="caps" />
                 </span>
                 <span
                   aria-hidden
@@ -1049,7 +1080,7 @@ export function GuestList() {
                     color: SAGE_DEEP,
                   }}
                 >
-                  {selectedGuest?.Name || copy.invite.scriptFallback}
+                  <SafeGlyphs text={selectedGuest?.Name || copy.invite.scriptFallback} />
                 </span>
               </h3>
 
@@ -1094,7 +1125,7 @@ export function GuestList() {
                       className={`${theSeasons.className} mb-2 uppercase tracking-[0.12em] sm:text-lg md:text-xl ${sectionType.subheader}`}
                       style={{ color: palette.heading }}
                     >
-                      {copy.responded.title}
+                      <SafeGlyphs text={copy.responded.title} fallback="caps" />
                     </h4>
                     <p
                       className={`font-goudy-italic mb-4 px-2 ${sectionType.text}`}
@@ -1523,7 +1554,7 @@ export function GuestList() {
                   className={`${theSeasons.className} mb-2 text-base uppercase tracking-[0.12em]`}
                   style={{ color: palette.heading }}
                 >
-                  {copy.phoneAlert.title}
+                  <SafeGlyphs text={copy.phoneAlert.title} fallback="caps" />
                 </h4>
 
                 <div
@@ -1593,7 +1624,7 @@ export function GuestList() {
                     className={`${theSeasons.className} mb-1 text-base uppercase tracking-[0.12em]`}
                     style={{ color: palette.heading }}
                   >
-                    {copy.success.title}
+                    <SafeGlyphs text={copy.success.title} fallback="caps" />
                   </h4>
 
                   {formData.RSVP === "Yes" && (
@@ -1710,7 +1741,7 @@ export function GuestList() {
                     className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] pb-1 sm:pb-1.5`}
                     style={{ fontSize: "var(--title-size)", color: CHARCOAL }}
                   >
-                    {copy.request.title}
+                    <SafeGlyphs text={copy.request.title} fallback="caps" />
                   </span>
                   <span
                     aria-hidden
@@ -1720,7 +1751,7 @@ export function GuestList() {
                       color: palette.accent,
                     }}
                   >
-                    {copy.request.script}
+                    <SafeGlyphs text={copy.request.script} />
                   </span>
                 </h3>
 
@@ -1876,7 +1907,7 @@ export function GuestList() {
                     
                     {/* Title */}
                     <h4 className={`${theSeasons.className} mb-2 uppercase tracking-[0.12em] sm:mb-3 ${sectionType.subheader}`} style={{ color: palette.heading }}>
-                      {copy.request.sentTitle}
+                      <SafeGlyphs text={copy.request.sentTitle} fallback="caps" />
                     </h4>
                     
                     {/* Message */}

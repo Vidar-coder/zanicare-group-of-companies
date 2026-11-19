@@ -37,6 +37,8 @@ interface StorySectionProps {
   imageAlt?: string
   // Which part of the photo stays in frame (CSS object-position), e.g. "center 20%"
   imagePosition?: string
+  // Photo frame shape in the plain layout: tall "portrait" (default) or wide "landscape" for group shots
+  imageAspect?: "portrait" | "landscape"
   // Milestone date shown above the title (falls back to "Chapter 0X")
   date?: string
   title?: string
@@ -110,6 +112,7 @@ function PlainOpenChapter({
   videoSrc,
   imageAlt,
   imagePosition,
+  imageAspect = "portrait",
   date,
   title,
   text,
@@ -124,6 +127,7 @@ function PlainOpenChapter({
   videoSrc?: string
   imageAlt?: string
   imagePosition?: string
+  imageAspect?: "portrait" | "landscape"
   date?: string
   title?: string
   text: React.ReactNode
@@ -138,6 +142,7 @@ function PlainOpenChapter({
   const photoFrom = reduceMotion ? { opacity: 1, x: 0, rotate: 0 } : { opacity: 0, x: photoLeft ? -40 : 40, rotate: 0 }
   const textFrom = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }
   const tilt = photoLeft ? -2.5 : 2.5
+  const wide = imageAspect === "landscape"
 
   return (
     <div className={`${theSeasons.variable} story-open relative z-[2] px-5 sm:px-8 md:px-10`}>
@@ -150,15 +155,15 @@ function PlainOpenChapter({
       >
         {imageSrc || videoSrc ? (
           <motion.div
-            className="w-[44%] shrink-0 sm:w-[42%] md:w-5/12"
+            className={wide ? "w-[50%] shrink-0 sm:w-[48%] md:w-1/2" : "w-[44%] shrink-0 sm:w-[42%] md:w-5/12"}
             initial={photoFrom}
             whileInView={{ opacity: 1, x: 0, rotate: tilt }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.95, ease: revealEase }}
           >
             <div className="story-open-photo">
-              {/* Tall portrait frame (2:3) */}
-              <div className="relative aspect-[2/3] w-full overflow-hidden">
+              {/* Tall portrait frame (2:3), or 4:3 for wide group shots */}
+              <div className={`relative w-full overflow-hidden ${wide ? "aspect-[4/3]" : "aspect-[2/3]"}`}>
                 {videoSrc ? (
                   <StoryVideo src={videoSrc} poster={imageSrc} position={imagePosition} />
                 ) : imageSrc ? (
@@ -166,7 +171,7 @@ function PlainOpenChapter({
                     src={encodeURI(imageSrc)}
                     alt={imageAlt ?? ""}
                     fill
-                    sizes="(max-width: 640px) 44vw, (max-width: 1024px) 40vw, 420px"
+                    sizes={wide ? "(max-width: 640px) 50vw, (max-width: 1024px) 48vw, 520px" : "(max-width: 640px) 44vw, (max-width: 1024px) 40vw, 420px"}
                     className="object-cover"
                     style={{ objectPosition: imagePosition || "center 30%" }}
                     quality={85}
@@ -231,6 +236,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
   videoSrc,
   imageAlt,
   imagePosition,
+  imageAspect,
   date,
   title,
   text,
@@ -254,6 +260,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
         videoSrc={videoSrc}
         imageAlt={imageAlt}
         imagePosition={imagePosition}
+        imageAspect={imageAspect}
         date={date}
         title={title}
         text={text}

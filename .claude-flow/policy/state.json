@@ -165,10 +165,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:56cec2a6eb72e6be96a47b965e9241322c970406b40fc162fa00daf33ca1f58c"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:91c50dd9c1c0ce78f4e84a8ebf0b815518f72451b03e4951cc487265858098aa",
+        "previousReceiptHash": "sha256:56cec2a6eb72e6be96a47b965e9241322c970406b40fc162fa00daf33ca1f58c",
+        "sequence": 4,
+        "issuedAt": 1795019004713,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1795019004713
+          },
+          "requestId": "90e207a5-e8c8-4e44-95f4-b2bbde783651"
+        },
+        "decision": {
+          "requestId": "90e207a5-e8c8-4e44-95f4-b2bbde783651",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:0713375774e3168c1663397b2d70af91e053f18ff76713509dfbcfa4fb0c8370"
     }
   ],
   "migratedAt": 1794916713348,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 4,
-  "ledgerHead": "sha256:56cec2a6eb72e6be96a47b965e9241322c970406b40fc162fa00daf33ca1f58c"
+  "ledgerLength": 5,
+  "ledgerHead": "sha256:0713375774e3168c1663397b2d70af91e053f18ff76713509dfbcfa4fb0c8370"
 }

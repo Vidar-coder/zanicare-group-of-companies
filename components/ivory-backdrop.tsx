@@ -10,7 +10,7 @@ import { LUX, LUX_PATTERN, LUX_SECTION_BACKGROUND, LUX_THEME_VARS } from "@/lib/
 export const ivorySectionStyle = { background: LUX_SECTION_BACKGROUND, ...LUX_THEME_VARS }
 
 /**
- * Decoration that goes with the ground: a faint gold monogram pattern, gold lace edging down both
+ * Decoration that goes with the ground: a gold diamond lattice pattern, gold lace edging down both
  * sides and a gilded rule along the top. Absolutely positioned — the parent needs `position: relative`.
  */
 export function IvoryBackdrop() {
@@ -19,7 +19,7 @@ export function IvoryBackdrop() {
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
-        style={{ backgroundImage: `url("${LUX_PATTERN}")`, backgroundSize: "88px auto", opacity: 0.16 }}
+        style={{ backgroundImage: `url("${LUX_PATTERN}")`, backgroundSize: "180px auto", opacity: 0.85 }}
       />
       <div
         aria-hidden

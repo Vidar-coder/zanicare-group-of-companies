@@ -12,6 +12,7 @@ import "@/components/loader/loading-screen.css"
 import { TintedDeco } from "@/components/tinted-deco"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
 import { PuhonText } from "@/components/puhon-closing"
+import { ClinicShowcase, type ClinicShowcaseConfig } from "@/components/sections/clinic-showcase"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -40,8 +41,8 @@ const SECTION_BACKGROUND = [
   "radial-gradient(90% 35% at 50% 100%, rgb(226 183 90 / 6%) 0%, transparent 70%)",
   "linear-gradient(180deg, #0b0b0c 0%, #121214 50%, #0b0b0c 100%)",
 ].join(", ")
-// Gold monogram pattern, slightly visible (same tile as the hero)
-const PATTERN = "/monogram/monogram-liner-gold.png"
+// Gold diamond lattice pattern, (same tile as the hero)
+const PATTERN = "/patterns/hex-gold.svg"
 
 function formatStoryParagraph(
   paragraph: string,
@@ -119,16 +120,42 @@ function LoveStoryTitle({
 // A paragraph that starts with "— " (e.g. "— Benedict") is the author's sign-off: set apart as a
 // small italic signature with a short gold rule, instead of a normal paragraph
 const SIGNATURE = /^\s*[—–-]\s+/
+// A paragraph that starts with "• " is a list item: consecutive ones become one list with gold diamonds
+const LIST_ITEM = /^\s*•\s+/
+
+function GoldList({ items }: { items: string[] }) {
+  return (
+    <ul className="love-story-list my-4 space-y-2">
+      {items.map((item, i) => (
+        <li key={i}>
+          <span
+            aria-hidden
+            className="mr-2.5 inline-block h-1.5 w-1.5 -translate-y-[0.2em] rotate-45"
+            style={{ background: GOLD, boxShadow: "0 0 6px rgb(226 183 90 / 50%)" }}
+          />
+          <StoryGlyphText text={item} />
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 function chapterTextFromParagraphs(
   paragraphs: readonly string[],
   groom: string,
   bride: string,
 ) {
+  const texts = paragraphs.map((paragraph) => formatStoryParagraph(paragraph, groom, bride))
   return (
     <>
-      {paragraphs.map((paragraph, index) => {
-        const text = formatStoryParagraph(paragraph, groom, bride)
+      {texts.map((text, index) => {
+        if (LIST_ITEM.test(text)) {
+          // the first item of a run renders the whole list; the rest are already in it
+          if (index > 0 && LIST_ITEM.test(texts[index - 1])) return null
+          const items: string[] = []
+          for (let j = index; j < texts.length && LIST_ITEM.test(texts[j]); j++) items.push(texts[j].replace(LIST_ITEM, ""))
+          return <GoldList key={index} items={items} />
+        }
         if (SIGNATURE.test(text)) {
           return (
             <p
@@ -144,7 +171,7 @@ function chapterTextFromParagraphs(
         return (
           <p
             key={index}
-            className={paragraphs.length > 1 && index < paragraphs.length - 1 ? "mb-4" : undefined}
+            className={texts.length > 1 && index < texts.length - 1 ? "mb-4" : undefined}
           >
             <StoryGlyphText text={text} />
           </p>
@@ -154,7 +181,7 @@ function chapterTextFromParagraphs(
   )
 }
 
-// The section paints its own black-and-gold ground with a faint gold monogram pattern.
+// The section paints its own black-and-gold ground with a gold diamond lattice pattern.
 // skyBackdrop is kept for compatibility and no longer changes anything.
 export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
   const siteConfig = useSiteConfig()
@@ -182,6 +209,12 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
   )
   const eucalyptusDecos =
     loveStory.eucalyptusDecos ?? defaultSiteConfig.loveStory.eucalyptusDecos
+  // Clinic photo showcase (content/site.ts → loveStory.clinicShowcase), placed after chapter `afterChapter`
+  const clinicShowcase = (loveStory.clinicShowcase ?? defaultSiteConfig.loveStory.clinicShowcase) as ClinicShowcaseConfig
+  const showcaseAfter =
+    clinicShowcase?.show === false
+      ? -1
+      : Math.min(clinicShowcase?.afterChapter || chapters.length, chapters.length) - 1
 
   return (
     <div
@@ -192,14 +225,14 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
       className={`love-story-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative z-[2] min-h-screen w-full overflow-x-hidden`}
       style={{ background: SECTION_BACKGROUND }}
     >
-      {/* Gold monogram pattern across the whole section, slightly visible */}
+      {/* Gold diamond lattice pattern across the whole section */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           backgroundImage: `url("${PATTERN}")`,
-          backgroundSize: "88px auto",
-          opacity: 0.18,
+          backgroundSize: "180px auto",
+          opacity: 0.85,
         }}
       />
       {/* Lace edging down both sides and a gold rule along the top (same as the couple video) */}
@@ -274,8 +307,8 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
       </header>
 
       {chapters.map((chapter, index) => (
+        <React.Fragment key={`${chapter.image}-${index}`}>
         <StorySection
-          key={`${chapter.image}-${index}`}
           title={chapter.title}
           // Sides (and light/dark cards) alternate automatically; a chapter's layout overrides it
           theme={index % 2 ? "dark" : "light"}
@@ -284,6 +317,7 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
           videoSrc={chapter.video}
           imageAlt={formatStoryParagraph(chapter.imageAlt || photoAlt, groom, bride)}
           imagePosition={chapter.imagePosition}
+          imageAspect={chapter.imageAspect}
           showNumber={showChapterNumbers}
           showDivider={showChapterDividers}
           date={chapter.date}
@@ -295,6 +329,8 @@ export function LoveStory(_props: { skyBackdrop?: boolean } = {}) {
           eucalyptusDecos={isPlain ? eucalyptusDecos : undefined}
           chapterLabelText={loveStory.chapterLabel}
         />
+        {index === showcaseAfter ? <ClinicShowcase config={clinicShowcase} /> : null}
+        </React.Fragment>
       ))}
 
       <footer

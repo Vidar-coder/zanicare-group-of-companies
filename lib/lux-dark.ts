@@ -36,8 +36,8 @@ export const LUX_SECTION_BACKGROUND = [
   "linear-gradient(180deg, #0b0b0c 0%, #121214 50%, #0b0b0c 100%)",
 ].join(", ")
 
-/** Gold monogram pattern tile (slightly visible) */
-export const LUX_PATTERN = "/monogram/monogram-liner-gold.png"
+/** Gold diamond lattice pattern tile (public/patterns/hex-gold.svg) */
+export const LUX_PATTERN = "/patterns/hex-gold.svg"
 
 /**
  * Theme colours re-pointed for dark sections. Set on the section wrapper so every

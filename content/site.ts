@@ -262,7 +262,7 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
   logo: "/Details/companyLogo.png",
-  monogram: "/monogram/monogram.png", // logo (loader, envelope, closing)
+  monogram: "/monogram/ZANICARE DOH Certified Badge.png", // logo (loader, envelope, closing)
   coupleNameImage: "/Details/companyLogo.png", // logo (loader, envelope)
   seal: "/Details/companyLogo.png", // envelope wax seal
   // ⚠ check: still the previous wedding song — swap in a Christmas track
@@ -328,6 +328,7 @@ type StoryChapter = {
   imageAlt?: string // photo description ("" uses loveStory.photoAlt)
   paragraphs: string[]
   imagePosition?: string // which part of the photo stays in frame, e.g. "center 20%" (default "center 30%")
+  imageAspect?: "portrait" | "landscape" // photo frame shape (default "portrait"; use "landscape" for wide group shots)
   layout?: "image-left" | "image-right" // optional — chapters alternate sides automatically
 }
 
@@ -534,7 +535,7 @@ export const siteConfig = {
     arrivalLabel: "Registration & cocktails", // before the guest arrival time
     countdownHeading: "Counting down to the celebration",
     // Faint repeating pattern behind the hero ("" hides it)
-    pattern: "/monogram/monogram-liner-gold.png",
+    pattern: "/patterns/hex-gold.svg",
   },
   // Couple video (components/sections/couple-video.tsx)
   coupleVideo: {
@@ -586,13 +587,15 @@ export const siteConfig = {
       sectionBottom: DECOR.headerOrnament, // ornament under the closing quote ("" hides it)
     },
     // The company story, one chapter at a time (fields: see StoryChapter above).
-    // Photos are placeholders for now. Add, remove or reorder chapters freely — sides alternate on their own.
+    // Add, remove or reorder chapters freely — sides alternate on their own.
+    // A paragraph starting with "• " becomes a gold-diamond list item; "— Name" becomes a signature.
     chapters: [
       {
         date: "Who We Are",
         title: "Zanicare Group of Companies",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare Animal Bite Clinic",
+        image: "/images/TEAM BUILDING/teambuilding (8).jpg",
+        imageAspect: "landscape",
+        imageAlt: "The Zanicare team at their 3rd annual team building",
         paragraphs: [
           "Zanicare Group of Companies Inc. is a growing healthcare organization dedicated to providing accessible and reliable animal bite management and preventive healthcare services through its network of Zanicare Animal Bite Clinics.",
         ],
@@ -600,8 +603,10 @@ export const siteConfig = {
       {
         date: "2022 · Molino, Bacoor",
         title: "Where It Began",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare's first branch in Molino, Bacoor",
+        image: "/images/TEAM BUILDING/teambuilding (4).jpg",
+        imageAspect: "landscape",
+        imagePosition: "center 40%",
+        imageAlt: "Zanicare team members together at a table",
         paragraphs: [
           "The company began its operations in 2022 in Molino, Bacoor, Cavite — our very first branch, and the place where the Zanicare story started.",
         ],
@@ -609,162 +614,111 @@ export const siteConfig = {
       {
         date: "Growing Together",
         title: "A Growing Network",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare clinic network",
+        image: "/images/TEAM BUILDING/teambuilding (1).jpg",
+        imageAspect: "landscape",
+        imagePosition: "center 60%",
+        imageAlt: "The whole Zanicare team by the pool",
         paragraphs: [
           "Since then, Zanicare has continued to expand its presence across different communities. Through its growing network of clinics, Zanicare aims to make essential animal bite treatment and post-exposure care more accessible to patients in convenient locations.",
+          "Our growing presence in areas such as Molino, Baclaran, San Dionisio, Moonwalk, Malibay, Sta. Ana, and other locations reflects our commitment to bringing essential animal bite and preventive healthcare services closer to patients.",
         ],
       },
       {
         date: "What We Do",
-        title: "Animal Bite Treatment",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Animal bite treatment at Zanicare",
+        title: "Care for Every Exposure",
+        image: "/images/TEAM BUILDING/teambuilding (3).jpg",
+        imageAlt: "The Zanicare team sharing a meal",
         paragraphs: [
-          "At the heart of our work is animal bite treatment — timely, careful assistance for patients who need immediate medical attention after a potential exposure to rabies.",
-        ],
-      },
-      {
-        date: "After an Exposure",
-        title: "Post-Exposure Prophylaxis",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Post-exposure care",
-        paragraphs: [
-          "Our clinics provide post-exposure prophylaxis (PEP) and other necessary interventions following potential exposure to rabies, so patients receive the care they need when it matters most.",
-        ],
-      },
-      {
-        date: "Before an Exposure",
-        title: "Pre-Exposure Prophylaxis",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Preventive vaccination",
-        paragraphs: [
-          "Prevention is part of care. Zanicare offers pre-exposure prophylaxis (PrEP) for those who want to be protected before an exposure ever happens.",
-        ],
-      },
-      {
-        date: "Continued Protection",
-        title: "Boosters & Tetanus",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Booster vaccination",
-        paragraphs: [
-          "We also provide booster vaccination and tetanus protection, helping patients stay protected long after their first visit.",
+          "At the heart of our work is timely, careful assistance for patients who need immediate medical attention after a potential exposure to rabies.",
+          "• Animal bite treatment",
+          "• Post-exposure prophylaxis (PEP)",
+          "• Pre-exposure prophylaxis (PrEP)",
+          "• Booster vaccination & tetanus protection",
         ],
       },
       {
         date: "Our People",
         title: "Care in Capable Hands",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare healthcare professionals",
+        image: "/images/TEAM BUILDING/teambuilding (7).jpg",
+        imageAspect: "landscape",
+        imageAlt: "Zanicare staff at the team building venue",
         paragraphs: [
           "Our clinics are supported by healthcare professionals and are designed to provide timely assistance to patients who require immediate medical attention.",
           "Every patient we serve is met by someone in our Zanicare family — and tonight, we celebrate them.",
         ],
       },
       {
-        date: "DOH Accredited Clinics",
-        title: "Our Clinics",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare DOH accredited clinic",
-        paragraphs: [
-          "Our DOH-accredited animal bite clinics serve patients in:",
-          "Baclaran · San Dionisio · Moonwalk · Malibay · Sta. Ana · Molino · City Med",
-        ],
-      },
-      {
-        date: "Our Commitment",
-        title: "Care Made Accessible",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare patient care",
-        paragraphs: [
-          "At Zanicare, we believe that quality healthcare should be accessible, responsive, and patient-centered. We continuously work toward expanding our services and strengthening our clinic operations to better serve the communities where we operate.",
-        ],
-      },
-      {
-        date: "Closer to Patients",
-        title: "Where We Serve",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare communities",
-        paragraphs: [
-          "Our growing presence in areas such as Molino, Baclaran, San Dionisio, Moonwalk, Malibay, Sta. Ana, and other locations reflects our commitment to bringing essential animal bite and preventive healthcare services closer to patients.",
-        ],
-      },
-      {
-        date: "Our Vision",
-        title: "Where We Are Headed",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare vision",
-        paragraphs: [
-          "To become a trusted and accessible healthcare organization providing quality animal bite management and preventive healthcare services to communities across the Philippines.",
-        ],
-      },
-      {
-        date: "Our Mission",
+        date: "Mission & Vision",
         title: "What Drives Us",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare mission",
+        image: "/images/TEAM BUILDING/teambuilding (2).jpg",
+        imageAspect: "landscape",
+        imageAlt: "Zanicare leaders at sunset by the sea",
         paragraphs: [
-          "To provide accessible, timely, and dependable healthcare services through professionally managed clinics, competent healthcare personnel, and patient-centered care.",
+          "Our mission: to provide accessible, timely, and dependable healthcare services through professionally managed clinics, competent healthcare personnel, and patient-centered care.",
+          "Our vision: to become a trusted and accessible healthcare organization providing quality animal bite management and preventive healthcare services to communities across the Philippines.",
         ],
       },
       {
-        date: "Our Values · I",
-        title: "Care",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare value: care",
+        date: "Our Values",
+        title: "Care Made Accessible",
+        image: "/images/TEAM BUILDING/teambuilding (5).jpg",
+        imageAlt: "Zanicare team members at the venue",
         paragraphs: [
-          "We put the safety and well-being of our patients first.",
-          "It is the first thing every patient should feel the moment they walk through our doors.",
-        ],
-      },
-      {
-        date: "Our Values · II",
-        title: "Accessibility",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare value: accessibility",
-        paragraphs: [
-          "We strive to make essential healthcare services available in communities where they are needed.",
-          "That is why every new branch brings care a little closer to home.",
-        ],
-      },
-      {
-        date: "Our Values · III",
-        title: "Professionalism",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare value: professionalism",
-        paragraphs: [
-          "We uphold professional standards in our healthcare services and clinic operations.",
-        ],
-      },
-      {
-        date: "Our Values · IV",
-        title: "Responsibility",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare value: responsibility",
-        paragraphs: [
-          "We take our responsibility to patients and communities seriously.",
-        ],
-      },
-      {
-        date: "Our Values · V",
-        title: "Continuous Growth",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare value: continuous growth",
-        paragraphs: [
-          "We continuously improve our services, people, and operations as the organization grows.",
+          "At Zanicare, we believe that quality healthcare should be accessible, responsive, and patient-centered.",
+          "• Care — the safety and well-being of our patients first",
+          "• Accessibility — essential care where it is needed",
+          "• Professionalism — high standards in every clinic",
+          "• Responsibility — to our patients and communities",
+          "• Continuous Growth — better services, people and operations",
         ],
       },
       {
         date: "Zanicare Today",
         title: "The Story Continues",
-        image: PLACEHOLDER_IMAGE,
-        imageAlt: "Zanicare today",
+        image: "/images/TEAM BUILDING/teambuilding (6).jpg",
+        imageAlt: "The Zanicare family together",
         paragraphs: [
           "From its beginnings in Molino, Bacoor, Zanicare has developed into a growing network of animal bite clinics serving patients in different communities. The organization continues to pursue expansion while maintaining its focus on accessible healthcare, professional service, and patient care.",
           "Thank you for being part of the story. Merry Christmas from the Zanicare family.",
         ],
       },
     ] as StoryChapter[],
+    // Clinic showcase (components/sections/clinic-showcase.tsx): two rows of clinic photos gliding in
+    // opposite directions on a tilted band, with a gold ribbon of branch names between them.
+    clinicShowcase: {
+      show: true,
+      afterChapter: 3, // shown after this chapter (1 = first); 0 = after the last chapter
+      eyebrow: "DOH Accredited",
+      title: "Our Clinics",
+      script: "closer to every community",
+      text: "Our DOH-accredited animal bite clinics — and the new ones opening their doors — bring timely care closer to home.",
+      branches: ["Baclaran", "San Dionisio", "Moonwalk", "Malibay", "Sta. Ana", "Molino", "City Med"],
+      rows: [
+        {
+          label: "DOH Accredited",
+          photos: [
+            "/images/DOH CLINICS/dohclinic (1).jpeg",
+            "/images/DOH CLINICS/dohclinic (2).jpeg",
+            "/images/DOH CLINICS/dohclinic (3).webp",
+            "/images/DOH CLINICS/dohclinic (1).webp",
+            "/images/DOH CLINICS/dohclinic (4).webp",
+            "/images/DOH CLINICS/dohclinic (2).webp",
+            "/images/DOH CLINICS/dohclinic (3).jpeg",
+          ],
+        },
+        {
+          label: "Newly Opened",
+          photos: [
+            "/images/NEW CLINICS/newClinics (1).jpeg",
+            "/images/NEW CLINICS/newClinics (3).jpeg",
+            "/images/NEW CLINICS/newClinics (1).webp",
+            "/images/NEW CLINICS/newClinics (1).jpg",
+            "/images/NEW CLINICS/newClinics (2).jpeg",
+            "/images/NEW CLINICS/newClinics (4).jpeg",
+          ],
+        },
+      ],
+    },
   },
   // Branch map (components/sections/branches-map.tsx) — every clinic as a glowing red pin + compact cards.
   //   Listed in the order shown on the page. Card title = "Zanicare – <name>".
@@ -2029,8 +1983,8 @@ export const siteConfig = {
     credit: {
       show: true,
       developedBy: "Developed by",
-      developerName: "Lance Valle",
-      developerUrl: "https://lance28-beep.github.io/portfolio-website/",
+      developerName: "Jabez Digital",
+      developerUrl: "https://www.facebook.com/jl.esconili",
       promoText: "Want a website like this? Visit",
       promoName: "Wedding Invitation Naga",
       promoUrl: "https://www.facebook.com/WeddingInvitationNaga",

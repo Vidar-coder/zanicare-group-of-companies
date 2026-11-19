@@ -14,7 +14,7 @@ import "./branches-map.css"
 
 /*
  * Branch map — every Zanicare clinic as a glowing red pin on a dark map, in the same luxury dark
- * look as the About Us section (black ground, faint gold monogram pattern, gold frame + corners).
+ * look as the About Us section (black ground, gold diamond lattice pattern, gold frame + corners).
  * Branches, wording and coordinates live in content/site.ts → branches.
  * Map: Leaflet with Esri's World Street Map tiles (no API key needed), turned dark in CSS to match the
  * black-and-gold look (branches-map.css → .zb-map .leaflet-tile-pane). Attribution kept, as required.
@@ -37,7 +37,7 @@ const GOLD = "#E2B75A"
 const GOLD_LINE = "#C9A24A"
 const WHITE = "#F5F5F5"
 const onBgGlow = "0 1px 2px rgb(0 0 0 / 85%), 0 0 14px rgb(0 0 0 / 55%)"
-const PATTERN = "/monogram/monogram-liner-gold.png"
+const PATTERN = "/patterns/hex-gold.svg"
 const revealEase = [0.22, 1, 0.36, 1] as const
 
 type Branch = (typeof defaultSiteConfig.branches.list)[number]
@@ -245,11 +245,11 @@ export function BranchesMap() {
       id="branches"
       className={`branches-root ${theSeasons.variable} ${aboveTheBeyond.variable} relative z-[2] w-full overflow-hidden`}
     >
-      {/* Gold monogram pattern, slightly visible */}
+      {/* Gold diamond lattice pattern, fully visible */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
-        style={{ backgroundImage: `url("${PATTERN}")`, backgroundSize: "88px auto", opacity: 0.18 }}
+        style={{ backgroundImage: `url("${PATTERN}")`, backgroundSize: "180px auto", opacity: 0.85 }}
       />
       <div
         aria-hidden

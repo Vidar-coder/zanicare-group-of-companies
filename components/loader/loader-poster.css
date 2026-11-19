@@ -753,8 +753,8 @@
     radial-gradient(120% 90% at 18% 6%, rgb(255 255 255 / 9%) 0%, transparent 55%),
     radial-gradient(110% 80% at 90% 100%, rgb(201 162 74 / 10%) 0%, transparent 60%),
     linear-gradient(170deg, var(--env-highlight) 0%, var(--env-base) 45%, var(--env-fold) 100%);
-  /* Liner: black with staggered gold paws (public/monogram/monogram-liner-gold.png, made from monogram.png) */
-  --env-liner-pattern: url("/monogram/monogram-liner-gold.png"); /* gold paws, from monogram.png */
+  /* Liner: black dotted ground with a gold diamond lattice (public/patterns/hex-gold.svg) */
+  --env-liner-pattern: url("/patterns/hex-gold.svg"); /* gold diamond lattice */
   --env-liner-ground:
     radial-gradient(90% 60% at 50% 0%, rgb(255 255 255 / 8%) 0%, transparent 70%),
     linear-gradient(180deg, #1c1c1e 0%, #121213 55%, #0b0b0c 100%);
@@ -801,7 +801,7 @@
 
 /* Liner inside the flap and on the open back: black + gold lattice, framed in black and gold */
 .env-invite-screen.env-invite-screen--poster .env-invite-flap-liner {
-  background-size: 64px auto, 100% 100%;
+  background-size: 120px auto, 100% 100%;
   box-shadow:
     inset 0 0 0 5px var(--env-base),
     inset 0 0 0 6px color-mix(in srgb, var(--env-trim) 70%, transparent),
@@ -816,7 +816,7 @@
     linear-gradient(180deg, rgb(0 0 0 / 22%) 0%, rgb(0 0 0 / 6%) 22%, transparent 45%),
     var(--env-liner-pattern),
     var(--env-liner-ground);
-  background-size: 100% 100%, 64px auto, 100% 100%;
+  background-size: 100% 100%, 120px auto, 100% 100%;
   background-position: 0 0, center top, 0 0;
   box-shadow:
     inset 0 0 0 5px var(--env-base),
