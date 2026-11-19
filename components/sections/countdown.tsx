@@ -140,9 +140,9 @@ function CountdownTitle() {
           color: light.script,
         }}
       >
-        Christmas Celebration
+        Year-End Celebration
       </span>
-      <span className="sr-only">to our Christmas Celebration</span>
+      <span className="sr-only">to our Year-End Celebration</span>
     </h2>
   )
 }

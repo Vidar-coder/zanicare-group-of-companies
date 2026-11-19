@@ -23,6 +23,7 @@ import { InvitePhotoBackdrop, PhotoBackground } from '@/components/loader/invite
 import { TintedDeco } from '@/components/tinted-deco';
 import { SectionBackdrop } from '@/components/section-backdrop';
 import { PosterBackdrop, posterThemeVars } from '@/components/loader/PosterBackdrop';
+import { SpecialCharText } from '@/components/special-char-text';
 import './envelope-invite.css';
 
 const theSeasons = localFont({
@@ -980,20 +981,24 @@ export const Hero: React.FC<HeroProps> = ({
                                 aria-hidden="true"
                                 className={script ? 'env-invite-letter-label__script' : 'env-invite-letter-label__word'}
                               >
-                                {word}
+                                <SpecialCharText text={word} ampClassName={aboveTheBeyond.className} />
                               </span>
                             </React.Fragment>
                           );
                         })}
                       </span>
-                      <span className="env-invite-letter-date">{letterDateNumeric}</span>
-                      <span className="env-invite-letter-invited">{content.eyebrow}</span>
+                      <span className="env-invite-letter-date">
+                        <SpecialCharText text={letterDateNumeric} ampClassName={aboveTheBeyond.className} />
+                      </span>
+                      <span className="env-invite-letter-invited">
+                        <SpecialCharText text={content.eyebrow} ampClassName={aboveTheBeyond.className} />
+                      </span>
                       <h2
                         className={`env-invite-letter-names env-invite-letter-names--text${usePosterTitle ? ' env-invite-letter-names--title' : ''}`}
                         aria-label={letterTitle}
                       >
                         <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
-                          {letterTop}
+                          <SpecialCharText text={letterTop} ampClassName={aboveTheBeyond.className} />
                         </span>
                         {letterJoiner && (
                           <span className={`${aboveTheBeyond.className} env-invite-names__and`} aria-hidden="true">
@@ -1001,7 +1006,7 @@ export const Hero: React.FC<HeroProps> = ({
                           </span>
                         )}
                         <span className={`${theSeasons.className} env-invite-names__nick`} aria-hidden="true">
-                          {letterBottom}
+                          <SpecialCharText text={letterBottom} ampClassName={aboveTheBeyond.className} />
                         </span>
                       </h2>
                     </div>

@@ -405,7 +405,7 @@ export default function MessageWallDisplay({ messages, loading, freshKey = null 
           className={`font-goudy-italic mx-auto mb-5 max-w-md sm:mb-6 ${sectionType.textRelaxed}`}
           style={{ color: BODY }}
         >
-          Be the first to leave a note of thanks or a Christmas wish for the Zanicare family.
+          Be the first to leave a note of thanks or a year-end wish for the Zanicare family.
         </p>
         <div className="flex justify-center">
           <span

@@ -156,7 +156,7 @@ function MessagesTitle() {
         } as React.CSSProperties
       }
     >
-      <span className="sr-only">Notes of Thanks &amp; Christmas wishes</span>
+      <span className="sr-only">Notes of Thanks &amp; year-end wishes</span>
       <span
         aria-hidden
         className={`${theSeasons.className} block uppercase leading-[0.9] tracking-[0.04em] min-[400px]:tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.14em]`}
@@ -177,7 +177,7 @@ function MessagesTitle() {
           textShadow: silkScriptShadow,
         }}
       >
-        &amp; Christmas wishes
+        &amp; year-end wishes
       </span>
     </h2>
   )
@@ -367,7 +367,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                 }}
                 onFocus={() => setFocusedField("message")}
                 onBlur={() => setFocusedField(null)}
-                placeholder="Thank a colleague, share a Christmas wish, or offer a prayer for the year ahead…"
+                placeholder="Thank a colleague, share a year-end wish, or offer a prayer for the year ahead…"
                 className={`message-form-textarea ${inputClass("message")} min-h-[90px] resize-none placeholder:leading-relaxed sm:min-h-[110px] md:min-h-[130px]`}
                 style={{
                   color: NAVY,
@@ -474,7 +474,7 @@ export function Messages() {
             className={`font-goudy-italic mx-auto mt-4 max-w-2xl px-2 sm:mt-5 md:mt-6 ${sectionType.textRelaxed}`}
             style={{ color: OUTSIDE_TEXT, textShadow: silkBodyShadow }}
           >
-            Leave a word of thanks, a Christmas wish or a prayer for the people you work beside. Every note becomes part of our year-end keepsake.
+            Leave a word of thanks, a year-end wish or a prayer for the people you work beside. Every note becomes part of our year-end keepsake.
           </p>
           <div className="mt-4 flex items-center justify-center sm:mt-5">
             <span className="h-px w-16 sm:w-24 md:w-32" style={lightLineStyle} />

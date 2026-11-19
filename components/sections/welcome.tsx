@@ -217,7 +217,7 @@ export function Welcome() {
                 Cavite and Cebu. Every one of those patients was met by someone in this room.
               </p>
               <p>
-                This Christmas, we set aside one evening to say thank you: for the early shifts and
+                This year-end, we set aside one evening to say thank you: for the early shifts and
                 late nights, for the calm you bring to worried patients, and for the trust our
                 partners place in us. Tonight we celebrate the year we built together — and the
                 people who made it possible.

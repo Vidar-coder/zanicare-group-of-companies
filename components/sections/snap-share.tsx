@@ -12,6 +12,7 @@ import Image from "next/image"
 import { PuhonBanner } from "@/components/puhon-closing"
 import { SilkScreen } from "@/components/silk-screen"
 import { MonogramMark } from "@/components/monogram-mark"
+import { SpecialCharText } from "@/components/special-char-text"
 
 
 const theSeasons = localFont({
@@ -114,7 +115,8 @@ function SnapShareTitle({ title, subtitle }: { title: string; subtitle: string }
         className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{ fontSize: "var(--title-size)", color: OUTSIDE_TEXT, textShadow: OUTSIDE_TITLE_SHADOW }}
       >
-        {title}
+        {/* The Seasons has no clean "&" / punctuation glyphs — "&" in script, the rest in Cinzel */}
+        <SpecialCharText text={title} ampClassName={`${aboveTheBeyond.className} normal-case tracking-normal`} />
       </span>
       <span
         aria-hidden
@@ -126,7 +128,7 @@ function SnapShareTitle({ title, subtitle }: { title: string; subtitle: string }
           textShadow: OUTSIDE_TITLE_SHADOW,
         }}
       >
-        {subtitle}
+        <SpecialCharText text={subtitle} ampClassName={aboveTheBeyond.className} />
       </span>
       <span className="sr-only">{subtitle}</span>
     </h2>
@@ -323,7 +325,7 @@ export function SnapShare() {
           onClick={() =>
             downloadCanvas(
               "snapshare-qr",
-              "zanicare-christmas-party-invitation-qr.png",
+              "zanicare-year-end-party-invitation-qr.png",
             )
           }
         >

@@ -46,6 +46,7 @@ export const playfair = localFont({
     { path: "../Font/google/playfair-display-normal.woff2", weight: "400 900", style: "normal" },
     { path: "../Font/google/playfair-display-italic.woff2", weight: "400 900", style: "italic" },
   ],
+  variable: "--font-playfair",
   display: "swap",
 })
 

@@ -117,7 +117,7 @@ export function DashboardOverview({ stats, onNavigate }: DashboardOverviewProps)
       {/* Heading */}
       <div>
         <p className={`${cinzel.className} text-[10px] font-semibold uppercase tracking-[0.24em] text-dash-faint`}>At a glance</p>
-        <h1 className="mt-0.5 text-2xl font-bold text-dash-ink sm:text-3xl">Christmas Party Overview</h1>
+        <h1 className="mt-0.5 text-2xl font-bold text-dash-ink sm:text-3xl">Year-End Party Overview</h1>
       </div>
 
       {/* RSVP progress */}

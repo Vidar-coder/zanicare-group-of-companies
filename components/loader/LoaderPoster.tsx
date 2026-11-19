@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { PosterBackdrop } from '@/components/loader/PosterBackdrop';
+import { SpecialCharText } from '@/components/special-char-text';
 import './loader-poster.css';
 
 /*
@@ -49,12 +50,18 @@ export interface LoaderPosterProps {
 
 const JOINING_WORDS = new Set(['the', 'of', 'and', '&', 'a']);
 
-// "Save the Date" → ["Save", "the", "Date"]; anything without a joining word stays whole
+// "Save the Date" → ["Save", "the", "Date"]. Without a joining word, a multi-word headline
+// is stacked: "Year End Party" → "YEAR END" in spaced capitals over a script "Party".
 function splitHeadline(headline: string) {
   const words = headline.split(/\s+/).filter(Boolean);
   const i = words.findIndex((w, idx) => idx > 0 && idx < words.length - 1 && JOINING_WORDS.has(w.toLowerCase()));
-  if (i < 0) return { before: headline, join: '', after: '' };
-  return { before: words.slice(0, i).join(' '), join: words[i], after: words.slice(i + 1).join(' ') };
+  if (i < 0) {
+    if (words.length > 1) {
+      return { before: words[words.length - 1], join: '', after: '', caps: words.slice(0, -1).join(' ') };
+    }
+    return { before: headline, join: '', after: '', caps: '' };
+  }
+  return { before: words.slice(0, i).join(' '), join: words[i], after: words.slice(i + 1).join(' '), caps: '' };
 }
 
 const delay = (ms: number) => ({ '--lp-delay': `${ms}ms` }) as React.CSSProperties;
@@ -111,10 +118,31 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 {p.kicker}
               </p>
             )}
-            <h1 className={`lp__headline${head.join ? '' : ' lp__headline--single'}`} aria-label={p.headline}>
-              <span className="lp__script lp-gold lp-gold--warm lp-in lp-in--left" style={delay(700)} aria-hidden="true">
-                {head.before}
-              </span>
+            <h1
+              className={`lp__headline${head.caps ? ' lp__headline--stacked' : head.join ? '' : ' lp__headline--single'}`}
+              aria-label={p.headline}
+            >
+              {head.caps ? (
+                <>
+                  {/* Gala lockup: "YEAR END" as the hero line, "— ◆ PARTY ◆ —" as a tracked subtitle */}
+                  <span className={`${p.nameFontClass} lp__caps lp-gold lp-gold--warm lp-in`} style={delay(600)} aria-hidden="true">
+                    <SpecialCharText text={head.caps} ampClassName={p.andFontClass} />
+                  </span>
+                  <span className="lp__sub lp-in" style={delay(950)} aria-hidden="true">
+                    <span className="lp__sub-rule" />
+                    <span className="lp__gem" />
+                    <span className="lp__sub-text">
+                      <SpecialCharText text={head.before} ampClassName={p.andFontClass} />
+                    </span>
+                    <span className="lp__gem" />
+                    <span className="lp__sub-rule lp__sub-rule--right" />
+                  </span>
+                </>
+              ) : (
+                <span className="lp__script lp-gold lp-gold--warm lp-in lp-in--left" style={delay(700)} aria-hidden="true">
+                  {head.before}
+                </span>
+              )}
               {head.join && (
                 <span className="lp__join lp-in" style={delay(1050)} aria-hidden="true">
                   <span className="lp__rule" />
@@ -159,7 +187,7 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
               aria-label={[p.groomName, p.namesJoiner, p.brideName].filter(Boolean).join(' ')}
             >
               <span className={`${p.nameFontClass} lp__name lp-gold lp-gold--warm lp-in`} style={delay(2150)} aria-hidden="true">
-                {p.groomName}
+                <SpecialCharText text={p.groomName} ampClassName={p.andFontClass} />
               </span>
               {p.namesJoiner && (
                 <span className={`${p.andFontClass} lp__and lp-gold lp-in`} style={delay(2350)} aria-hidden="true">
@@ -167,13 +195,15 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 </span>
               )}
               <span className={`${p.nameFontClass} lp__name lp-gold lp-in`} style={delay(2350)} aria-hidden="true">
-                {p.brideName}
+                <SpecialCharText text={p.brideName} ampClassName={p.andFontClass} />
               </span>
             </h2>
             {p.dateText && (
               <p className="lp__date lp-in" style={delay(2750)}>
                 <span className="lp__rule lp__rule--long" />
-                <span className={`${p.nameFontClass} lp-gold lp-gold--warm`}>{p.dateText}</span>
+                <span className={`${p.nameFontClass} lp-gold lp-gold--warm`}>
+                  <SpecialCharText text={p.dateText} ampClassName={p.andFontClass} />
+                </span>
                 <span className="lp__rule lp__rule--long" />
               </p>
             )}

@@ -13,7 +13,7 @@ import {
   MARQUEE_IMAGE_SIZES,
 } from "@/lib/loading-bg-photos"
 import { anastasiaScript } from "@/lib/fonts"
-import { inter, greatVibes, imperialScript, cinzel } from "@/lib/self-hosted-fonts"
+import { inter, greatVibes, imperialScript, cinzel, playfair } from "@/lib/self-hosted-fonts"
 
 const canonicalUrl = canonicalSiteUrl
 // Link preview (Facebook, Messenger, Viber, WhatsApp, X). Absolute https URLs are required:
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   },
   description: eventDescription,
   keywords:
-    `${companyName}, Zanicare, ${eventName}, Christmas party, company party, ${siteConfig.ceremony.location}, invitation, RSVP, ${eventHashtag}`,
+    `${companyName}, Zanicare, ${eventName}, year-end party, thanksgiving party, company party, ${siteConfig.ceremony.location}, invitation, RSVP, ${eventHashtag}`,
   applicationName: `${eventName} Invitation`,
   authors: [{ name: companyName }],
   creator: companyName,
@@ -232,7 +232,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
-        className={`${inter.variable} ${greatVibes.variable} ${imperialScript.variable} ${cinzel.variable} ${brittany.variable} ${playlistScript.variable} ${anastasiaScript.variable} font-inter antialiased text-foreground`}
+        className={`${inter.variable} ${greatVibes.variable} ${imperialScript.variable} ${cinzel.variable} ${brittany.variable} ${playlistScript.variable} ${anastasiaScript.variable} ${playfair.variable} font-inter antialiased text-foreground`}
       >
         <ClientLayout>
           {children}

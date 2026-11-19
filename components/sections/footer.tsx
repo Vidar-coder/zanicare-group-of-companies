@@ -15,6 +15,7 @@ import {
   UtensilsCrossed,
   Clock,
   MapPin,
+  Phone,
   ChevronRight,
 } from "lucide-react"
 import { useSiteConfig } from "@/hooks/use-site-config"
@@ -551,6 +552,50 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                   </>
                 )}
 
+                {content.contact?.show && (
+                  <>
+                    <Label>{content.contact.title}</Label>
+                    {content.contact.tagline ? (
+                      <p className={`font-goudy-italic mt-1 ${ct.body}`} style={{ color: palette.soft }}>
+                        {content.contact.tagline}
+                      </p>
+                    ) : null}
+                    <ul className="mt-3 space-y-2">
+                      {[
+                        { key: "address", Icon: MapPin, text: content.contact.address, href: "" },
+                        { key: "email", Icon: Mail, text: content.contact.email, href: content.contact.email ? `mailto:${content.contact.email}` : "" },
+                        { key: "phone", Icon: Phone, text: content.contact.phone, href: content.contact.phoneHref },
+                      ]
+                        .filter((row) => row.text)
+                        .map(({ key, Icon, text, href }) => (
+                          <li key={key} className="flex items-start gap-2.5">
+                            <span
+                              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                              style={{ background: BUTTON, boxShadow: BUTTON_SHADOW }}
+                              aria-hidden
+                            >
+                              <Icon className="h-3.5 w-3.5" style={{ color: IVORY }} />
+                            </span>
+                            {href ? (
+                              <a
+                                href={href}
+                                className={`font-goudy-italic min-w-0 break-words pt-1 ${ct.body} hover:opacity-80`}
+                                style={{ color: palette.body }}
+                              >
+                                {text}
+                              </a>
+                            ) : (
+                              <p className={`font-goudy-italic min-w-0 break-words pt-1 ${ct.body}`} style={{ color: palette.body }}>
+                                {text}
+                              </p>
+                            )}
+                          </li>
+                        ))}
+                    </ul>
+                    <span className="my-4 block h-px w-full" style={dividerLineStyle} aria-hidden />
+                  </>
+                )}
+
                 <Label>{content.quickLinksTitle}</Label>
                 <nav className="mt-3 grid grid-cols-2 gap-2" aria-label={content.quickLinksTitle}>
                   {content.links.map((item) => (
@@ -613,18 +658,6 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
                       style={{ color: LUX.gold }}
                     >
                       {content.credit.developerName}
-                    </a>
-                  </p>
-                  <p className={`font-goudy-italic ${ct.body}`} style={onBgSoft}>
-                    {content.credit.promoText}{" "}
-                    <a
-                      href={content.credit.promoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-semibold underline decoration-[rgb(201_162_74/60%)] underline-offset-2 hover:opacity-80"
-                      style={{ color: LUX.gold }}
-                    >
-                      {content.credit.promoName}
                     </a>
                   </p>
                 </div>

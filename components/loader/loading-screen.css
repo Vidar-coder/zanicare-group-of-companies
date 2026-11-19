@@ -253,7 +253,9 @@
 
 .loading-screen__std-headline {
   margin: 0;
-  font-family: var(--font-brittany);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
   color: var(--ls-type-light);
   font-size: clamp(2.8rem, 10vw, 5.5rem);
   line-height: 1.05;
@@ -2868,7 +2870,9 @@
   top: -0.12em;
   margin: -0.25em 0.02em;
   padding: 0 0.14em 0.1em;
-  font-family: var(--font-brittany), cursive;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
   font-size: 1.5em;
   line-height: 1;
   font-weight: 400;
@@ -5376,7 +5380,7 @@
   text-shadow: 0 2px 4px rgb(0 0 0 / 85%), 0 0 22px rgb(226 183 90 / 30%);
 }
 
-/* "to our Christmas Thanksgiving Party" in ivory italic, tagline in small grey capitals */
+/* "to our Year-End Thanksgiving Party" in ivory italic, tagline in small grey capitals */
 .home-hero--plain .home-hero-eyebrow {
   color: var(--hh-ivory);
   -webkit-text-fill-color: var(--hh-ivory);

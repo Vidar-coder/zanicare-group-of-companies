@@ -83,14 +83,14 @@ export type AttireColor = string | { name: string; hex: string }
 // The site was built for couples, so the event uses the same fields:
 //   groom / bride                   → full company + event name (Welcome sign-off, full names)
 //   groomNickname / brideNickname   → the two big words on the loader, envelope and footer
-//                                     ("Christmas" & "Thanksgiving"), joined by loadingScreen.namesJoiner
+//                                     ("Year-End" & "Thanksgiving"), joined by loadingScreen.namesJoiner
 const COMPANY_NAME = "Zanicare Group of Companies Inc."
-const EVENT_NAME = "Christmas Thanksgiving Party"
+const EVENT_NAME = "Year-End Thanksgiving Party"
 const COUPLE = {
   bride: EVENT_NAME,
   brideNickname: "Thanksgiving",
   groom: COMPANY_NAME,
-  groomNickname: "Christmas",
+  groomNickname: "Year-End",
 }
 
 // ── Date & times ────────────────────────────────────────────────────────────
@@ -129,7 +129,7 @@ const VENUE_CARDS = {
   layout: "combined" as "separate" | "combined",
   // Used when layout is "combined"
   combined: {
-    badge: "Christmas Thanksgiving Party",
+    badge: "Year-End Thanksgiving Party",
     sectionLabel: "Venue",
     showDate: true,
     showArrival: true,
@@ -162,7 +162,7 @@ const RSVP = {
   coordinator: "the Zanicare HR & Events Committee",
   phone: "to be announced",
 }
-const HASHTAGS = ["#ZanicareChristmas2026", "#ZanicareCares"] // official hashtags (Snap & Share, reminders)
+const HASHTAGS = ["#ZanicareYearEnd2026", "#ZanicareCares"] // official hashtags (Snap & Share, reminders)
 
 // ── Attire guide (Event Details → Attire Guidelines) ────────────────────────
 // SHOW = which cards to display AND their order, top to bottom.
@@ -265,7 +265,7 @@ const BRAND = {
   monogram: "/monogram/ZANICARE DOH Certified Badge.png", // logo (loader, envelope, closing)
   coupleNameImage: "/Details/companyLogo.png", // logo (loader, envelope)
   seal: "/Details/companyLogo.png", // envelope wax seal
-  // ⚠ check: still the previous wedding song — swap in a Christmas track
+  // ⚠ check: still the previous wedding song — swap in a year-end party track
   backgroundMusic: "/background_music/Bruno Mars - 24k Magic (Lyrics).mp3",
 }
 
@@ -370,7 +370,7 @@ export const siteConfig = {
     date: WEDDING_DATE,
     time: TIMES.ceremony,
     venue: CEREMONY_VENUE.name,
-    tagline: "invites you to our Christmas Thanksgiving Party",
+    tagline: "invites you to our Year-End Thanksgiving Party",
     theme: "Luxury · Black, Grey & White",
     motif: "#111111, #3A3A3C, #8E8E93, #D6D6D6, #F5F5F5",
   },
@@ -425,12 +425,12 @@ export const siteConfig = {
       // Short lines either side of the logo, one entry per line ([] to hide a side)
       sideLeft: [] as string[],
       sideRight: [] as string[],
-      weddingOf: "cordially invites you to our", // line above the event title ("" to hide)
+      weddingOf: "cordially invites you to a night of", // line above the event title ("" to hide)
       // Event title under the logo, in capitals on two lines. joiner = small word between the
       // lines ("" = none). Leave titleTop/titleBottom "" to use couple.groomNickname / brideNickname.
-      titleTop: "Christmas",
+      titleTop: "Thanksgiving",
       titleJoiner: "",
-      titleBottom: "Thanksgiving Party",
+      titleBottom: "& Awards",
       showTime: false, // weekday · time and guest arrival lines under the date
       showVenue: true, // venue name + address under the date
       showProgress: true, // progress bar under the status line
@@ -464,7 +464,7 @@ export const siteConfig = {
     backgroundPhotos: MARQUEE_PHOTOS,
     backgroundPhotosDesktop: MARQUEE_PHOTOS_DESKTOP, // same marquee on screens 768px and up
     // Opening title on the loader and the envelope letter — short joining words ("of", "the") are set in script
-    headline: "Merry Christmas", // set in the Brittany script (loader + envelope letter)
+    headline: "Year End Party", // loader: "YEAR END" in spaced gold capitals over "Party" in Playfair Display italic
     // Word between the couple's names on the loader and the envelope letter ("and", "&", "y", …)
     namesJoiner: "&",
     // {days} is replaced with the number of days left before wedding.date
@@ -488,7 +488,7 @@ export const siteConfig = {
     },
     showCeremonyDetails: true,
     eyebrow: "You're invited",
-    message: "An evening of gratitude, recognition and Christmas cheer",
+    message: "An evening of gratitude, recognition and year-end cheer",
     // Rotates under the progress bar while the invitation loads
     statusMessages: [
       "Polishing the silverware",
@@ -530,7 +530,7 @@ export const siteConfig = {
     // Wording — "" hides a line
     kicker: COMPANY_NAME, // small capitals above "You're Invited"
     eyebrow: `to our ${EVENT_NAME}`, // under the title
-    tagline: "An evening of gratitude, recognition & Christmas cheer",
+    tagline: "An evening of gratitude, recognition & year-end cheer",
     timeLead: "Program begins at", // before "7:00 in the evening"
     arrivalLabel: "Registration & cocktails", // before the guest arrival time
     countdownHeading: "Counting down to the celebration",
@@ -679,7 +679,7 @@ export const siteConfig = {
         imageAlt: "The Zanicare family together",
         paragraphs: [
           "From its beginnings in Molino, Bacoor, Zanicare has developed into a growing network of animal bite clinics serving patients in different communities. The organization continues to pursue expansion while maintaining its focus on accessible healthcare, professional service, and patient care.",
-          "Thank you for being part of the story. Merry Christmas from the Zanicare family.",
+          "Thank you for being part of the story. Happy Thanksgiving from the Zanicare family.",
         ],
       },
     ] as StoryChapter[],
@@ -880,7 +880,7 @@ export const siteConfig = {
     eyebrow: "The Celebration",
     title: "Event Details",
     subtitle: "a night of thanks",
-    description: "Where to go, when to arrive and what to wear — everything you need for our Christmas Thanksgiving Party.",
+    description: "Where to go, when to arrive and what to wear — everything you need for our Year-End Thanksgiving Party.",
     // Verse under the description — "" hides it
     verse: "Give thanks to the Lord, for He is good; His love endures forever.",
     verseCitation: "Psalm 107:1",
@@ -968,7 +968,7 @@ export const siteConfig = {
         {
           show: true,
           time: TIMES.reception,
-          title: "Christmas Dinner",
+          title: "Thanksgiving Dinner",
           description: "Dinner is served — time to relax, share stories and celebrate with your team.",
           icon: "dinner" as ProgramIconName,
         },
@@ -983,8 +983,8 @@ export const siteConfig = {
         {
           show: true,
           time: "9:30 PM",
-          title: "Christmas Raffle & Games",
-          description: "Raffle draws, parlor games and holiday surprises throughout the night.",
+          title: "Year-End Raffle & Games",
+          description: "Raffle draws, parlor games and year-end surprises throughout the night.",
           icon: "raffle" as ProgramIconName,
         },
         {
@@ -1120,7 +1120,7 @@ export const siteConfig = {
       {
         show: true,
         time: "8:00 PM",
-        title: "Christmas Dinner",
+        title: "Thanksgiving Dinner",
         description: "Dinner is served.",
         location: "",
         image: "",
@@ -1139,8 +1139,8 @@ export const siteConfig = {
       {
         show: true,
         time: "9:30 PM",
-        title: "Christmas Raffle & Games",
-        description: "Raffle draws, parlor games and holiday surprises.",
+        title: "Year-End Raffle & Games",
+        description: "Raffle draws, parlor games and year-end surprises.",
         location: "",
         image: "",
         icon: "fireworks" as TimelineIconName,
@@ -1204,7 +1204,7 @@ export const siteConfig = {
     headerOrnament: DECOR.headerOrnament, // "" to hide
     title: "RSVP",
     script: "Will you join us",
-    intro: "A night of gratitude, awards and Christmas cheer awaits. Kindly confirm your seat so we can prepare a warm welcome for you.",
+    intro: "A night of gratitude, awards and year-end cheer awaits. Kindly confirm your seat so we can prepare a warm welcome for you.",
     deadlineLabel: "RSVP Deadline",
     openButton: "Reserve My Seat",
     search: {
@@ -1220,7 +1220,7 @@ export const siteConfig = {
     invite: {
       title: "You're Invited",
       scriptFallback: "to our celebration",
-      greeting: "Welcome, {name}! It would mean so much to celebrate this year with you at our Christmas Thanksgiving Party.",
+      greeting: "Welcome, {name}! It would mean so much to celebrate this year with you at our Year-End Thanksgiving Party.",
       seats: "We've set aside {count} for you.",
       seatSingular: "seat",
       seatPlural: "seats",
@@ -1291,10 +1291,10 @@ export const siteConfig = {
       title: "Your Seat Is Saved",
       declinedTitle: "Thank You for Letting Us Know",
       attending: "Wonderful! We can't wait to celebrate, give thanks and cheer on this year's awardees with you.",
-      declined: "You'll be missed — thank you for being part of the Zanicare family this year. Merry Christmas!",
+      declined: "You'll be missed — thank you for being part of the Zanicare family this year. Happy Thanksgiving!",
       neutral: "Thank you for your response!",
       messagePrompt:
-        "While you're here, leave a Christmas message for the Zanicare family — your words will be part of our year-end keepsake.",
+        "While you're here, leave a thanksgiving message for the Zanicare family — your words will be part of our year-end keepsake.",
       messageButton: "Write a Message",
       laterButton: "Maybe later",
     },
@@ -1346,7 +1346,7 @@ export const siteConfig = {
     subtitle: "joining the celebration",
     description:
       "Meet the colleagues, partners and friends joining us in celebration — your presence makes the night truly special.",
-    statsEyebrow: "Christmas Thanksgiving Party",
+    statsEyebrow: "Year-End Thanksgiving Party",
     guestSingular: "Guest",
     guestPlural: "Guests",
     statsCaption: "Celebrating With Us",
@@ -1418,7 +1418,7 @@ export const siteConfig = {
     items: [
       {
         question: "When and where is the party?",
-        answer: `Our Christmas Thanksgiving Party is on ${WEDDING_DAY}, ${WEDDING_DATE} at ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}.\n\n• Registration & cocktails: ${TIMES.guestArrival}\n• Program begins: ${TIMES.ceremony}\n• Christmas dinner: ${TIMES.reception}\n\n[Open in Google Maps](${CEREMONY_VENUE.map})`,
+        answer: `Our Year-End Thanksgiving Party is on ${WEDDING_DAY}, ${WEDDING_DATE} at ${CEREMONY_VENUE.name}, ${CEREMONY_VENUE.address}.\n\n• Registration & cocktails: ${TIMES.guestArrival}\n• Program begins: ${TIMES.ceremony}\n• Thanksgiving dinner: ${TIMES.reception}\n\n[Open in Google Maps](${CEREMONY_VENUE.map})`,
       },
       {
         question: "What time should I arrive?",
@@ -1427,7 +1427,7 @@ export const siteConfig = {
       {
         question: "What happens during the evening?",
         answer:
-          "It's a night of thanksgiving and celebration. You can look forward to:\n\n• A message from our Founder and a look back at the year\n• Christmas dinner with your colleagues\n• Awards & recognition for our outstanding people and branches\n• Christmas raffle, games and the Grand Raffle Draw\n• Performances, music and dancing\n\nSee the full [program](#details) in Event Details.",
+          "It's a night of thanksgiving and celebration. You can look forward to:\n\n• A message from our Founder and a look back at the year\n• Thanksgiving dinner with your colleagues\n• Awards & recognition for our outstanding people and branches\n• Year-end raffle, games and the Grand Raffle Draw\n• Performances, music and dancing\n\nSee the full [program](#details) in Event Details.",
       },
       {
         question: "How do I RSVP?",
@@ -1452,7 +1452,7 @@ export const siteConfig = {
       {
         question: "How do the awards and raffle work?",
         answer:
-          "We'll honor our loyal and outstanding people — including Service Awards, Best Branch and Employee of the Year — followed by the Christmas raffle and the Grand Raffle Draw.\n\nWinners must be present when their name is called, so please stay until the very end of the program.",
+          "We'll honor our loyal and outstanding people — including Service Awards, Best Branch and Employee of the Year — followed by the year-end raffle and the Grand Raffle Draw.\n\nWinners must be present when their name is called, so please stay until the very end of the program.",
       },
       {
         question: "May we choose our own seats?",
@@ -1540,7 +1540,7 @@ export const siteConfig = {
     qrCard: {
       coupleNameImage: BRAND.coupleNameImage, // unused: the card sets the names in type like the loader
       coupleImage: BRAND.logo, // company logo beside the text
-      eyebrow: "Zanicare Christmas Thanksgiving Party",
+      eyebrow: "Zanicare Year-End Thanksgiving Party",
       title: "Find Your Table",
       script: "please be seated",
       description:
@@ -1879,13 +1879,13 @@ export const siteConfig = {
   // Wedding playlist (components/sections/wedding-playlist.tsx). {couple} → "Groom & Bride" nicknames.
   playlist: {
     eyebrow: "Our Soundtrack",
-    title: "A Christmas Playlist",
+    title: "A Year-End Playlist",
     script: "songs of the season",
-    subtitle: "Holiday songs for the night",
+    subtitle: "Feel-good songs for the night",
     // Shown on the playlist card
     cardEyebrow: "Spotify Playlist",
-    playlistName: "Zanicare Christmas Party",
-    cardNote: "Press play and get into the Christmas spirit.",
+    playlistName: "Zanicare Year-End Party",
+    cardNote: "Press play and get into the party spirit.",
     buttonText: "Open in Spotify",
     // CD album art: photo on the sleeve and the disc label ("" = plain sage sleeve)
     coverImage: COUPLE_PHOTOS[2],
@@ -1910,12 +1910,12 @@ export const siteConfig = {
     photoAlt: COMPANY_NAME,
     eyebrow: "Until we meet",
     script: "with gratitude, Zanicare", // "" hides it
-    message: "We can't wait to celebrate this Christmas with you.", // "" hides it
+    message: "We can't wait to celebrate this year-end with you.", // "" hides it
     // Plain mode
     plain: {
       eyebrow: "Until we meet",
       script: "with gratitude, Zanicare",
-      message: "We can't wait to celebrate this Christmas with you.",
+      message: "We can't wait to celebrate this year-end with you.",
       // Corner ornaments — top two here, bottom two on the footer below; "" hides any of them
       decos: { ...CORNER_DECOS, footerVine: DECOR.headerOrnament },
       // Thin double border around See You There + footer (false hides it)
@@ -1937,8 +1937,8 @@ export const siteConfig = {
     // Typed out one after another
     quotes: [
       '"Give thanks to the Lord, for He is good; His love endures forever." – Psalm 107:1',
-      "Welcome to the Zanicare Christmas Thanksgiving Party! From our first clinic in Molino, Bacoor to a growing network of branches, every milestone was made possible by our people.",
-      "Thank you for your dedication, your care for our patients and your hard work all year. Merry Christmas and see you on December 13!",
+      "Welcome to the Zanicare Year-End Thanksgiving Party! From our first clinic in Molino, Bacoor to a growing network of branches, every milestone was made possible by our people.",
+      "Thank you for your dedication, your care for our patients and your hard work all year. Happy Thanksgiving and see you on December 13!",
     ],
     rsvp: {
       show: true,
@@ -1967,6 +1967,16 @@ export const siteConfig = {
       platform: "facebook" | "instagram" | "tiktok" | "youtube" | "twitter" | "threads" | "messenger" | "email"
       href: string
     }[],
+    // Contact details shown below Follow Us — show: false hides the block, empty fields are skipped
+    contact: {
+      show: true,
+      title: "Get in Touch",
+      tagline: "Care through Accuracy",
+      address: "366 Quirino Ave., 2nd flr. Monte Victoria Bldg., Baclaran, Parañaque",
+      email: "zanicaregroup@gmail.com",
+      phone: "(02) 8723-3920",
+      phoneHref: "tel:+63287233920",
+    },
     quickLinksTitle: "Quick Links",
     links: [
       { label: "Home", href: "#home" },
@@ -1978,7 +1988,7 @@ export const siteConfig = {
       { label: "Gallery", href: "#gallery" },
       { label: "FAQ", href: "#faq" },
     ],
-    copyright: "© {year} Zanicare Group of Companies Inc. — with gratitude and Christmas cheer.",
+    copyright: "© {year} Zanicare Group of Companies Inc. — with gratitude and year-end cheer.",
     tagline: "This invitation was designed to share the evening's details with you.",
     credit: {
       show: true,
@@ -2006,7 +2016,7 @@ export const siteConfig = {
     subtitle: "capture the night",
     // One line per line of the verse (snap-share.tsx keeps the line breaks); the hashtag is shown right under it
     description:
-      "Strike a pose, raise a glass\nand help us capture every moment\nof gratitude and Christmas cheer.\nTag your photos with our official hashtag:",
+      "Strike a pose, raise a glass\nand help us capture every moment\nof gratitude and year-end cheer.\nTag your photos with our official hashtag:",
     // "Our Favorite Moments" photo card — always hidden when loadingScreen.display is "plain"
     moments: {
       show: true,
@@ -2034,14 +2044,14 @@ export const siteConfig = {
     social: {
       show: true,
       title: "Spread the Cheer",
-      description: "Post your favorite moments and tag us — let's fill our feeds with Zanicare Christmas cheer.",
+      description: "Post your favorite moments and tag us — let's fill our feeds with Zanicare year-end cheer.",
       // Shown under the buttons — "" hides it
       note: "For Instagram and TikTok, your caption and hashtags are copied — just paste them into your post.",
       // Button label for a moment after the caption is copied (Instagram / TikTok)
       captionCopied: "Caption copied",
       // Remove any you don't want: "instagram" | "facebook" | "tiktok" | "twitter"
       platforms: ["instagram", "facebook", "tiktok", "twitter"] as ("instagram" | "facebook" | "tiktok" | "twitter")[],
-      shareText: "Celebrating a year of gratitude with the Zanicare family at our Christmas Thanksgiving Party!",
+      shareText: "Celebrating a year of gratitude with the Zanicare family at our Year-End Thanksgiving Party!",
     },
     // Shown only when googleDriveLink is set
     upload: {
@@ -2054,7 +2064,7 @@ export const siteConfig = {
     },
     closing:
       "Thank you for helping us capture a night of gratitude. Every photo and message becomes part of the Zanicare story.",
-    closingTag: "From our family to yours — Merry Christmas",
+    closingTag: "From our family to yours — Happy Thanksgiving",
     // Closing banner — text comes from loveStory.closing*; photos crossfade behind it (placeholders for now)
     puhon: {
       show: true,

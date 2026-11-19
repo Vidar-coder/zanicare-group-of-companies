@@ -73,7 +73,7 @@ export function DashboardSidebar({
     }
   }, [mobileOpen, onMobileClose])
 
-  // Proposal invites are a wedding feature — hidden for the Christmas party (set true to bring back)
+  // Proposal invites are a wedding feature — hidden for the year-end party (set true to bring back)
   const SHOW_PROPOSALS = false
   const navItems = [
     {
@@ -146,7 +146,7 @@ export function DashboardSidebar({
         ) : null}
 
         <p className={`${cinzel.className} relative text-[9.5px] font-semibold uppercase tracking-[0.3em] text-dash-faint`}>
-          Christmas Party Dashboard
+          Year-End Party Dashboard
         </p>
 
         {/* Names */}
