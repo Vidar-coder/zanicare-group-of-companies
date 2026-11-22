@@ -47,8 +47,13 @@ const VALID_GUEST_STATUSES = new Set<Guest["status"]>([
   "request",
 ])
 
+// Sheet cells come back as numbers too (row IDs like 87, table numbers, phone numbers) — keep them.
+// Dropping a numeric ID made every guest fall back to `id: name`, so RSVP / dashboard updates were
+// sent with the name and the script answered "Guest not found".
 function text(value: unknown): string {
-  return typeof value === "string" ? value.trim() : ""
+  if (typeof value === "string") return value.trim()
+  if (typeof value === "number" && Number.isFinite(value)) return String(value)
+  return ""
 }
 
 function normalizeGuest(guest: Record<string, unknown>): Guest | null {
