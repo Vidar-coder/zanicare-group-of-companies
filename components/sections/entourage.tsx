@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useState, type CSSProperties } from "react"
+import { useEffect, useMemo, useState, type CSSProperties } from "react"
 import { MotionConfig, motion, type Variants } from "motion/react"
 import localFont from "next/font/local"
 import { Section } from "@/components/section"
@@ -12,6 +12,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
 import { LUX, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
+import { SpecialCharText } from "@/components/special-char-text"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -25,14 +26,15 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Our people — the classic entourage arch: one ivory card, a heading per rank tier, compact name lists.
+// Our people — one straight-edged ivory panel (corporate, no arch), a heading per rank tier and names in
+// two columns: left column aligned left, right column aligned right, read row by row in rank order.
 // People come from the Google Sheet "Entourage" tab: RoleCategory = role / branch, RoleTitle = position.
 // Order follows content/site.ts → entourage.hierarchy (highest rank first), then branches, then the rest.
 
 // Kept for the invitation page / dashboard, which still pass a sponsors list
 export type SponsorsList = "one" | "two"
 
-// ── Palette: ivory arch with gold accents on the dark section ──────────────
+// ── Palette: ivory panel with gold accents on the dark section ──────────────
 const INK = "#1C1C1E" // names, headings
 const GOLD_INK = "#8A6A22" // positions, labels (antique gold, readable on ivory)
 const GOLD = "#C9A24A"
@@ -123,27 +125,35 @@ const lineDraw: Variants = {
   show: { scaleX: 1, opacity: 1, transition: { duration: 1, ease } },
 }
 
-// Names drift in toward the centre line from their own column
+// Names slide in from their own edge (left column from the left, right from the right), row by row
+type Align = "left" | "right" | "center"
 const nameReveal: Variants = {
-  hidden: (align: "left" | "right" | "center") => ({
+  hidden: ({ align }: { align: Align; row: number }) => ({
     opacity: 0,
-    x: align === "right" ? -18 : align === "left" ? 18 : 0,
-    y: align === "center" ? 10 : 4,
+    x: align === "left" ? -22 : align === "right" ? 22 : 0,
+    y: align === "center" ? 10 : 0,
+    filter: "blur(4px)",
   }),
-  show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.75, ease } },
+  show: ({ row }: { align: Align; row: number }) => ({
+    opacity: 1,
+    x: 0,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease, delay: Math.min(row * 0.06, 0.36) },
+  }),
 }
 
-// The arch rises and unfolds from its crown
-const archRise: Variants = {
-  hidden: { opacity: 0, y: 48 },
-  show: { opacity: 1, y: 0, transition: { duration: 1.4, ease, opacity: { duration: 0.6 } } },
+// The panel rises, then opens top-down with straight edges
+const panelRise: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 1.1, ease, opacity: { duration: 0.6 } } },
 }
 
-const archUnfold: Variants = {
-  hidden: { clipPath: "inset(0% 0% 100% 0% round 50% 50% 0% 0%)" },
+const panelOpen: Variants = {
+  hidden: { clipPath: "inset(0% 0% 100% 0%)" },
   show: {
-    clipPath: "inset(0% 0% 0% 0% round 0% 0% 0% 0%)",
-    transition: { duration: 1.4, ease },
+    clipPath: "inset(0% 0% 0% 0%)",
+    transition: { duration: 1.2, ease },
     transitionEnd: { clipPath: "none" },
   },
 }
@@ -164,36 +174,49 @@ function DiamondDivider({ color, line, small = false }: { color: string; line: s
   )
 }
 
-function GroupTitle({ children, featured = false }: { children: React.ReactNode; featured?: boolean }) {
+// "──── EXECUTIVE OFFICERS ────": the heading between two gold rules that draw out from it
+function GroupTitle({ label, featured = false }: { label: string; featured?: boolean }) {
   return (
-    <motion.h3
-      className={`${theSeasons.className} relative mb-1.5 text-center uppercase leading-tight tracking-[0.1em] sm:mb-2 sm:tracking-[0.14em] ${
-        featured ? "text-[0.85rem] sm:text-[1.05rem] md:text-[1.2rem]" : "text-[0.72rem] sm:text-[0.88rem] md:text-[0.98rem]"
-      }`}
-      style={{ color: INK }}
-      variants={rise}
+    <motion.div
+      className="mb-2 flex items-center gap-3 sm:mb-3 sm:gap-4"
       initial="hidden"
       whileInView="show"
       viewport={REVEAL_VIEWPORT}
     >
-      {children}
       <motion.span
         aria-hidden
         variants={lineDraw}
-        className="mx-auto mt-1 block h-px w-10 origin-center sm:w-14"
-        style={{ background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }}
+        className="h-px flex-1 origin-right"
+        style={{ background: `linear-gradient(to left, ${GOLD}, transparent)` }}
       />
-    </motion.h3>
+      <motion.h3
+        variants={rise}
+        className={`${theSeasons.className} shrink-0 text-center uppercase leading-tight tracking-[0.12em] sm:tracking-[0.16em] ${
+          featured ? "text-[0.82rem] sm:text-[1rem] md:text-[1.12rem]" : "text-[0.7rem] sm:text-[0.84rem] md:text-[0.94rem]"
+        }`}
+        style={{ color: INK }}
+      >
+        <SpecialCharText text={label} ampClassName={aboveTheBeyond.className} />
+      </motion.h3>
+      <motion.span
+        aria-hidden
+        variants={lineDraw}
+        className="h-px flex-1 origin-left"
+        style={{ background: `linear-gradient(to right, ${GOLD}, transparent)` }}
+      />
+    </motion.div>
   )
 }
 
 function NameItem({
   person,
   align,
+  row = 0,
   showRole = false,
 }: {
   person: Representative
-  align: "left" | "right" | "center"
+  align: Align
+  row?: number
   showRole?: boolean
 }) {
   const position = person.title || (showRole ? person.category : "")
@@ -204,15 +227,17 @@ function NameItem({
       <motion.div
         className={`group/item relative flex w-full min-w-0 flex-col ${items} justify-center py-0.5 sm:py-1`}
         variants={nameReveal}
-        custom={align}
+        custom={{ align, row }}
       >
         <span
           aria-hidden
           className="absolute inset-0 rounded-md opacity-0 transition-opacity duration-300 group-hover/item:opacity-100"
-          style={{ background: "linear-gradient(to right, transparent, rgb(201 162 74 / 16%), transparent)" }}
+          style={{
+            background: `linear-gradient(${align === "right" ? "to left" : "to right"}, rgb(201 162 74 / 14%), transparent)`,
+          }}
         />
         <p className={`${theSeasons.className} relative max-w-full break-words ${text}`} style={{ ...nameStyle, color: INK }}>
-          {toDisplayName(person.name)}
+          <SpecialCharText text={toDisplayName(person.name)} ampClassName={aboveTheBeyond.className} />
         </p>
         {position ? (
           <p
@@ -227,8 +252,8 @@ function NameItem({
   )
 }
 
-// One person → centered; up to six → two columns meeting at a gold centre line;
-// larger groups → a compact centered grid (two columns on phones, three from md up)
+// Two columns, filled row by row so rank order reads left → right: 1 | 2, 3 | 4 …
+// Left column aligned left, right column aligned right. A lone person sits centered.
 function GroupNames({ people, showRole = false }: { people: Representative[]; showRole?: boolean }) {
   if (people.length === 1) {
     return (
@@ -237,34 +262,22 @@ function GroupNames({ people, showRole = false }: { people: Representative[]; sh
       </div>
     )
   }
-  if (people.length > 6) {
-    return (
-      <div className="grid grid-cols-2 gap-x-3 sm:gap-x-6 md:grid-cols-3">
-        {people.map((person, i) => (
-          <div key={`${person.name}-${i}`} className="min-w-0">
-            <NameItem person={person} align="center" showRole={showRole} />
-          </div>
-        ))}
-      </div>
-    )
-  }
-  const half = Math.ceil(people.length / 2)
-  const left = people.slice(0, half)
-  const right = people.slice(half)
   return (
-    <div className="relative grid grid-cols-2 gap-x-3 gap-y-0.5 sm:gap-x-6 md:gap-x-10">
+    <div className="relative grid grid-cols-2 gap-x-4 gap-y-0.5 sm:gap-x-8 md:gap-x-12">
       {/* Faint gold centre line between the columns */}
       <span
         aria-hidden
         className="pointer-events-none absolute inset-y-1 left-1/2 w-px -translate-x-1/2"
-        style={{ background: "linear-gradient(to bottom, transparent, rgb(201 162 74 / 30%), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, transparent, rgb(201 162 74 / 28%), transparent)" }}
       />
-      {Array.from({ length: half }).map((_, i) => (
-        <React.Fragment key={i}>
-          <div className="min-w-0 px-0.5 sm:px-1">{left[i] ? <NameItem person={left[i]} align="right" showRole={showRole} /> : null}</div>
-          <div className="min-w-0 px-0.5 sm:px-1">{right[i] ? <NameItem person={right[i]} align="left" showRole={showRole} /> : null}</div>
-        </React.Fragment>
-      ))}
+      {people.map((person, i) => {
+        const align: Align = i % 2 === 0 ? "left" : "right"
+        return (
+          <div key={`${person.name}-${i}`} className="min-w-0 px-0.5 sm:px-1">
+            <NameItem person={person} align={align} row={Math.floor(i / 2)} showRole={showRole} />
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -449,14 +462,14 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
                 className={`${theSeasons.className} block uppercase leading-[0.92] tracking-[0.05em] sm:tracking-[0.12em]`}
                 style={{ fontSize: "var(--title-size)", ...onBg }}
               >
-                {content.title}
+                <SpecialCharText text={content.title} ampClassName={aboveTheBeyond.className} />
               </span>
               <span
                 aria-hidden
                 className={`${aboveTheBeyond.className} mx-auto mt-2 block w-fit max-w-full px-1 leading-[0.9]`}
                 style={{ fontSize: "var(--script-size)", ...onBgGold }}
               >
-                {content.subtitle}
+                <SpecialCharText text={content.subtitle} />
               </span>
             </motion.h2>
             <motion.p
@@ -468,25 +481,31 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
             </motion.p>
           </motion.div>
 
-          {/* The arch */}
+          {/* The panel — straight edges, corporate */}
           <div className="relative z-20 mx-auto max-w-3xl px-2.5 pb-1 @container/entourage-card sm:max-w-4xl sm:px-6 md:px-8">
-            <motion.div variants={archRise} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.08 }}>
-              <motion.div variants={archUnfold}>
-                <div className="relative overflow-hidden rounded-t-full" style={cardStyle}>
+            <motion.div variants={panelRise} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.08 }}>
+              <motion.div variants={panelOpen}>
+                <div className="relative overflow-hidden rounded-[4px]" style={cardStyle}>
+                  {/* Gold bar along the top edge */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 z-30 h-[3px]"
+                    style={{ background: `linear-gradient(to right, #8A6A22, ${GOLD}, #F3D27A, ${GOLD}, #8A6A22)` }}
+                  />
                   {/* Fine gold inner frame */}
                   <motion.div
                     aria-hidden
-                    className="pointer-events-none absolute inset-2 z-30 rounded-t-full sm:inset-4 md:inset-5"
+                    className="pointer-events-none absolute inset-2 z-30 rounded-[2px] sm:inset-3 md:inset-4"
                     style={{ border: `1px solid ${HAIRLINE}` }}
                     initial={{ opacity: 0, scale: 0.94 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, amount: 0.08 }}
                     transition={{ duration: 1.6, delay: 0.5, ease }}
                   />
-                  {/* One-time sheen across the crown */}
+                  {/* One-time sheen across the top */}
                   <motion.div
                     aria-hidden
-                    className="pointer-events-none absolute inset-x-0 top-0 z-30 h-[40%] rounded-t-full"
+                    className="pointer-events-none absolute inset-x-0 top-0 z-30 h-[40%]"
                     style={{
                       background: "linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 60%) 50%, transparent 65%)",
                       backgroundSize: "250% 100%",
@@ -497,7 +516,7 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
                     transition={{ duration: 2.2, delay: 1.1, ease: "easeInOut" }}
                   />
 
-                  <div className="relative z-20 px-4 pb-7 pt-[14%] sm:px-10 sm:pb-10 sm:pt-[15%] md:px-14 md:pb-12">
+                  <div className="relative z-20 px-5 pb-7 pt-8 sm:px-10 sm:pb-10 sm:pt-11 md:px-14 md:pb-12 md:pt-12">
 
                     {isLoading && people.length === 0 ? (
                       <p className="font-goudy-italic py-16 text-center text-sm sm:text-base" style={{ color: INK }}>
@@ -524,13 +543,8 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
                     ) : (
                       <div>
                         {groups.map((group, i) => (
-                          <section key={group.label} className={i > 0 ? "mt-3.5 sm:mt-5" : ""}>
-                            {i > 0 && (
-                              <div className="mb-3.5 sm:mb-5">
-                                <DiamondDivider color={GOLD} line={HAIRLINE} small />
-                              </div>
-                            )}
-                            <GroupTitle featured={group.featured}>{group.label}</GroupTitle>
+                          <section key={group.label} className={i > 0 ? "mt-5 sm:mt-7" : ""}>
+                            <GroupTitle label={group.label} featured={group.featured} />
                             <GroupNames people={group.people} showRole={group.showRole} />
                           </section>
                         ))}
