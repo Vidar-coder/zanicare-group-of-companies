@@ -103,7 +103,7 @@
   overflow: hidden;
   background: #0e0e10;
 }
-/* Esri's light street tiles turned into a dark map: invert, swing the hues back, then mute and
+/* Light street tiles turned into a dark map: invert, swing the hues back, then mute and
    warm them slightly toward the gold motif (roads read as soft grey-gold lines on charcoal) */
 .zb-map .leaflet-tile-pane {
   filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(1.05) saturate(0.35) sepia(0.18);

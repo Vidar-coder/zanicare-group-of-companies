@@ -11,7 +11,6 @@ import { fetchInvitationList, readCachedInvitationList } from "@/lib/invitation-
 import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
-import { MonogramMark } from "@/components/monogram-mark"
 import { LUX, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
 
 const theSeasons = localFont({
@@ -26,9 +25,9 @@ const aboveTheBeyond = localFont({
   variable: "--font-above-beyond",
 })
 
-// Branch representatives — the classic entourage arch: one ivory card, a heading per group
-// (Leadership, then each branch) and names in two columns. People come from the Google Sheet
-// "Entourage" tab: RoleCategory = branch / group, RoleTitle = position (content/site.ts → entourage).
+// Our people — the classic entourage arch: one ivory card, a heading per rank tier, compact name lists.
+// People come from the Google Sheet "Entourage" tab: RoleCategory = role / branch, RoleTitle = position.
+// Order follows content/site.ts → entourage.hierarchy (highest rank first), then branches, then the rest.
 
 // Kept for the invitation page / dashboard, which still pass a sponsors list
 export type SponsorsList = "one" | "two"
@@ -51,13 +50,13 @@ const onBg = { color: LUX.white, textShadow: LUX_TEXT_SHADOW } as const
 const onBgGold = { color: LUX.gold, textShadow: LUX_TEXT_SHADOW } as const
 
 const nameStyle: CSSProperties = {
-  fontSize: "clamp(0.7rem, min(2.4vw, 5.6cqi), 1.15rem)",
+  fontSize: "clamp(0.64rem, min(2.1vw, 4.9cqi), 1rem)",
   lineHeight: 1.25,
   letterSpacing: "0.02em",
 }
 
 const positionStyle: CSSProperties = {
-  fontSize: "clamp(0.52rem, min(1.7vw, 3.9cqi), 0.74rem)",
+  fontSize: "clamp(0.5rem, min(1.6vw, 3.6cqi), 0.68rem)",
   lineHeight: 1.15,
 }
 
@@ -151,13 +150,16 @@ const archUnfold: Variants = {
 
 // ── Pieces ──────────────────────────────────────────────────────────────────
 
-// Hairlines either side of the monogram (public/monogram/monogram.png)
-function MonogramDivider({ color, line, small = false }: { color: string; line: string; small?: boolean }) {
+// Hairlines either side of a small gold diamond
+function DiamondDivider({ color, line, small = false }: { color: string; line: string; small?: boolean }) {
   return (
-    <div className="flex items-center justify-center gap-2" aria-hidden>
-      <span className={`h-px ${small ? "w-8 sm:w-12" : "w-10 sm:w-16"}`} style={{ background: `linear-gradient(to right, transparent, ${line})` }} />
-      <MonogramMark color={color} className={small ? "h-3 w-3.5 sm:h-3.5 sm:w-4" : "h-4 w-[1.15rem] sm:h-[1.15rem] sm:w-5"} />
-      <span className={`h-px ${small ? "w-8 sm:w-12" : "w-10 sm:w-16"}`} style={{ background: `linear-gradient(to left, transparent, ${line})` }} />
+    <div className="flex items-center justify-center gap-1.5" aria-hidden>
+      <span className={`h-px ${small ? "w-6 sm:w-10" : "w-10 sm:w-16"}`} style={{ background: `linear-gradient(to right, transparent, ${line})` }} />
+      <span
+        className={`rotate-45 ${small ? "h-1 w-1" : "h-1.5 w-1.5"}`}
+        style={{ background: color, boxShadow: "0 0 6px rgb(226 183 90 / 40%)" }}
+      />
+      <span className={`h-px ${small ? "w-6 sm:w-10" : "w-10 sm:w-16"}`} style={{ background: `linear-gradient(to left, transparent, ${line})` }} />
     </div>
   )
 }
@@ -165,8 +167,8 @@ function MonogramDivider({ color, line, small = false }: { color: string; line: 
 function GroupTitle({ children, featured = false }: { children: React.ReactNode; featured?: boolean }) {
   return (
     <motion.h3
-      className={`${theSeasons.className} relative mb-1.5 text-center uppercase leading-tight tracking-[0.1em] sm:mb-2.5 sm:tracking-[0.14em] ${
-        featured ? "text-[0.85rem] sm:text-[1.1rem] md:text-[1.25rem]" : "text-[0.72rem] sm:text-[0.92rem] md:text-[1.05rem]"
+      className={`${theSeasons.className} relative mb-1.5 text-center uppercase leading-tight tracking-[0.1em] sm:mb-2 sm:tracking-[0.14em] ${
+        featured ? "text-[0.85rem] sm:text-[1.05rem] md:text-[1.2rem]" : "text-[0.72rem] sm:text-[0.88rem] md:text-[0.98rem]"
       }`}
       style={{ color: INK }}
       variants={rise}
@@ -178,20 +180,29 @@ function GroupTitle({ children, featured = false }: { children: React.ReactNode;
       <motion.span
         aria-hidden
         variants={lineDraw}
-        className="mx-auto mt-1 block h-px w-12 origin-center sm:mt-1.5 sm:w-16"
+        className="mx-auto mt-1 block h-px w-10 origin-center sm:w-14"
         style={{ background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }}
       />
     </motion.h3>
   )
 }
 
-function NameItem({ person, align }: { person: Representative; align: "left" | "right" | "center" }) {
+function NameItem({
+  person,
+  align,
+  showRole = false,
+}: {
+  person: Representative
+  align: "left" | "right" | "center"
+  showRole?: boolean
+}) {
+  const position = person.title || (showRole ? person.category : "")
   const items = align === "right" ? "items-end" : align === "left" ? "items-start" : "items-center"
   const text = align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
   return (
     <motion.div className="w-full min-w-0" initial="hidden" whileInView="show" viewport={REVEAL_VIEWPORT}>
       <motion.div
-        className={`group/item relative flex w-full min-w-0 flex-col ${items} justify-center py-1 sm:py-1.5`}
+        className={`group/item relative flex w-full min-w-0 flex-col ${items} justify-center py-0.5 sm:py-1`}
         variants={nameReveal}
         custom={align}
       >
@@ -203,12 +214,12 @@ function NameItem({ person, align }: { person: Representative; align: "left" | "
         <p className={`${theSeasons.className} relative max-w-full break-words ${text}`} style={{ ...nameStyle, color: INK }}>
           {toDisplayName(person.name)}
         </p>
-        {person.title ? (
+        {position ? (
           <p
             className={`${cinzel.className} relative mt-0.5 max-w-full break-words font-semibold uppercase tracking-[0.14em] ${text}`}
             style={{ ...positionStyle, color: GOLD_INK }}
           >
-            {person.title}
+            {position}
           </p>
         ) : null}
       </motion.div>
@@ -216,12 +227,24 @@ function NameItem({ person, align }: { person: Representative; align: "left" | "
   )
 }
 
-// One person → centered; otherwise first half on the left (right-aligned), rest on the right
-function TwoColumnNames({ people }: { people: Representative[] }) {
+// One person → centered; up to six → two columns meeting at a gold centre line;
+// larger groups → a compact centered grid (two columns on phones, three from md up)
+function GroupNames({ people, showRole = false }: { people: Representative[]; showRole?: boolean }) {
   if (people.length === 1) {
     return (
       <div className="mx-auto max-w-xs">
-        <NameItem person={people[0]} align="center" />
+        <NameItem person={people[0]} align="center" showRole={showRole} />
+      </div>
+    )
+  }
+  if (people.length > 6) {
+    return (
+      <div className="grid grid-cols-2 gap-x-3 sm:gap-x-6 md:grid-cols-3">
+        {people.map((person, i) => (
+          <div key={`${person.name}-${i}`} className="min-w-0">
+            <NameItem person={person} align="center" showRole={showRole} />
+          </div>
+        ))}
       </div>
     )
   }
@@ -238,8 +261,8 @@ function TwoColumnNames({ people }: { people: Representative[] }) {
       />
       {Array.from({ length: half }).map((_, i) => (
         <React.Fragment key={i}>
-          <div className="min-w-0 px-0.5 sm:px-1">{left[i] ? <NameItem person={left[i]} align="right" /> : null}</div>
-          <div className="min-w-0 px-0.5 sm:px-1">{right[i] ? <NameItem person={right[i]} align="left" /> : null}</div>
+          <div className="min-w-0 px-0.5 sm:px-1">{left[i] ? <NameItem person={left[i]} align="right" showRole={showRole} /> : null}</div>
+          <div className="min-w-0 px-0.5 sm:px-1">{right[i] ? <NameItem person={right[i]} align="left" showRole={showRole} /> : null}</div>
         </React.Fragment>
       ))}
     </div>
@@ -315,8 +338,18 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Groups in order: Leadership, then branches in branches.list order, then anything else as typed
+  // Groups in order: the hierarchy tiers (highest rank first), Leadership, then branches in
+  // branches.list order, then anything else as typed
+  const hierarchy = content.hierarchy ?? []
   const groups = useMemo(() => {
+    // role key → its tier and its rank inside the tier
+    const tierOf = new Map<string, { tier: number; order: number }>()
+    hierarchy.forEach((tier, t) =>
+      tier.roles.forEach((role, order) => {
+        const key = groupKey(role)
+        if (!tierOf.has(key)) tierOf.set(key, { tier: t, order })
+      }),
+    )
     const leadershipKeys = new Set(content.leadershipCategories.map(groupKey))
     const branchOrder = new Map<string, { index: number; label: string }>()
     branchList.forEach((b, index) => {
@@ -324,29 +357,39 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
       if (!branchOrder.has(groupKey(b.area))) branchOrder.set(groupKey(b.area), { index, label: b.name })
     })
 
-    const map = new Map<string, { label: string; rank: number; featured: boolean; people: Representative[] }>()
+    type Entry = { label: string; rank: number; featured: boolean; showRole: boolean }
+    const map = new Map<string, Entry & { people: (Representative & { order: number })[] }>()
     let otherRank = 0
     for (const person of people) {
       const key = groupKey(person.category)
       let id: string
-      let entry: { label: string; rank: number; featured: boolean }
-      if (leadershipKeys.has(key)) {
+      let entry: Entry
+      let order = 0
+      const tier = tierOf.get(key)
+      if (tier) {
+        const def = hierarchy[tier.tier]
+        id = `tier-${tier.tier}`
+        entry = { label: def.title, rank: -100 + tier.tier, featured: tier.tier < 2, showRole: def.showRole }
+        order = tier.order
+      } else if (leadershipKeys.has(key)) {
         id = "__leadership"
-        entry = { label: content.leadershipTitle || person.category, rank: -1, featured: true }
+        entry = { label: content.leadershipTitle || person.category, rank: -1, featured: true, showRole: false }
       } else if (branchOrder.has(key)) {
         const b = branchOrder.get(key)!
         id = `branch-${b.index}`
-        entry = { label: b.label, rank: b.index, featured: false }
+        entry = { label: b.label, rank: b.index, featured: false, showRole: false }
       } else {
         id = `other-${key}`
-        entry = { label: person.category, rank: 1000 + otherRank++, featured: false }
+        entry = { label: person.category, rank: 1000 + otherRank++, featured: false, showRole: false }
       }
       const existing = map.get(id)
-      if (existing) existing.people.push(person)
-      else map.set(id, { ...entry, people: [person] })
+      if (existing) existing.people.push({ ...person, order })
+      else map.set(id, { ...entry, people: [{ ...person, order }] })
     }
-    return [...map.values()].sort((a, b) => a.rank - b.rank)
-  }, [people, branchList, content.leadershipCategories, content.leadershipTitle])
+    return [...map.values()]
+      .sort((a, b) => a.rank - b.rank)
+      .map((group) => ({ ...group, people: [...group.people].sort((a, b) => a.order - b.order) })) // stable sort keeps sheet order within a role
+  }, [people, hierarchy, branchList, content.leadershipCategories, content.leadershipTitle])
 
   return (
     <MotionConfig reducedMotion="user">
@@ -379,7 +422,7 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
               </motion.div>
             ) : null}
             <motion.div variants={rise}>
-              <MonogramDivider color={LUX.gold} line={HAIRLINE} />
+              <DiamondDivider color={LUX.gold} line={HAIRLINE} />
             </motion.div>
             <motion.p
               variants={rise}
@@ -454,11 +497,7 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
                     transition={{ duration: 2.2, delay: 1.1, ease: "easeInOut" }}
                   />
 
-                  <div className="relative z-20 px-4 pb-8 pt-[16%] sm:px-10 sm:pb-12 sm:pt-[18%] md:px-14 md:pb-14">
-                    {/* Monogram at the crown */}
-                    <div className="mb-4 flex justify-center sm:mb-6">
-                      <MonogramMark color={GOLD} className="h-7 w-8 sm:h-9 sm:w-10" />
-                    </div>
+                  <div className="relative z-20 px-4 pb-7 pt-[14%] sm:px-10 sm:pb-10 sm:pt-[15%] md:px-14 md:pb-12">
 
                     {isLoading && people.length === 0 ? (
                       <p className="font-goudy-italic py-16 text-center text-sm sm:text-base" style={{ color: INK }}>
@@ -485,14 +524,14 @@ export function Entourage(_props: { sponsorsList?: SponsorsList } = {}) {
                     ) : (
                       <div>
                         {groups.map((group, i) => (
-                          <section key={group.label} className={i > 0 ? "mt-5 sm:mt-7 md:mt-8" : ""}>
+                          <section key={group.label} className={i > 0 ? "mt-3.5 sm:mt-5" : ""}>
                             {i > 0 && (
-                              <div className="mb-5 sm:mb-7 md:mb-8">
-                                <MonogramDivider color={GOLD} line={HAIRLINE} small />
+                              <div className="mb-3.5 sm:mb-5">
+                                <DiamondDivider color={GOLD} line={HAIRLINE} small />
                               </div>
                             )}
                             <GroupTitle featured={group.featured}>{group.label}</GroupTitle>
-                            <TwoColumnNames people={group.people} />
+                            <GroupNames people={group.people} showRole={group.showRole} />
                           </section>
                         ))}
                       </div>

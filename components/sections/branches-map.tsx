@@ -10,15 +10,18 @@ import { layeredSectionTitleSize } from "@/lib/section-typography"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { siteConfig as defaultSiteConfig } from "@/content/site"
 import { TintedDeco } from "@/components/tinted-deco"
+import { CountUp } from "@/components/count-up"
+import { SpecialCharText } from "@/components/special-char-text"
 import "./branches-map.css"
 
 /*
  * Branch map — every Zanicare clinic as a glowing red pin on a dark map, in the same luxury dark
  * look as the About Us section (black ground, gold diamond lattice pattern, gold frame + corners).
  * Branches, wording and coordinates live in content/site.ts → branches.
- * Map: Leaflet with Esri's World Street Map tiles (no API key needed), turned dark in CSS to match the
- * black-and-gold look (branches-map.css → .zb-map .leaflet-tile-pane). Attribution kept, as required.
- * (CARTO's dark tiles now need an API key; OpenStreetMap's own servers block apps like this.)
+ * Map: Leaflet with OSM France "HOT" street tiles (no API key), falling back to Esri, then OpenTopoMap,
+ * if a server refuses. Turned dark in CSS to match the black-and-gold look
+ * (branches-map.css → .zb-map .leaflet-tile-pane). Attribution kept, as required.
+ * (CARTO's dark tiles need an API key; Esri's server now answers 403; OpenStreetMap's own servers block apps like this.)
  */
 
 const theSeasons = localFont({
@@ -118,12 +121,41 @@ function BranchesLeafletMap({
       })
       mapRef.current = map
 
-      // Esri World Street Map: no API key, street names included (made dark in CSS)
-      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
-        maxZoom: 19,
-        attribution:
-          'Tiles &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> — Esri, HERE, Garmin, USGS, &copy; OpenStreetMap contributors',
-      }).addTo(map)
+      // Street tiles with no API key (made dark in CSS). If a server refuses us — Esri now answers
+      // 403 — and none of its tiles load, the next one in the list takes over.
+      const OSM = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+      const tileSources = [
+        {
+          url: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+          attribution: `${OSM}, tiles by <a href="https://www.hotosm.org/" target="_blank" rel="noopener">HOT</a> / OSM France`,
+          maxZoom: 19,
+        },
+        {
+          url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+          attribution: `Tiles &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> — Esri, HERE, Garmin, USGS, ${OSM}`,
+          maxZoom: 19,
+        },
+        {
+          url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+          attribution: `${OSM}, <a href="https://opentopomap.org" target="_blank" rel="noopener">OpenTopoMap</a>`,
+          maxZoom: 17,
+        },
+      ]
+      const showTiles = (i: number) => {
+        const source = tileSources[i]
+        if (!source) return
+        let loaded = 0
+        let failed = 0
+        const layer = L.tileLayer(source.url, { maxZoom: source.maxZoom, attribution: source.attribution })
+        layer.on("tileload", () => loaded++)
+        layer.on("tileerror", () => {
+          if (++failed < 4 || loaded > 0 || !map.hasLayer(layer)) return
+          map.removeLayer(layer)
+          showTiles(i + 1)
+        })
+        layer.addTo(map)
+      }
+      showTiles(0)
 
       const icon = L.divIcon({
         className: "zb-pin-wrap",
@@ -309,7 +341,7 @@ export function BranchesMap() {
               className={`${theSeasons.className} block pb-1 uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em]`}
               style={{ fontSize: "var(--title-size)", color: WHITE, textShadow: onBgGlow }}
             >
-              {content.title}
+              <SpecialCharText text={content.title} ampClassName={aboveTheBeyond.className} />
             </span>
             {content.script && (
               <span
@@ -320,7 +352,7 @@ export function BranchesMap() {
                   textShadow: `${onBgGlow}, 0 0 20px rgb(226 183 90 / 25%)`,
                 }}
               >
-                {content.script}
+                <SpecialCharText text={content.script} />
               </span>
             )}
           </h2>
@@ -336,7 +368,9 @@ export function BranchesMap() {
             {stats.map((stat) => (
               <div key={stat.label} className="zb-stat">
                 <dt className="sr-only">{stat.label}</dt>
-                <dd className={`${theSeasons.className} zb-stat__value`}>{stat.value}</dd>
+                <dd className={`${theSeasons.className} zb-stat__value`}>
+                  <CountUp value={stat.value} />
+                </dd>
                 <dd aria-hidden className={`${cinzel.className} zb-stat__label`}>
                   {stat.label}
                 </dd>
@@ -401,7 +435,9 @@ export function BranchesMap() {
                   </p>
                   {branch.note && <span className={`${cinzel.className} zb-card__badge`}>{branch.note}</span>}
                 </div>
-                <h3 className={`${theSeasons.className} zb-card__name`}>{branch.name}</h3>
+                <h3 className={`${theSeasons.className} zb-card__name`}>
+                  <SpecialCharText text={branch.name} ampClassName={aboveTheBeyond.className} />
+                </h3>
                 <p className="zb-card__area">{branch.address || (branch.area ? `${branch.area} · ${labels.noPin}` : labels.noPin)}</p>
                 {branch.status && (
                   <p className={`${cinzel.className} zb-card__status`}>

@@ -7,6 +7,7 @@ import { sectionType, welcomeTitleSize } from "@/lib/section-typography"
 import { cinzel } from "@/lib/fonts"
 import { IVORY_LACE_EDGE as WELCOME_LACE_EDGE } from "@/lib/ivory-lace"
 import { SilkScreen } from "@/components/silk-screen"
+import { CountUp } from "@/components/count-up"
 
 
 const theSeasons = localFont({
@@ -34,7 +35,7 @@ const PATTERN = "/patterns/hex-gold.svg"
 // Three quick facts under the letter
 const HIGHLIGHTS = [
   { value: "2022", label: "Founded in Molino, Bacoor" },
-  { value: "11", label: "Branches nationwide" },
+  { value: "33+", label: "Branches nationwide" },
   { value: "1", label: "Zanicare family" },
 ]
 
@@ -213,8 +214,8 @@ export function Welcome() {
               </p>
               <p>
                 What began in 2022 with a single clinic in Molino, Bacoor has grown into a network of
-                eleven animal bite clinics, caring for patients in communities across Metro Manila,
-                Cavite and Cebu. Every one of those patients was met by someone in this room.
+                more than thirty animal bite clinics, caring for patients in communities across Metro
+                Manila, Cavite, Rizal, Nueva Ecija, Isabela and Cebu. Every one of those patients was met by someone in this room.
               </p>
               <p>
                 This year-end, we set aside one evening to say thank you: for the early shifts and
@@ -241,7 +242,7 @@ export function Welcome() {
                     className={`${theSeasons.className} text-[clamp(1.5rem,6vw,2.1rem)] leading-none`}
                     style={{ color: GOLD }}
                   >
-                    {item.value}
+                    <CountUp value={item.value} />
                   </dd>
                   <dd
                     aria-hidden

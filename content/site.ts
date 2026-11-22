@@ -732,20 +732,22 @@ export const siteConfig = {
     title: "Find Us",
     script: "closer to every community",
     description:
-      "From our first clinic in Molino, Bacoor in 2022, Zanicare has grown into a network of animal bite clinics across Metro Manila, Cavite and Cebu — so timely, dependable care is never far from home.",
-    // Summary strip above the map ("" hides one)
+      "From our first clinic in Molino, Bacoor in 2022, Zanicare has grown into a network of more than 30 animal bite clinics across Metro Manila, Cavite, Rizal, Nueva Ecija, Isabela and Cebu — so timely, dependable care is never far from home.",
+    // Summary strip above the map ("" hides one). Numbers count up when scrolled into view
+    // (a trailing "+" is kept; a year like "2022" stays still)
     stats: [
-      { value: "11", label: "Branches" },
-      { value: "3", label: "Regions" },
+      { value: "33+", label: "Branches" },
+      { value: "19", label: "Cities" },
       { value: "2022", label: "Since" },
     ],
     // Tabs above the map: each zooms the map to its branches and filters the list
     regions: [
       { label: "All", match: [] as string[] },
-      { label: "Metro Manila & Cavite", match: ["Metro Manila", "Cavite"] },
+      { label: "Metro Manila & Nearby", match: ["Metro Manila", "Cavite", "Rizal"] },
+      { label: "North Luzon", match: ["Nueva Ecija", "Isabela"] },
       { label: "Cebu", match: ["Cebu"] },
     ],
-    defaultRegion: 1, // tab selected when the page opens (0 = All, 1 = Metro Manila & Cavite, 2 = Cebu)
+    defaultRegion: 1, // tab selected when the page opens (0 = All, 1 = Metro Manila & Nearby, 2 = North Luzon, 3 = Cebu)
     labels: {
       branch: "Branch", // "Branch 01"
       directions: "Directions",
@@ -759,19 +761,19 @@ export const siteConfig = {
     list: [
       {
         name: "Molino", area: "Molino", region: "Cavite", note: "First branch · 2022", status: "Always Open",
-        address: "Unit 5 Comm. Space B1 L7 South Susana Homes, Molino 2, Bacoor",
+        address: "#11 Aldar Commercial Bldg., B31 L5 Ph. 2 Adelfa St., Soldier Hills IV, Molino 6, Bacoor, Cavite 4102",
         blurb: "Where it all began — our very first clinic, opened in 2022.",
-        lat: 14.417, lng: 120.9815, map: "",
+        lat: 14.397, lng: 120.98, map: "",
       },
       {
         name: "Main", area: "Las Piñas", region: "Metro Manila", note: "Main branch", status: "Always Open",
-        address: "2nd Flr. 0121 F. Quirino Ave., Daniel Fajardo, Las Piñas",
+        address: "2nd Flr. 0121 F. Quirino Ave., Daniel Fajardo, Las Piñas City 1740",
         blurb: "Our main clinic in Las Piñas, open around the clock.",
         lat: 14.4795, lng: 120.979, map: "",
       },
       {
         name: "Parañaque", area: "San Dionisio", region: "Metro Manila", note: "", status: "Always Open",
-        address: "0590-A Quirino Ave., San Dionisio, Parañaque",
+        address: "0590 Quirino Ave., San Dionisio, Parañaque City 1700",
         blurb: "Round-the-clock animal bite care along Quirino Avenue.",
         lat: 14.493, lng: 120.993, map: "",
       },
@@ -783,47 +785,177 @@ export const siteConfig = {
       },
       {
         name: "Guadalupe", area: "Makati City", region: "Metro Manila", note: "", status: "Always Open",
-        address: "Unit 2A-1, Perea Bldg., 121 P. Burgos cor. Reposo St., Guadalupe Nuevo, Makati",
+        address: "Unit 2A-1, 121 P. Burgos cor. Reposo St., Guadalupe Nuevo, Makati City 1212",
         blurb: "Dependable, patient-centered care in the heart of Makati.",
         lat: 14.5615, lng: 121.048, map: "",
       },
       {
         name: "Frisco", area: "Quezon City", region: "Metro Manila", note: "", status: "Always Open",
-        address: "55 Tolentino St., San Francisco Del Monte, Quezon City 1104",
+        address: "Unit 1-B, 55 Tolentino St., San Francisco Del Monte (Damayan), Quezon City 1104",
         blurb: "Serving San Francisco Del Monte and the neighborhoods of Quezon City.",
         lat: 14.637, lng: 121.017, map: "",
       },
-      // ⚠ check: no address yet — add address / lat / lng to show its pin
       {
         name: "Marikina", area: "Marikina City", region: "Metro Manila", note: "", status: "",
-        address: "",
+        address: "356 J.P. Rizal St., Sto. Niño, Marikina City 1800",
         blurb: "Bringing timely animal bite care to Marikina.",
-        lat: null, lng: null, map: "",
+        lat: 14.638, lng: 121.096, map: "",
       },
       {
         name: "Caloocan", area: "Caloocan City", region: "Metro Manila", note: "", status: "",
-        address: "129 Malolos Ave. cor. Catarungan St., Bagong Barrio, Caloocan City",
+        address: "129 Malolos Ave. cor. Katarungan St., Bagong Barrio, Caloocan City",
         blurb: "Our clinic in Bagong Barrio, caring for patients in Caloocan.",
         lat: 14.663, lng: 120.998, map: "",
       },
       {
         name: "Cebu City", area: "Cebu City", region: "Cebu", note: "", status: "Always Open",
-        address: "101 N. Bacalso Ave., Sambag 1, Cebu City",
+        address: "101 N. Bacalso Ave., Sambag I, Cebu City, Cebu 6000",
         blurb: "Our clinic in Cebu City, along N. Bacalso Avenue.",
         lat: 10.301, lng: 123.8935, map: "",
       },
       {
         name: "Mandaue City", area: "Mandaue City", region: "Cebu", note: "", status: "Always Open",
-        address: "La Chef Arcade Bldg., 2nd Flr. Unit 5, P. Burgos, Centro, Mandaue City",
+        address: "607 cor. Zamora St. & Burgos St., Centro, Mandaue City, Cebu 6014",
         blurb: "Accessible, round-the-clock care in the center of Mandaue.",
-        lat: 10.327, lng: 123.944, map: "",
+        lat: 10.3275, lng: 123.9435, map: "",
       },
-      // ⚠ check: no address yet — add address / lat / lng to show its pin
       {
         name: "Lapu-Lapu City", area: "Lapu-Lapu City", region: "Cebu", note: "", status: "",
-        address: "",
+        address: "2nd Flr. Unit 2, RMG Bldg., Lopez Jaena St., Poblacion, Lapu-Lapu City, Cebu 6015",
         blurb: "Extending Zanicare care to Lapu-Lapu City.",
-        lat: null, lng: null, map: "",
+        lat: 10.3105, lng: 123.949, map: "",
+      },
+      {
+        name: "Bahay Toro", area: "Quezon City", region: "Metro Manila", note: "", status: "",
+        address: "B1 L1 Sitio Bathala, Bahay Toro, Project 8, Quezon City",
+        blurb: "Care for the families of Project 8 and Bahay Toro.",
+        lat: 14.664, lng: 121.027, map: "",
+      },
+      {
+        name: "Malibay", area: "Pasay City", region: "Metro Manila", note: "", status: "",
+        address: "Unit 1C, 35 Clemente Jose St., Brgy. 166, Pasay City 1300",
+        blurb: "Close-to-home care for the Malibay community.",
+        lat: 14.539, lng: 121.0, map: "",
+      },
+      {
+        name: "Sta. Ana", area: "Manila", region: "Metro Manila", note: "", status: "",
+        address: "2020 Renaissance St., Brgy. 866 Zone 95, Santa Ana, Manila 1009",
+        blurb: "Serving the neighborhoods of Santa Ana, Manila.",
+        lat: 14.581, lng: 121.012, map: "",
+      },
+      {
+        name: "G. Tuazon", area: "Sampaloc, Manila", region: "Metro Manila", note: "", status: "",
+        address: "Unit 2D, 2/F 1920 G. Tuazon St. cor. Palawan St., Brgy. 573 Zone 056, Sampaloc, Manila 1015",
+        blurb: "Our clinic along G. Tuazon Street in Sampaloc.",
+        lat: 14.6135, lng: 121.001, map: "",
+      },
+      {
+        name: "Moonwalk", area: "Parañaque City", region: "Metro Manila", note: "", status: "",
+        address: "15037 E. Rodriguez Ave., San Agustin Village, Moonwalk, Parañaque 1709",
+        blurb: "Animal bite care for Moonwalk and nearby villages.",
+        lat: 14.487, lng: 121.004, map: "",
+      },
+      {
+        name: "Tandang Sora", area: "Quezon City", region: "Metro Manila", note: "", status: "",
+        address: "Unit 1-H, 317 Himlayan Rd. cor. Tandang Sora Ave., Pasong Tamo, Quezon City 1107",
+        blurb: "Serving Pasong Tamo and the Tandang Sora area.",
+        lat: 14.679, lng: 121.052, map: "",
+      },
+      {
+        name: "Project 6", area: "Quezon City", region: "Metro Manila", note: "", status: "",
+        address: "53-A Road 3 cor. Road 8, Project 6, Quezon City 1100",
+        blurb: "Care close to home for Project 6 and its neighbors.",
+        lat: 14.66, lng: 121.038, map: "",
+      },
+      {
+        name: "Talon Singko", area: "Las Piñas City", region: "Metro Manila", note: "", status: "",
+        address: "No. 2 F Bldg., Luna St. cor. Apollo 3, Moonwalk Subd., Talon Singko, Las Piñas 1740",
+        blurb: "Our second Las Piñas clinic, in Talon Singko.",
+        lat: 14.4315, lng: 120.9925, map: "",
+      },
+      {
+        name: "Cauayan City", area: "Isabela", region: "Isabela", note: "", status: "",
+        address: "045 Don Jose Canciller, District 1, Cauayan City, Isabela",
+        blurb: "Bringing Zanicare care to Cauayan City, Isabela.",
+        lat: 16.9275, lng: 121.7725, map: "",
+      },
+      {
+        name: "Baclaran", area: "Parañaque City", region: "Metro Manila", note: "", status: "",
+        address: "2nd Flr. Monte Victoria Bldg., 366 Quirino Ave., Baclaran, Parañaque City",
+        blurb: "Serving the busy Baclaran community.",
+        lat: 14.528, lng: 120.9945, map: "",
+      },
+      {
+        name: "San Jose City", area: "Nueva Ecija", region: "Nueva Ecija", note: "", status: "",
+        address: "Unit 2, Jao Bldg., Maharlika Highway, Rafael Rueda Sr. Pob., San Jose City, Nueva Ecija 3121",
+        blurb: "Our clinic along Maharlika Highway in San Jose City.",
+        lat: 15.7885, lng: 120.9925, map: "",
+      },
+      {
+        name: "Pasig", area: "Pasig City", region: "Metro Manila", note: "", status: "",
+        address: "8649 Sandoval Ave., Nagpayong, Pinagbuhatan, Pasig City 1602",
+        blurb: "Care for the families of Pinagbuhatan, Pasig.",
+        lat: 14.549, lng: 121.101, map: "",
+      },
+      {
+        name: "Mandaluyong", area: "Mandaluyong City", region: "Metro Manila", note: "", status: "",
+        address: "No. 49 Aglipay St., Pag-asa, Mandaluyong City 1550",
+        blurb: "Timely animal bite care in Mandaluyong.",
+        lat: 14.583, lng: 121.042, map: "",
+      },
+      {
+        name: "San Andres", area: "Manila", region: "Metro Manila", note: "", status: "",
+        address: "1629 Dagonoy St., San Andres Bukid, Manila",
+        blurb: "Serving the San Andres Bukid community.",
+        lat: 14.573, lng: 121.0, map: "",
+      },
+      {
+        name: "Jhocson", area: "Sampaloc, Manila", region: "Metro Manila", note: "", status: "",
+        address: "1315 F. Jhocson St., Brgy. 405, Sampaloc, Manila",
+        blurb: "Close to the University Belt in Sampaloc.",
+        lat: 14.6105, lng: 120.9955, map: "",
+      },
+      {
+        name: "Tondo", area: "Manila", region: "Metro Manila", note: "", status: "",
+        address: "2212 Juan Luna St., Gagalangin, Tondo, Manila",
+        blurb: "Care for the families of Gagalangin, Tondo.",
+        lat: 14.624, lng: 120.974, map: "",
+      },
+      {
+        name: "Taytay", area: "Rizal", region: "Rizal", note: "", status: "",
+        address: "2nd Flr. PB Zapanta Bldg., Cortez St. cor. Rizal Ave., Brgy. San Juan, Taytay, Rizal",
+        blurb: "Our clinic in Taytay, Rizal.",
+        lat: 14.569, lng: 121.1335, map: "",
+      },
+      {
+        name: "Cubao", area: "Quezon City", region: "Metro Manila", note: "", status: "",
+        address: "2nd Flr. 35 P.A. Bernardo St., Brgy. San Martin de Porres, Cubao, Quezon City",
+        blurb: "Animal bite care in the heart of Cubao.",
+        lat: 14.62, lng: 121.054, map: "",
+      },
+      {
+        name: "Taguig", area: "Taguig City", region: "Metro Manila", note: "", status: "",
+        address: "2nd Flr. Plaza Dela Rosa Bldg., Manalac Ave., Brgy. North Daang Hari, Taguig City",
+        blurb: "Serving North Daang Hari and nearby Taguig.",
+        lat: 14.505, lng: 121.039, map: "",
+      },
+      {
+        name: "Pandacan", area: "Manila", region: "Metro Manila", note: "", status: "",
+        address: "1802 West Zamora St. cor. Ilang-Ilang St., Pandacan, Manila",
+        blurb: "Care close to home for Pandacan.",
+        lat: 14.588, lng: 121.001, map: "",
+      },
+      {
+        name: "Kamuning", area: "Quezon City", region: "Metro Manila", note: "", status: "",
+        address: "No. 11 K-5th St., Brgy. Kamuning, Quezon City",
+        blurb: "Our clinic in Kamuning, Quezon City.",
+        lat: 14.63, lng: 121.039, map: "",
+      },
+      {
+        name: "Santiago City", area: "Isabela", region: "Isabela", note: "", status: "",
+        address: "#7 Quezon St. cor. Turingan St., Purok 2, Centro East, Santiago City, Isabela 3311",
+        blurb: "Extending Zanicare care to Santiago City, Isabela.",
+        lat: 16.688, lng: 121.55, map: "",
       },
     ] as {
       name: string
@@ -1175,18 +1307,41 @@ export const siteConfig = {
   // Shown like the classic entourage: one arch card, a heading per group, names in two columns.
   // Group order: Leadership first, then branches in branches.list order, then anything else as typed.
   entourage: {
-    eyebrow: "Our People",
-    title: "Branch Representatives",
-    subtitle: "the faces of every clinic",
+    eyebrow: "The Zanicare Family",
+    title: "Our People",
+    subtitle: "the hearts behind every clinic",
     description:
-      "Behind every Zanicare clinic are the people who keep its doors open and its patients cared for. Tonight we celebrate those representing each of our branches.",
+      "From the officers who steer our vision to the nurses and staff who welcome every patient, these are the people who make Zanicare what it is. Tonight, we honor each one of them.",
     // Heading of the first group (rows with any of leadershipCategories go here)
     leadershipTitle: "Leadership",
     leadershipCategories: ["Leadership", "Founder", "Executive", "Executives", "Management", "Head Office"],
-    emptyText: "Representatives to be announced",
-    loadingText: "Gathering our representatives...",
-    retryingText: "Still gathering our representatives. Trying again...",
-    errorText: "We couldn't load the representatives just now.",
+    // Order of the list, highest rank first. Each tier gathers the sheet's RoleCategory values in `roles`
+    // (case, dashes and spacing don't matter) under one heading, people sorted by the order of `roles`.
+    // showRole: print each person's role under their name (for tiers mixing several roles).
+    // Roles not listed here follow after, as their own groups.
+    hierarchy: [
+      {
+        title: "Executive Officers",
+        roles: ["President", "Medical Director", "Treasurer", "Corporate Secretary"],
+        showRole: true,
+      },
+      {
+        title: "Department Heads",
+        roles: ["Quality Assurance Head", "Finance Head", "Procurement Head", "Human Resources Head"],
+        showRole: true,
+      },
+      { title: "Medical Consultants", roles: ["Medical Consultant", "Medical Consultants"], showRole: false },
+      { title: "Investors", roles: ["Investors", "Investor"], showRole: false },
+      { title: "Admin Assistants", roles: ["Admin Assistant", "Admin Assistants"], showRole: false },
+      { title: "Nurses", roles: ["Regular Employee – Nurse", "Nurse", "Nurses"], showRole: false },
+      { title: "Admin Staff", roles: ["Regular Employee – Admin", "Admin", "Admin Staff"], showRole: false },
+      { title: "Reliever Nurses", roles: ["Reliever Nurse", "Reliever Nurses"], showRole: false },
+      { title: "Reliever Admin Staff", roles: ["Reliever Admin", "Reliever Admins"], showRole: false },
+    ] as { title: string; roles: string[]; showRole: boolean }[],
+    emptyText: "Our honorees will be announced soon.",
+    loadingText: "Gathering the Zanicare family…",
+    retryingText: "Still gathering the Zanicare family. One moment…",
+    errorText: "We couldn't load our people just now.",
     retryText: "Try again",
     // Corner florals (sized per corner like the loader), sprig above the title — "" hides any of them
     decos: {
