@@ -473,6 +473,155 @@
   color: var(--lp-ink-soft);
 }
 
+/* ── Brand lockup (poster.lockup) ────────────────────────────────────────
+     Zanicare - AMJ - CityMed - HealBite   ← bold white serif
+                  with
+          [ ZANICARE Group logo ]
+     Thanksgiving and Year End Party       ← script
+   …then "YOU'RE / Invited!" above the date */
+.lp__lockup {
+  gap: 0;
+  margin-top: 1cqh;
+}
+.lp__brands {
+  margin: 0;
+  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  font-size: min(2.5cqh, 5.4cqw);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: var(--lp-halo);
+}
+.lp__brands-joiner {
+  margin: 0.1cqh 0 0;
+  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  font-size: min(2.2cqh, 4.8cqw);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: var(--lp-halo);
+}
+/* Wide group logo (transparent PNG) — a faint light halo keeps the green readable on black */
+.lp__logo {
+  display: block;
+  width: min(78cqw, 44cqh);
+  height: auto;
+  margin-top: 1.2cqh;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 1.2cqh rgba(255, 255, 255, 0.28));
+  pointer-events: none;
+  user-select: none;
+}
+/* Wraps into two balanced lines on narrow screens ("Thanksgiving and / Year End Party") */
+.lp__event-title {
+  max-width: calc(100% + 0.8em);
+  margin: 2.2cqh -0.4em 0;
+  padding: 0.25em 0.4em;
+  font-size: min(4.6cqh, 8.6cqw);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  word-spacing: 0.32em;
+  text-wrap: balance;
+}
+/* Brighter gold for the thin script strokes so they read as gold, not brown */
+.lp__event-title.lp-gold {
+  --lp-gold-1: #c08a2c;
+  --lp-gold-2: #f0c96a;
+  --lp-gold-3: #fff4cf;
+}
+/* Punctuation in the lockup comes from Cinzel (special-char-text.tsx) — the display fonts'
+   demo glyphs show a "DEMO" mark; size it to sit with the letters around it */
+.lp__invited-top .special-char {
+  font-size: 0.82em;
+  letter-spacing: 0;
+  margin: 0 0.02em;
+  vertical-align: 0.08em;
+}
+.lp__invited-bottom .special-char,
+.lp__event-title .special-char:not(.special-char--amp) {
+  font-size: 0.7em;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-left: 0.06em;
+}
+.lp__invited {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 0.6cqh;
+  font-weight: 400;
+  line-height: 1;
+}
+.lp__invited-top {
+  font-size: min(8cqh, 17cqw);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0.1em 0.15em;
+}
+.lp__invited-bottom {
+  font-size: min(9cqh, 19cqw);
+  line-height: 1;
+  white-space: nowrap;
+  margin-top: -1.6cqh;
+  padding: 0.25em 0.4em 0.3em;
+}
+
+/* ── Lockup on phones (portrait, narrow stage) ───────────────────────────
+   Clear the corner florals at the top, give the logo the full width, and spread the
+   header out so the poster no longer has a large empty band in the middle. */
+@media (max-width: 640px) {
+  .lp--lockup .lp__content {
+    padding: 8cqh 6cqw 6.5cqh;
+  }
+  .lp__lockup {
+    margin-top: 0;
+  }
+  .lp__brands {
+    max-width: 100%;
+    font-size: min(2.3cqh, 5cqw);
+    white-space: normal;
+    text-wrap: balance;
+  }
+  .lp__brands-joiner {
+    margin-top: 0.4cqh;
+    font-size: min(1.9cqh, 4.2cqw);
+    font-style: italic;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .lp__logo {
+    width: min(86cqw, 46cqh);
+    margin-top: 1.6cqh;
+  }
+  .lp__event-title {
+    margin-top: 2.8cqh;
+    font-size: min(4.4cqh, 10.5cqw);
+    line-height: 1.45;
+  }
+  /* Spare height is shared between the blocks instead of pooling above "YOU'RE" */
+  .lp--lockup .lp__content {
+    justify-content: space-between;
+  }
+  .lp--lockup .lp__middle {
+    flex: 0 0 auto;
+  }
+  .lp__invited-top {
+    font-size: min(7.4cqh, 18cqw);
+  }
+  .lp__invited-bottom {
+    font-size: min(8.4cqh, 21cqw);
+    margin-top: -1.2cqh;
+  }
+  .lp--lockup .lp__address {
+    max-width: 88cqw;
+    text-wrap: balance;
+  }
+}
+
 /* ── Footer: status, progress bar, percentage ────────────────────────── */
 .lp__footer {
   display: flex;

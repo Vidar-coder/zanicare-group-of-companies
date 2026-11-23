@@ -525,10 +525,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:843c4e208925dc6c5a8b15ba19a102d1e08ee3db824a82b9b97c8f4b70627463"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:2fd22d750cb77ff6608064bb096317b49ee9940ea24b7ea59a6b4ff1fe4326b4",
+        "previousReceiptHash": "sha256:843c4e208925dc6c5a8b15ba19a102d1e08ee3db824a82b9b97c8f4b70627463",
+        "sequence": 13,
+        "issuedAt": 1795354382791,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1795354382791
+          },
+          "requestId": "1187e96a-304b-4755-904b-4a61b17e2666"
+        },
+        "decision": {
+          "requestId": "1187e96a-304b-4755-904b-4a61b17e2666",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:7b70bd96d1baf68fa5894de799f358635ea80dd272e9bac894f3f731620205c0"
     }
   ],
   "migratedAt": 1794916713348,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 13,
-  "ledgerHead": "sha256:843c4e208925dc6c5a8b15ba19a102d1e08ee3db824a82b9b97c8f4b70627463"
+  "ledgerLength": 14,
+  "ledgerHead": "sha256:7b70bd96d1baf68fa5894de799f358635ea80dd272e9bac894f3f731620205c0"
 }

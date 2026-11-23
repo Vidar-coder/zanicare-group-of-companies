@@ -270,6 +270,11 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, onFade
           desktopPhotos={backgroundPhotosDesktop}
           coupleImage={poster.coupleImage ? encodeURI(poster.coupleImage) : ''}
           kicker={poster.kicker}
+          lockup={
+            poster.lockup && (poster.lockup.logo || poster.lockup.brands)
+              ? { ...poster.lockup, logo: poster.lockup.logo ? encodeURI(poster.lockup.logo) : '' }
+              : undefined
+          }
           headline={content.headline}
           sideLeft={poster.sideLeft ?? []}
           sideRight={poster.sideRight ?? []}

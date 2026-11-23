@@ -19,6 +19,8 @@ export interface LoaderPosterProps {
   desktopPhotos: string[];
   coupleImage: string;
   kicker: string;
+  /** Brand lockup (loadingScreen.poster.lockup): replaces kicker, headline, middle image and title */
+  lockup?: PosterLockup;
   /** e.g. "Save the Date" — the joining word ("the") is set small between two rules */
   headline: string;
   sideLeft: string[];
@@ -48,7 +50,16 @@ export interface LoaderPosterProps {
   reduceMotion: boolean;
 }
 
-const JOINING_WORDS = new Set(['the', 'of', 'and', '&', 'a']);
+export interface PosterLockup {
+  brands?: string;
+  joiner?: string;
+  logo?: string;
+  title?: string;
+  invitedTop?: string;
+  invitedBottom?: string;
+}
+
+const JOINING_WORDS =new Set(['the', 'of', 'and', '&', 'a']);
 
 // "Save the Date" → ["Save", "the", "Date"]. Without a joining word, a multi-word headline
 // is stacked: "Year End Party" → "YEAR END" in spaced capitals over a script "Party".
@@ -68,6 +79,7 @@ const delay = (ms: number) => ({ '--lp-delay': `${ms}ms` }) as React.CSSProperti
 
 export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
   const head = splitHeadline(p.headline);
+  const lk = p.lockup;
   const percentRef = useRef<HTMLSpanElement>(null);
 
   // Percentage under the bar, counted up in step with the bar's CSS animation
@@ -90,7 +102,7 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
   }, [p.durationMs]);
 
   return (
-    <div className={`lp${p.reduceMotion ? ' lp--still' : ''}`}>
+    <div className={`lp${lk ? ' lp--lockup' : ''}${p.reduceMotion ? ' lp--still' : ''}`}>
       {/* Black silk, vignette, silver frame and corners — shared with the envelope (Hero.tsx) */}
       <PosterBackdrop corners={p.corners} />
 
@@ -98,7 +110,7 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
         <div className="lp__glow" aria-hidden="true" />
 
         {/* Couple cut-out, fading into the details below */}
-        {p.coupleImage && (
+        {!lk && p.coupleImage && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={p.coupleImage}
@@ -112,6 +124,36 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
         )}
 
         <div className="lp__content">
+          {lk ? (
+            <header className="lp__header lp__lockup">
+              {lk.brands && (
+                <p className="lp__brands lp-in" style={delay(500)}>
+                  {lk.brands}
+                </p>
+              )}
+              {lk.joiner && (
+                <p className="lp__brands-joiner lp-in" style={delay(700)}>
+                  {lk.joiner}
+                </p>
+              )}
+              {lk.logo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={lk.logo}
+                  alt="Zanicare Group of Companies Inc."
+                  className="lp__logo lp-in"
+                  style={delay(900)}
+                  fetchPriority="high"
+                  draggable={false}
+                />
+              )}
+              {lk.title && (
+                <h1 className={`${p.andFontClass} lp__event-title lp-gold lp-gold--warm lp-in`} style={delay(1250)}>
+                  <SpecialCharText text={lk.title} ampClassName={p.andFontClass} />
+                </h1>
+              )}
+            </header>
+          ) : (
           <header className="lp__header">
             {p.kicker && (
               <p className="lp__kicker lp-in" style={delay(500)}>
@@ -157,6 +199,7 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
               )}
             </h1>
           </header>
+          )}
 
           <div className="lp__middle">
             {p.sideLeft.length > 0 && (
@@ -176,6 +219,27 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
           </div>
 
           <div className="lp__details">
+            {lk ? (
+              (lk.invitedTop || lk.invitedBottom) && (
+                <h2 className="lp__invited" aria-label={[lk.invitedTop, lk.invitedBottom].filter(Boolean).join(' ')}>
+                  {lk.invitedTop && (
+                    <span className={`${p.nameFontClass} lp__invited-top lp-gold lp-in`} style={delay(1700)} aria-hidden="true">
+                      <SpecialCharText text={lk.invitedTop} />
+                    </span>
+                  )}
+                  {lk.invitedBottom && (
+                    <span
+                      className={`${p.andFontClass} lp__invited-bottom lp-gold lp-gold--warm lp-in lp-in--right`}
+                      style={delay(2050)}
+                      aria-hidden="true"
+                    >
+                      <SpecialCharText text={lk.invitedBottom} />
+                    </span>
+                  )}
+                </h2>
+              )
+            ) : (
+            <>
             {p.weddingOf && (
               <p className="lp__wedding-of lp-in" style={delay(1950)}>
                 {p.weddingOf}
@@ -198,6 +262,8 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
                 <SpecialCharText text={p.brideName} ampClassName={p.andFontClass} />
               </span>
             </h2>
+            </>
+            )}
             {p.dateText && (
               <p className="lp__date lp-in" style={delay(2750)}>
                 <span className="lp__rule lp__rule--long" />

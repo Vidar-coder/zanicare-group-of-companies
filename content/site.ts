@@ -422,6 +422,17 @@ export const siteConfig = {
       // Image in the middle of the poster (PNG/WebP; "" to hide) — the company logo
       coupleImage: BRAND.logo,
       kicker: COMPANY_NAME, // small line above the headline ("" to hide)
+      // Brand lockup at the top of the poster (replaces kicker + headline + middle logo while
+      // `logo` or `brands` is set): brands line, joiner, wide group logo, event title in script,
+      // then "YOU'RE / Invited!" in place of the event title under it
+      lockup: {
+        brands: "Zanicare - AMJ - CityMed - HealBite",
+        joiner: "with",
+        logo: "/Details/Zanicare Group Logo.png",
+        title: "Thanksgiving and Year End Party",
+        invitedTop: "You're",
+        invitedBottom: "Invited!",
+      },
       // Short lines either side of the logo, one entry per line ([] to hide a side)
       sideLeft: [] as string[],
       sideRight: [] as string[],
