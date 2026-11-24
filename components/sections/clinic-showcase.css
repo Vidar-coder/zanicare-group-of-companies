@@ -154,7 +154,7 @@
     0 0 24px rgb(226 183 90 / 25%),
     0 22px 36px -16px rgb(0 0 0 / 95%);
 }
-/* Square frame matching the 1080×1080 clinic posters; the whole image is shown (object-contain) */
+/* One square frame for every photo; the whole image is shown (object-contain) over a blurred fill */
 .clinic-card__photo {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -166,6 +166,15 @@
 }
 .clinic-card:hover .clinic-card__photo img {
   filter: saturate(1.05) contrast(1.03);
+}
+/* Blurred, dimmed copy of the photo fills whatever space the whole photo leaves, so every card
+   is the same size with no empty bars */
+.clinic-card__photo img.clinic-card__backdrop {
+  filter: blur(18px) brightness(0.55) saturate(1.1);
+  transform: scale(1.15);
+}
+.clinic-card:hover .clinic-card__photo img.clinic-card__backdrop {
+  filter: blur(18px) brightness(0.55) saturate(1.1);
 }
 .clinic-card__shine {
   position: absolute;

@@ -32,17 +32,32 @@ export type ClinicShowcaseConfig = {
   rows: readonly { label: string; photos: readonly string[] }[]
 }
 
-/** One gold-framed clinic photo with its badge */
+/**
+ * One gold-framed clinic photo with its badge. Every card is the same square: the whole photo is
+ * shown, and any space a tall or wide photo leaves is filled by a blurred copy of the same photo.
+ */
 function ClinicCard({ src, label, index, eager }: { src: string; label: string; index: number; eager: boolean }) {
+  const url = encodeURI(src)
+  const sizes = "(max-width: 640px) 74vw, 352px"
   return (
     <figure className="clinic-card">
       <div className="clinic-card__photo">
         <Image
-          src={encodeURI(src)}
+          src={url}
+          alt=""
+          aria-hidden
+          fill
+          sizes={sizes}
+          className="clinic-card__backdrop object-cover"
+          quality={85}
+          loading={eager ? "eager" : "lazy"}
+        />
+        <Image
+          src={url}
           alt={`Zanicare clinic — ${label.toLowerCase()} (${index + 1})`}
           fill
-          sizes="(max-width: 640px) 74vw, 352px"
-          className="object-contain"
+          sizes={sizes}
+          className="clinic-card__img object-contain"
           quality={85}
           loading={eager ? "eager" : "lazy"}
         />

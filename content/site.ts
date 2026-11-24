@@ -708,13 +708,13 @@ export const siteConfig = {
         {
           label: "DOH Accredited",
           photos: [
-            "/images/revisedImages/sta ana.jpg",
+            "/images/revisedImages/STA ANA.jpg",
             "/images/revisedImages/Moonwalk.jpg",
             "/images/revisedImages/MOLINO.png",
             "/images/revisedImages/MANDAUE.png",
             "/images/revisedImages/Malibay.png",
             "/images/revisedImages/LAPU.png",
-            "/images/revisedImages/CityMed.png",
+            "/images/revisedImages/citymed.png",
             "/images/revisedImages/CEBU2.png",
             "/images/revisedImages/Baclaran.jpg",
           ],
@@ -923,7 +923,7 @@ export const siteConfig = {
         lat: 14.573, lng: 121.0, map: "",
       },
       {
-        name: "Jhocson", area: "Sampaloc, Manila", region: "Metro Manila", note: "", status: "",
+        name: "Bustillos", area: "Sampaloc, Manila", region: "Metro Manila", note: "", status: "",
         address: "1315 F. Jhocson St., Brgy. 405, Sampaloc, Manila",
         blurb: "Close to the University Belt in Sampaloc.",
         lat: 14.6105, lng: 120.9955, map: "",
