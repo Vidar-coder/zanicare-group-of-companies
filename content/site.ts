@@ -450,11 +450,11 @@ export const siteConfig = {
       photoVeil: 0,
       // Colors — shared with the envelope screen that follows, so the look carries over
       theme: {
-        goldDark: "#8e8e93", // lettering: shadow side (silver)
-        gold: "#e5e5e7", // lettering: main tone (platinum)
-        goldLight: "#ffffff", // lettering: sheen (white)
-        ink: "#ededee", // small capital lines (kicker, date line, venue, status)
-        inkSoft: "#b9b9bd", // venue address
+        goldDark: "#b8893a", // lettering: shadow side (antique gold)
+        gold: "#f1d389", // lettering: main tone (light gold)
+        goldLight: "#fff7dc", // lettering: sheen (champagne)
+        ink: "#f3dfa6", // small capital lines (kicker, date line, venue, status) — light gold
+        inkSoft: "#d9c08a", // venue address — softer gold
         washTop: "#050506", // dark vignette over the top of the silk
         washBottom: "#050506", // dark vignette over the bottom of the silk
       },
@@ -708,13 +708,15 @@ export const siteConfig = {
         {
           label: "DOH Accredited",
           photos: [
-            "/images/DOH CLINICS/dohclinic (1).jpeg",
-            "/images/DOH CLINICS/dohclinic (2).jpeg",
-            "/images/DOH CLINICS/dohclinic (3).webp",
-            "/images/DOH CLINICS/dohclinic (1).webp",
-            "/images/DOH CLINICS/dohclinic (4).webp",
-            "/images/DOH CLINICS/dohclinic (2).webp",
-            "/images/DOH CLINICS/dohclinic (3).jpeg",
+            "/images/revisedImages/sta ana.jpg",
+            "/images/revisedImages/Moonwalk.jpg",
+            "/images/revisedImages/MOLINO.png",
+            "/images/revisedImages/MANDAUE.png",
+            "/images/revisedImages/Malibay.png",
+            "/images/revisedImages/LAPU.png",
+            "/images/revisedImages/CityMed.png",
+            "/images/revisedImages/CEBU2.png",
+            "/images/revisedImages/Baclaran.jpg",
           ],
         },
         {

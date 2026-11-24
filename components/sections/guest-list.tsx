@@ -29,6 +29,7 @@ import { fetchUntilReady, isAbortError } from "@/lib/fetch-until-ready"
 import { fetchInvitationList, invalidateInvitationData, readCachedInvitationList } from "@/lib/invitation-data"
 import { TintedDeco } from "@/components/tinted-deco"
 import { SilkScreen } from "@/components/silk-screen"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -682,6 +683,7 @@ export function GuestList() {
             } as React.CSSProperties
           }
         >
+          <HolidayDeco />
           <span className="sr-only">{copy.title}. {copy.script}?</span>
           <span
             aria-hidden

@@ -33,6 +33,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
 import { LUX, LUX_CARD, LUX_GOLD_BUTTON, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 
 const theSeasons = localFont({
@@ -134,6 +135,7 @@ function DetailsTitle({ title, subtitle }: { title: string; subtitle: string }) 
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span
         className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.15em] md:tracking-[0.18em] pb-1 sm:pb-1.5`}
         style={{ fontSize: "var(--title-size)", ...onBg }}

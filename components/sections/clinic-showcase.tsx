@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { cinzel } from "@/lib/fonts"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
 import "./clinic-showcase.css"
+import { HolidayDeco } from '@/components/holiday-deco'
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -40,9 +41,9 @@ function ClinicCard({ src, label, index, eager }: { src: string; label: string; 
           src={encodeURI(src)}
           alt={`Zanicare clinic — ${label.toLowerCase()} (${index + 1})`}
           fill
-          sizes="(max-width: 640px) 46vw, 260px"
-          className="object-cover"
-          quality={75}
+          sizes="(max-width: 640px) 74vw, 352px"
+          className="object-contain"
+          quality={85}
           loading={eager ? "eager" : "lazy"}
         />
         <span className="clinic-card__shine" aria-hidden />
@@ -135,6 +136,7 @@ export function ClinicShowcase({ config }: { config: ClinicShowcaseConfig }) {
             <span className="clinic-showcase__eyebrow-rule clinic-showcase__eyebrow-rule--right" aria-hidden />
           </p>
         ) : null}
+        <HolidayDeco />
         <h2 id="clinic-showcase-title" className={`${theSeasons.className} clinic-showcase__title`}>
           <StoryGlyphText text={config.title} />
         </h2>
@@ -164,7 +166,7 @@ export function ClinicShowcase({ config }: { config: ClinicShowcaseConfig }) {
               photos={row.photos}
               label={row.label}
               reverse={i % 2 === 1}
-              duration={Math.max(28, row.photos.length * 7)}
+              duration={Math.max(45, row.photos.length * 11)}
               still={reduceMotion}
             />
           </React.Fragment>

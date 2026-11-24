@@ -3,3 +3,4 @@
 {"v":1,"endedAt":1794932361774,"reason":"other","totalUsd":9.040923,"byAgent":{"main":9.040923},"byTool":{"Bash":7.630755,"Read":1.117707,"(model)":0.292461},"refusals":0,"budget":null}
 {"v":1,"endedAt":1794994230314,"reason":"other","totalUsd":6.96216,"byAgent":{"main":6.96216},"byTool":{"Bash":5.710128,"Read":0.963818,"(model)":0.288215},"refusals":0,"budget":null}
 {"v":1,"endedAt":1795354377675,"reason":"other","totalUsd":3.441391,"byAgent":{"main":3.441391},"byTool":{"Bash":2.743276,"Read":0.45619,"(model)":0.135854,"Edit":0.080728,"Write":0.025342},"refusals":0,"budget":null}
+{"v":1,"endedAt":1795437456116,"reason":"other","totalUsd":1.770764,"byAgent":{"main":1.770764},"byTool":{"Bash":1.192171,"Edit":0.438946,"Read":0.086794,"(model)":0.052853},"refusals":0,"budget":null}

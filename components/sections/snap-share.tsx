@@ -13,6 +13,7 @@ import { PuhonBanner } from "@/components/puhon-closing"
 import { SilkScreen } from "@/components/silk-screen"
 import { MonogramMark } from "@/components/monogram-mark"
 import { SpecialCharText } from "@/components/special-char-text"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 
 const theSeasons = localFont({
@@ -111,6 +112,7 @@ function SnapShareTitle({ title, subtitle }: { title: string; subtitle: string }
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span
         className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{ fontSize: "var(--title-size)", color: OUTSIDE_TEXT, textShadow: OUTSIDE_TITLE_SHADOW }}

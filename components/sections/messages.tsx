@@ -13,6 +13,7 @@ import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import { SilkScreen } from "@/components/silk-screen"
 import { MonogramMark } from "@/components/monogram-mark"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 
 const theSeasons = localFont({
@@ -156,6 +157,7 @@ function MessagesTitle() {
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span className="sr-only">Notes of Thanks &amp; year-end wishes</span>
       <span
         aria-hidden

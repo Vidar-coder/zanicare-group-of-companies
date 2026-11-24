@@ -6,22 +6,22 @@
    loader root and the envelope screen, so both always share the same colors */
 .loading-screen--poster,
 .env-invite-screen--poster {
-  /* Silver lettering on black silk (black · grey · white) */
-  --lp-gold-1: #8e8e93;
-  --lp-gold-2: #e5e5e7;
-  --lp-gold-3: #ffffff;
-  --lp-ink: #ededee;      /* small caps text — light enough to read over the dark silk */
-  --lp-ink-soft: #b9b9bd;
+  /* Light-gold lettering on black silk */
+  --lp-gold-1: #b8893a;
+  --lp-gold-2: #f1d389;
+  --lp-gold-3: #fff7dc;
+  --lp-ink: #f3dfa6;      /* small caps text — light gold, readable over the dark silk */
+  --lp-ink-soft: #d9c08a;
   --lp-wash-top: #050506;
   --lp-wash-bottom: #050506;
   /* Accents for lines, frame and progress. Names kept from the original motif:
-     ivory = page base (black), champagne = dark grey, sage = mid grey,
-     terracotta = silver rules, burgundy = progress fill (white) */
+     ivory = page base (black), champagne = dark bronze, sage = muted gold,
+     terracotta = gold rules / frame, burgundy = progress fill (light gold) */
   --lp-ivory: #0c0c0d;
-  --lp-champagne: #3a3a3d;
-  --lp-sage: #8e8e93;
-  --lp-terracotta: #c7c7cc;
-  --lp-burgundy: #f5f5f5;
+  --lp-champagne: #3a2f1c;
+  --lp-sage: #a8843f;
+  --lp-terracotta: #d9b45f;
+  --lp-burgundy: #f1d389;
 }
 
 .lp {
@@ -491,8 +491,7 @@
   line-height: 1.2;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  color: #fff;
-  text-shadow: var(--lp-halo);
+  padding: 0 0.1em;
 }
 .lp__brands-joiner {
   margin: 0.1cqh 0 0;
@@ -500,8 +499,7 @@
   font-size: min(2.2cqh, 4.8cqw);
   font-weight: 700;
   line-height: 1.1;
-  color: #fff;
-  text-shadow: var(--lp-halo);
+  padding: 0 0.15em;
 }
 /* Wide group logo (transparent PNG) — a faint light halo keeps the green readable on black */
 .lp__logo {
@@ -654,16 +652,33 @@
     inset 0 0 0 1px color-mix(in srgb, var(--lp-burgundy) 25%, transparent),
     0 0 0 1px rgba(255, 255, 255, 0.15);
 }
-/* Solid white fill */
+/* Gold fill with a soft glow and a light glint travelling along it */
 .lp__bar {
   position: absolute;
   inset: 0 auto 0 0;
   width: 0%;
   border-radius: inherit;
-  background: var(--lp-burgundy);
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--lp-gold-1), var(--lp-gold-2) 60%, var(--lp-gold-3));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--lp-gold-2) 70%, transparent);
   animation-name: lp-progress;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+}
+.lp__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 250, 230, 0.85), transparent);
+  transform: translateX(-120%);
+  animation: lp-bar-glint 1.8s ease-in-out infinite;
+}
+.lp--still .lp__bar::after {
+  display: none;
+}
+@keyframes lp-bar-glint {
+  to { transform: translateX(320%); }
 }
 @keyframes lp-progress {
   to { width: 100%; }

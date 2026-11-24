@@ -11,6 +11,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { DecoCorners } from "@/components/deco-corners"
 import { IvoryBackdrop, ivorySectionStyle } from "@/components/ivory-backdrop"
 import { LUX, LUX_CARD, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 
 const theSeasons = localFont({
@@ -109,6 +110,7 @@ function FaqTitle({ title, subtitle }: { title: string; subtitle: string }) {
         } as CSSProperties
       }
     >
+      <HolidayDeco />
       <span className="sr-only">
         {title} — {subtitle}
       </span>

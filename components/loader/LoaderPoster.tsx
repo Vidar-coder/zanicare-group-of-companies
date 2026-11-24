@@ -127,12 +127,12 @@ export const LoaderPoster: React.FC<LoaderPosterProps> = (p) => {
           {lk ? (
             <header className="lp__header lp__lockup">
               {lk.brands && (
-                <p className="lp__brands lp-in" style={delay(500)}>
+                <p className="lp__brands lp-gold lp-gold--warm lp-in" style={delay(500)}>
                   {lk.brands}
                 </p>
               )}
               {lk.joiner && (
-                <p className="lp__brands-joiner lp-in" style={delay(700)}>
+                <p className="lp__brands-joiner lp-gold lp-in" style={delay(700)}>
                   {lk.joiner}
                 </p>
               )}

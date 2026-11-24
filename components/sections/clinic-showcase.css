@@ -8,7 +8,8 @@
   --cs-gold-light: #f3d27a;
   --cs-white: #f5f5f5;
   --cs-ivory: #ede6d6;
-  --cs-card-w: clamp(9.5rem, 42vw, 15rem);
+  /* large enough to read the text on the clinic posters */
+  --cs-card-w: clamp(15rem, 74vw, 22rem);
   --cs-gap: clamp(0.75rem, 2.5vw, 1.25rem);
   padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(3rem, 8vw, 5.5rem);
   overflow: hidden;
@@ -68,7 +69,7 @@
   /* wider than the screen so the tilt never shows an empty corner */
   margin-inline: -8vw;
   padding: clamp(1.25rem, 3.5vw, 2rem) 0;
-  rotate: -3deg;
+  rotate: 0deg; /* level, so the poster text reads easily */
   background:
     linear-gradient(180deg, rgb(226 183 90 / 7%), transparent 18%, transparent 82%, rgb(226 183 90 / 7%)),
     rgb(5 5 6 / 55%);
@@ -146,34 +147,25 @@
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.45s ease;
 }
 .clinic-card:hover {
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-6px) scale(1.02);
   border-color: rgb(243 210 122 / 85%);
   box-shadow:
     inset 0 1px 0 rgb(243 210 122 / 25%),
     0 0 24px rgb(226 183 90 / 25%),
     0 22px 36px -16px rgb(0 0 0 / 95%);
 }
+/* Square frame matching the 1080×1080 clinic posters; the whole image is shown (object-contain) */
 .clinic-card__photo {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #111;
 }
 .clinic-card__photo img {
-  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
-  filter: saturate(0.92) contrast(1.04);
+  transition: filter 0.6s ease;
 }
 .clinic-card:hover .clinic-card__photo img {
-  transform: scale(1.08);
-  filter: saturate(1.05) contrast(1.05);
-}
-/* dark foot so the badge always reads */
-.clinic-card__photo::after {
-  content: "";
-  position: absolute;
-  inset: 55% 0 0;
-  background: linear-gradient(180deg, transparent, rgb(0 0 0 / 75%));
-  pointer-events: none;
+  filter: saturate(1.05) contrast(1.03);
 }
 .clinic-card__shine {
   position: absolute;
@@ -187,15 +179,14 @@
 .clinic-card:hover .clinic-card__shine {
   translate: 120% 0;
 }
+/* Badge sits under the photo so it never covers the poster text */
 .clinic-card__badge {
-  position: absolute;
-  left: 0.85rem;
-  bottom: 0.8rem;
-  z-index: 2;
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
+  padding: 0.55rem 0 0.2rem;
   align-items: center;
   gap: 0.4rem;
-  font-size: clamp(0.5rem, 1.8vw, 0.62rem);
+  font-size: clamp(0.62rem, 2vw, 0.72rem);
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;

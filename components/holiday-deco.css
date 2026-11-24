@@ -1,0 +1,41 @@
+/* Christmas trim above section titles (components/holiday-deco.tsx) */
+.holiday-deco {
+  display: block;
+  width: clamp(9.5rem, 42vw, 15rem);
+  margin: 0 auto 0.5rem;
+  line-height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.holiday-deco__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+.holiday-deco__hat {
+  transform-box: fill-box;
+  transform-origin: 70% 90%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The bow breathes and the hat sways gently */
+  .holiday-deco__bow {
+    transform-box: fill-box;
+    transform-origin: 50% 40%;
+    animation: holiday-deco-bow 4.5s ease-in-out infinite;
+  }
+  .holiday-deco__hat {
+    animation: holiday-deco-hat 5s ease-in-out infinite;
+  }
+}
+
+@keyframes holiday-deco-bow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes holiday-deco-hat {
+  0%, 100% { transform: rotate(-16deg); }
+  50% { transform: rotate(-10deg); }
+}

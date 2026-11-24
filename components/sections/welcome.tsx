@@ -8,6 +8,7 @@ import { cinzel } from "@/lib/fonts"
 import { IVORY_LACE_EDGE as WELCOME_LACE_EDGE } from "@/lib/ivory-lace"
 import { SilkScreen } from "@/components/silk-screen"
 import { CountUp } from "@/components/count-up"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 
 const theSeasons = localFont({
@@ -71,6 +72,7 @@ function LayeredWelcomeTitle() {
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span
         className={`${cinzel.className} mb-3 block text-[clamp(0.6rem,2.4vw,0.76rem)] font-semibold uppercase tracking-[0.34em] sm:mb-4`}
         style={{ color: GOLD }}

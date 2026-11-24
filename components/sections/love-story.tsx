@@ -13,6 +13,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { StoryGlyphText } from "@/lib/story-glyph-text"
 import { PuhonText } from "@/components/puhon-closing"
 import { ClinicShowcase, type ClinicShowcaseConfig } from "@/components/sections/clinic-showcase"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 const theSeasons = localFont({
   src: "../../Font/Fontspring-DEMO-theseasons-reg.otf",
@@ -91,6 +92,7 @@ function LoveStoryTitle({
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span
         className={`${theSeasons.className} block pb-1 uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
         style={{

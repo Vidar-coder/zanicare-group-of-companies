@@ -13,6 +13,7 @@ import { TintedDeco } from "@/components/tinted-deco"
 import { CountUp } from "@/components/count-up"
 import { SpecialCharText } from "@/components/special-char-text"
 import "./branches-map.css"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 /*
  * Branch map — every Zanicare clinic as a glowing red pin on a dark map, in the same luxury dark
@@ -337,6 +338,7 @@ export function BranchesMap() {
               } as React.CSSProperties
             }
           >
+            <HolidayDeco />
             <span
               className={`${theSeasons.className} block pb-1 uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em]`}
               style={{ fontSize: "var(--title-size)", color: WHITE, textShadow: onBgGlow }}

@@ -10,6 +10,7 @@ import Counter from "@/components/Counter"
 import { parseWeddingDate } from "@/lib/wedding-date"
 import { SilkScreen } from "@/components/silk-screen"
 import { LUX, LUX_TEXT_SHADOW } from "@/lib/lux-dark"
+import { HolidayDeco } from "@/components/holiday-deco"
 
 interface TimeLeft {
   days: number
@@ -113,6 +114,7 @@ function CountdownTitle() {
         } as React.CSSProperties
       }
     >
+      <HolidayDeco />
       <span
         className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.15em] md:tracking-[0.18em] pb-1 sm:pb-1.5`}
         style={{
