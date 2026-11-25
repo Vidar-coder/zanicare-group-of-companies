@@ -5,3 +5,4 @@
 {"v":1,"endedAt":1795354377675,"reason":"other","totalUsd":3.441391,"byAgent":{"main":3.441391},"byTool":{"Bash":2.743276,"Read":0.45619,"(model)":0.135854,"Edit":0.080728,"Write":0.025342},"refusals":0,"budget":null}
 {"v":1,"endedAt":1795437456116,"reason":"other","totalUsd":1.770764,"byAgent":{"main":1.770764},"byTool":{"Bash":1.192171,"Edit":0.438946,"Read":0.086794,"(model)":0.052853},"refusals":0,"budget":null}
 {"v":1,"endedAt":1795503886882,"reason":"other","totalUsd":1.845592,"byAgent":{"main":1.845592},"byTool":{"Bash":1.562794,"Edit":0.093659,"Write":0.079598,"(model)":0.06283,"Read":0.046711},"refusals":0,"budget":null}
+{"v":1,"endedAt":1795527051332,"reason":"other","totalUsd":0.897103,"byAgent":{"main":0.897103},"byTool":{"Bash":0.499999,"Read":0.204522,"Edit":0.192582},"refusals":0,"budget":null}

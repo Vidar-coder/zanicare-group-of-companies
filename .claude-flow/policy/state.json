@@ -725,10 +725,50 @@
         "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
       },
       "hash": "sha256:02270de77eff0993935a8f0ac594702172e978871054a06acd4fd32b6fcc6b15"
+    },
+    {
+      "payload": {
+        "receiptId": "sha256:af89a972d32fc8d3d7dde45f691193833f52131092190b2a92339a64d509236b",
+        "previousReceiptHash": "sha256:02270de77eff0993935a8f0ac594702172e978871054a06acd4fd32b6fcc6b15",
+        "sequence": 18,
+        "issuedAt": 1795527055284,
+        "request": {
+          "identity": {
+            "id": "legacy-cli",
+            "type": "legacy"
+          },
+          "action": {
+            "type": "mcp.tool.call",
+            "resource": "hooks_intelligence_verified-ingest",
+            "tool": "hooks_intelligence_verified-ingest",
+            "server": "ruflo",
+            "network": false,
+            "destructive": false
+          },
+          "context": {
+            "metadata": {
+              "inputDigest": "sha256:b72ed13cb525af2592de7b88e763277fa14592edc468666510c59a8cf02dd505"
+            },
+            "now": 1795527055284
+          },
+          "requestId": "5eb311a0-cccf-4377-b553-df6df79e0563"
+        },
+        "decision": {
+          "requestId": "5eb311a0-cccf-4377-b553-df6df79e0563",
+          "outcome": "allowed",
+          "enforcedOutcome": "allowed",
+          "mode": "legacy",
+          "reason": "legacy-default-allow",
+          "matchedRules": [],
+          "obligations": []
+        },
+        "policyHash": "sha256:00b63b2f746eb8b9095bbd5e1dbae4ddd74fd92a6740b72f59f4069fbfda4737"
+      },
+      "hash": "sha256:67165700a5bc751758387b0ca044e135740fae82cd3efd5b8941eb38f533bbe8"
     }
   ],
   "migratedAt": 1794916713348,
   "migratedFrom": "pre-ADR-324; capabilities=.swarm/memory.db",
-  "ledgerLength": 18,
-  "ledgerHead": "sha256:02270de77eff0993935a8f0ac594702172e978871054a06acd4fd32b6fcc6b15"
+  "ledgerLength": 19,
+  "ledgerHead": "sha256:67165700a5bc751758387b0ca044e135740fae82cd3efd5b8941eb38f533bbe8"
 }

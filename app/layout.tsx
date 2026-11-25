@@ -20,7 +20,10 @@ const canonicalUrl = canonicalSiteUrl
 // a forwarded message is re-scraped without the original page, so relative paths break.
 const OG_IMAGE_FALLBACK = `${canonicalUrl}${siteConfig.linkPreviewImage}`
 const OG_IMAGE_SQUARE = `${canonicalUrl}${siteConfig.linkPreviewImageSquare}`
-const eventImageUrl = OG_IMAGE_FALLBACK
+const hasSquareImage = siteConfig.linkPreviewImageSquare !== siteConfig.linkPreviewImage
+// Real pixel size of /Details/LinkPreview.png — update when the preview image changes
+const OG_IMAGE_WIDTH = 1734
+const OG_IMAGE_HEIGHT = 907
 // og:image:type must match the real file — Facebook / Messenger drop the image on a mismatch
 const imageType = (path: string) =>
   /\.png$/i.test(path) ? "image/png" : /\.webp$/i.test(path) ? "image/webp" : "image/jpeg"
@@ -30,16 +33,20 @@ const phoneOpeningCard = siteConfig.openingCard?.enabled !== false
 
 // couple.groom = company name, couple.bride = event name (content/site.ts → QUICK SETUP)
 const companyName = siteConfig.couple.groom
-const eventName = siteConfig.couple.bride
-const coupleNames = `${companyName} ${eventName}`
-const eventTitle = `${eventName} | ${companyName}`
-const eventDescription = `You're invited to the ${companyName} ${eventName} on ${siteConfig.wedding.date} at ${siteConfig.ceremony.location}. RSVP, view the program, and find everything you need for the evening.`
+// Name used in titles, link previews and search results
+const eventName = "Thanksgiving and Year-End Party"
+const shortCompanyName = "Zanicare"
+const eventDate = `${siteConfig.ceremony.day}, ${siteConfig.ceremony.date}`
+const eventTitle = `${shortCompanyName} ${eventName} | ${siteConfig.wedding.date}`
+const eventDescription = `You're invited to the ${companyName} ${eventName} on ${eventDate} at ${siteConfig.ceremony.location}. RSVP, view the program and leave a note of thanks.`
+const previewAlt = `${shortCompanyName} ${eventName} — ${siteConfig.wedding.date}, ${siteConfig.ceremony.location}`
 const eventHashtag = siteConfig.snapShare.hashtag[0] ?? ""
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
   name: `${companyName} ${eventName}`,
+  url: canonicalUrl,
   startDate: "2026-12-13T18:00:00+08:00",
   endDate: "2026-12-13T23:30:00+08:00",
   eventStatus: "https://schema.org/EventScheduled",
@@ -60,6 +67,7 @@ const jsonLd = {
   organizer: {
     "@type": "Organization",
     name: companyName,
+    url: canonicalUrl,
   },
   eventHashtag,
 }
@@ -80,12 +88,23 @@ export const metadata: Metadata = {
   metadataBase: new URL(canonicalUrl),
   title: {
     default: eventTitle,
-    template: `%s | ${eventName}`,
+    template: `%s | ${shortCompanyName} ${eventName}`,
   },
   description: eventDescription,
   keywords:
-    `${companyName}, Zanicare, ${eventName}, year-end party, thanksgiving party, company party, ${siteConfig.ceremony.location}, invitation, RSVP, ${eventHashtag}`,
-  applicationName: `${eventName} Invitation`,
+    [
+      companyName,
+      shortCompanyName,
+      `${shortCompanyName} ${eventName}`,
+      "thanksgiving party",
+      "year-end party",
+      "company party",
+      siteConfig.ceremony.location,
+      "invitation",
+      "RSVP",
+      ...siteConfig.snapShare.hashtag,
+    ],
+  applicationName: `${shortCompanyName} ${eventName}`,
   authors: [{ name: companyName }],
   creator: companyName,
   publisher: companyName,
@@ -105,46 +124,45 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon_io/favicon.ico",
     apple: "/favicon_io/apple-touch-icon.png",
-    other: [
-      { rel: "android-chrome-192x192", url: "/favicon_io/android-chrome-192x192.png" },
-      { rel: "android-chrome-512x512", url: "/favicon_io/android-chrome-512x512.png" },
-    ],
   },
   manifest: "/favicon_io/site.webmanifest",
   openGraph: {
-    title: `${eventName} | ${siteConfig.wedding.date}`,
+    title: eventTitle,
     description: eventDescription,
     url: canonicalUrl,
-    siteName: coupleNames,
+    siteName: companyName,
     locale: "en_PH",
     type: "website",
-    // Wide image first (what Facebook / Messenger / Viber show); square second for apps that prefer it.
-    // width/height must match the real files, or Messenger may skip the image.
-    // Both are the company logo (1254×1254) until a 1200×630 preview image is made.
+    // width/height must match the real file, or Messenger may skip the image
     images: [
       {
         url: OG_IMAGE_FALLBACK,
         secureUrl: OG_IMAGE_FALLBACK,
-        width: 1254,
-        height: 1254,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
         type: imageType(siteConfig.linkPreviewImage),
-        alt: `${coupleNames} - ${siteConfig.wedding.date}`,
+        alt: previewAlt,
       },
-      {
-        url: OG_IMAGE_SQUARE,
-        secureUrl: OG_IMAGE_SQUARE,
-        width: 1254,
-        height: 1254,
-        type: imageType(siteConfig.linkPreviewImageSquare),
-        alt: coupleNames,
-      },
+      // Square fallback only when it's a different file (600×600)
+      ...(hasSquareImage
+        ? [
+            {
+              url: OG_IMAGE_SQUARE,
+              secureUrl: OG_IMAGE_SQUARE,
+              width: 600,
+              height: 600,
+              type: imageType(siteConfig.linkPreviewImageSquare),
+              alt: previewAlt,
+            },
+          ]
+        : []),
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${eventName} Invitation`,
+    title: eventTitle,
     description: `${eventDescription} ${eventHashtag}`.trim(),
-    images: [eventImageUrl],
+    images: [{ url: OG_IMAGE_FALLBACK, alt: previewAlt }],
   },
   robots: {
     index: true,
@@ -158,7 +176,7 @@ export const metadata: Metadata = {
     },
   },
   appleWebApp: {
-    title: eventName,
+    title: shortCompanyName,
     statusBarStyle: "default",
     capable: true,
   },
@@ -169,7 +187,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   colorScheme: "light",
-  themeColor: "#D9A08C",
+  themeColor: "#111111",
 }
 
 export default function RootLayout({
@@ -180,10 +198,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="color-scheme" content="light" />
-        <meta name="theme-color" content="#111111" />
-        <meta name="format-detection" content="telephone=yes,email=no,address=no" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet" />
