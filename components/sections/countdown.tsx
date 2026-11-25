@@ -45,7 +45,7 @@ const light = {
   soft: LUX.ivory,
 } as const
 
-/** Polished gold for the logo and the day number */
+/** Polished gold for the day number */
 const GOLD_LEAF = `linear-gradient(115deg, #B8862B 0%, ${LUX.gold} 28%, ${LUX.goldLight} 45%, #FFF1C4 50%, ${LUX.goldLight} 55%, ${LUX.gold} 72%, #B8862B 100%)`
 
 /** Fine gold rule that fades out at the given end */
@@ -78,28 +78,18 @@ function OutsideDivider() {
   )
 }
 
-/** The logo as a gold silhouette, with a slow shine sweeping across it */
-function GoldMonogram({ src, label }: { src: string; label: string }) {
-  const mask = `url("${encodeURI(src)}") center / contain no-repeat`
+/** Full-colour seal shown above the countdown */
+const COUNTDOWN_LOGO = "/monogram/monogramnew.png"
+
+function CountdownLogo({ label }: { label: string }) {
   return (
-    <div
-      role="img"
-      aria-label={label}
-      className="relative h-full w-full"
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={COUNTDOWN_LOGO}
+      alt={label}
+      className="h-full w-full object-contain"
       style={{ filter: "drop-shadow(0 0 10px rgb(226 183 90 / 35%)) drop-shadow(0 6px 14px rgb(0 0 0 / 60%))" }}
-    >
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          WebkitMask: mask,
-          mask,
-          backgroundImage: GOLD_LEAF,
-          backgroundSize: "250% 100%",
-        }}
-        animate={{ backgroundPosition: ["100% 0%", "0% 0%", "100% 0%"] }}
-        transition={{ duration: 9, ease: "easeInOut", repeat: Infinity }}
-      />
-    </div>
+    />
   )
 }
 
@@ -314,7 +304,7 @@ export function Countdown() {
           className="relative"
         >
           <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] lg:w-[36rem] lg:h-[36rem] xl:w-[40rem] xl:h-[40rem]">
-            <GoldMonogram src={siteConfig.couple.monogram} label={`${siteConfig.couple.groom} logo`} />
+            <CountdownLogo label={`${siteConfig.couple.groom} logo`} />
           </div>
         </motion.div>
       </div>
