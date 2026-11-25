@@ -262,9 +262,9 @@ const DISPLAY_MODE = "plain" as "photos" | "plain"
 // ── Shared images ───────────────────────────────────────────────────────────
 const BRAND = {
   logo: "/Details/companyLogo.png",
-  monogram: "/monogram/ZANICARE DOH Certified Badge.png", // logo (loader, envelope, closing)
+  monogram: "/monogram/monasdgsfdgjkh.png", // logo (navbar, footer, loader, envelope, closing)
   coupleNameImage: "/Details/companyLogo.png", // logo (loader, envelope)
-  seal: "/Details/companyLogo.png", // envelope wax seal
+  seal: "/monogram/monogramnew.png", // envelope wax seal
   // ⚠ check: still the previous wedding song — swap in a year-end party track
   backgroundMusic: "/background_music/Bruno Mars - 24k Magic (Lyrics).mp3",
 }
