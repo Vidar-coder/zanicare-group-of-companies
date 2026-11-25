@@ -79,7 +79,7 @@ function OutsideDivider() {
 }
 
 /** Full-colour seal shown above the countdown */
-const COUNTDOWN_LOGO = "/monogram/monogramnew.png"
+const COUNTDOWN_LOGO = "/monogram/seal.png"
 
 function CountdownLogo({ label }: { label: string }) {
   return (

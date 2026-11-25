@@ -47,6 +47,7 @@ const BUTTON_HOVER = "linear-gradient(180deg, #FFF1C2 0%, #F3D27A 45%, #C9952F 1
 const BUTTON_SHADOW = "0 8px 18px -10px rgb(0 0 0 / 80%)"
 const IVORY = "#111111" // lettering / icons on gold
 const HAIRLINE = "rgb(201 162 74 / 40%)"
+const FOOTER_SEAL = "/monogram/seal.png"
 
 const palette = {
   body: LUX.body,
@@ -305,23 +306,16 @@ export function Footer({ background = true }: { background?: boolean } = {}) {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {content.showMonogram && siteConfig.couple.monogram ? (
-            <motion.span
+          {content.showMonogram ? (
+            // Seal in its original colours
+            // eslint-disable-next-line @next/next/no-img-element
+            <motion.img
               variants={rise}
-              role="img"
-              aria-label={`${companyName} monogram`}
-              className="block h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32"
+              src={FOOTER_SEAL}
+              alt={`${companyName} seal`}
+              className="block h-24 w-24 object-contain sm:h-28 sm:w-28 md:h-32 md:w-32"
               style={{
-                background: LUX_GOLD_BUTTON,
                 filter: "drop-shadow(0 4px 14px rgb(0 0 0 / 70%)) drop-shadow(0 0 10px rgb(226 183 90 / 25%))",
-                WebkitMaskImage: `url("${siteConfig.couple.monogram}")`,
-                maskImage: `url("${siteConfig.couple.monogram}")`,
-                WebkitMaskSize: "contain",
-                maskSize: "contain",
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                maskPosition: "center",
               }}
             />
           ) : (

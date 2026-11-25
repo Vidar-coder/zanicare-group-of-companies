@@ -5,14 +5,13 @@ import Link from "next/link"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import StaggeredMenu from "./StaggeredMenu"
 import { cinzel } from "@/lib/fonts"
-import { siteConfig } from "@/content/site"
 
 
 // Palette lives in globals.css → @theme inline → --color-motif-*
 // Edit there once to update every component.
 
 
-const NAV_MONOGRAM = siteConfig.couple.monogram
+const NAV_SEAL = "/monogram/seal.png"
 
 // Same order as the sections in app/page.tsx. Links whose section isn't on the page
 // (e.g. commented out there) are hidden automatically.
@@ -117,8 +116,6 @@ export function Navbar() {
     [visibleLinks],
   )
 
-  const monogramSrc = siteConfig.couple.monogram || NAV_MONOGRAM
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
@@ -143,15 +140,13 @@ export function Navbar() {
             className="flex-shrink-0 group relative z-10 flex items-center justify-center py-0 pl-1 pr-2.5 sm:pl-1.5 sm:pr-3 md:pl-2 md:pr-3.5 -ml-0.5 sm:ml-0 self-stretch"
             aria-label={`${siteConfig.couple.groomNickname} & ${siteConfig.couple.brideNickname} — Home`}
           >
-            {/* Monogram painted in gold through its alpha mask */}
-            <span
+            {/* Seal in its original colours */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={NAV_SEAL}
+              alt=""
               aria-hidden
-              className="relative block h-[2.5rem] w-[3.2rem] sm:h-[2.85rem] sm:w-[3.65rem] md:h-[3.35rem] md:w-[4.15rem] shrink-0 my-0 group-hover:scale-105 group-active:scale-100 transition-transform duration-500"
-              style={{
-                backgroundColor: "#E2B75A",
-                WebkitMask: `url("${monogramSrc}") center / contain no-repeat`,
-                mask: `url("${monogramSrc}") center / contain no-repeat`,
-              }}
+              className="relative block h-[2.5rem] w-[3.2rem] sm:h-[2.85rem] sm:w-[3.65rem] md:h-[3.35rem] md:w-[4.15rem] shrink-0 my-0 object-contain group-hover:scale-105 group-active:scale-100 transition-transform duration-500"
             />
             <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[rgb(226_183_90/12%)] blur-md -z-10" />
           </Link>
